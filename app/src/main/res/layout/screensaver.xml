@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+  	android:background="@drawable/screen1"
+    android:orientation="vertical" >
+    
+<!--     <LinearLayout android:id="@+id/image_holder"   android:background="@color/light_grey" android:layout_width="3000px" android:layout_height="3000px"> -->
+
+    <TextView
+        style="@style/table_item_colored"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="20pt"
+        android:id="@+id/ss_current_cons_label"
+        android:text="500W"
+     />
+
+<!--     </LinearLayout> -->
+    
+        
+  </LinearLayout>

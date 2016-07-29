@@ -1,0 +1,174 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="layout.SummaryFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="400sp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.60"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1">
+
+                        <TextView
+                            style="@style/table_item_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/current_cons_label"
+                            android:text="Consumo Actual:"
+                            android:textColor="#FFFFFF"
+                            android:textSize="21px"
+                            android:textStyle="bold" />
+
+                        <LinearLayout style="@style/white_separator" >
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/frag_current_cons_label"
+                            style="@style/table_item_value"
+                            android:background="@drawable/main_bg1"
+                            android:paddingLeft="10dp"
+                            android:text="500W"
+                            android:textColor="@color/app_main_dark"
+                            android:textSize="21px" />
+                    </LinearLayout>
+
+                    <android.prsma.org.energyspectrum.customUI.SummaryWidget
+                        android:id="@+id/frag_summaryWidget"
+                        android:layout_width="fill_parent"
+                        android:layout_weight="0.9"
+                        android:layout_margin="15sp"
+                        android:layout_height="0sp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.4"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000000" >
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="400sp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/table_item_label"
+                            android:layout_width="fill_parent"
+                            android:background="@drawable/main_bg2"
+                            android:padding="2dp"
+                            android:text=" Consumo Actual VS Passado"
+                            android:textColor="#000000"
+                            android:textSize="21px" />
+
+                        <android.prsma.org.energyspectrum.customUI.SummaryComparisonWidget
+                            android:id="@+id/frag_summaryCompWidget"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.8"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5px"
+                    android:layout_marginTop="5px"
+                    android:src="@drawable/info_icon" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/frag_recomendation_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.66"
+                        android:gravity="center_vertical"
+                        android:text="Set your home computer to automatically hibernate/sleep after a short period of inactivity."
+                        android:textColor="#000000"
+                        android:textSize="6pt" >
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/frag_connection_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="35dp"
+                            android:gravity="right"
+                            android:text="Ligando-se ao medidor..."
+                            android:textColor="#000000" />
+
+                        <LinearLayout
+                            android:id="@+id/frag_connection_status_icon"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="15dp"
+                            android:orientation="horizontal" >
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/frag_reset_connection"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/round_box_blue_stroke"
+                            android:onClick="handleButtonClick"
+                            android:padding="9dp"
+                            android:text="Reset" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

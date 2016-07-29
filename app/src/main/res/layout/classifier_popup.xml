@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/classifier_info"
+    style="@style/popupMainLayout"
+    android:orientation="vertical" >
+
+    <TextView
+		style="@style/popUpLabel"
+        android:text="Equipment"
+        android:textSize="9pt"
+         android:paddingLeft="15dp"
+         android:paddingTop="5dp" />
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_marginLeft="25dp" >
+
+	    <TextView
+	        style="@style/popUpLabel"
+	        android:text="Your Guess:" />
+
+	    <EditText android:id="@+id/user_guess" 
+	        	style="@style/popUpLabel" 
+	        	android:width="300px"/>
+	   
+	</LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:layout_margin="4dp" >
+
+            <Button
+                android:id="@+id/back_popUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="Back" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Ok  " />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu 
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/main_options"
+		android:icon="@android:drawable/ic_menu_preferences"
+		android:title="Preferences">
+	</item>
+<!-- 	<item -->
+<!-- 	    android:id="@+id/goto_cluster" -->
+<!-- 	    android:icon="@android:drawable/btn_star_big_off" -->
+<!-- 	    android:title="clusterAnalysis"> -->
+<!-- 	</item> -->
+<!-- 	<item -->
+<!-- 	    android:id="@+id/reset_connection" -->
+<!-- 	    android:icon="@android:drawable/ic_menu_rotate" -->
+<!-- 	    android:title="act. ligação"> -->
+<!-- 	</item> -->
+<!-- 	<item -->
+<!-- 	    android:id="@+id/goto_production" -->
+<!-- 	    android:icon="@android:drawable/ic_menu_rotate" -->
+<!-- 	    android:title="Debug prod"> -->
+<!-- 	</item> -->
+</menu>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/top_menu_layout"
+        style="@style/top_menu"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/home_btn_prod"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_left_wh"
+            android:onClick="handleHomeClickProd" >
+
+            <TextView
+                style="@style/top_menu_label"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/home_tab_name" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="25dp"
+                android:src="@drawable/home_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/top_menu_item"
+            android:background="@color/bg_color" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/prod_icon" />
+
+            <TextView
+                style="@style/top_menu_label"
+                android:text="Produção" />
+        </LinearLayout>
+
+        <!-- android:id="@+id/today_btn" -->
+
+        <LinearLayout
+            android:id="@+id/day_btn_prod"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_right" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/ic_menu_day" />
+
+            <TextView
+                android:id="@+id/day_label"
+                style="@style/top_menu_label"
+                android:text="Dia" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/week_btn_prod"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_not_hc2" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/v_bar" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/ic_menu_week" />
+
+            <TextView
+                style="@style/top_menu_label"
+                android:text="Semana" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/month_btn_prod"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_not_hc2" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/v_bar" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/ic_menu_month" />
+
+            <TextView
+                style="@style/top_menu_label"
+                android:text="Mês" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <android.prsma.org.energyspectrum.customUI.ProductionChart
+            android:id="@+id/prod_chart"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.75" />
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25"
+            android:background="@color/bg_color"
+            android:orientation="vertical" >
+
+            <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="7px"
+                android:background="@drawable/main_bg2_prod"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Origem"
+                android:textColor="@color/app_orange"
+                android:textSize="8pt" />
+            <!-- solar legend -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:layout_marginBottom="2dp"
+                    android:src="@drawable/solar_icon" />
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/solar_color" >
+                </LinearLayout>
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    style="@style/prod_legend"
+                    android:text="E. Solar" />
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    android:id="@+id/solar_precent"
+                    style="@style/prod_legend"
+                    android:gravity="right"
+                    android:textSize="10pt"
+                    android:text="--" />
+            </LinearLayout>
+            <!-- Hidrica legend -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:src="@drawable/water_icon" />
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/water_color" >
+                </LinearLayout>
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    style="@style/prod_legend"
+                    android:text="E. Hidrica" />
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    android:id="@+id/water_precent"
+                    style="@style/prod_legend"
+                    android:gravity="right"
+                    android:textSize="10pt"
+                    android:text="--" />
+            </LinearLayout>
+            <!-- eolica legend -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:src="@drawable/wind_icon" />
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/wind_color" >
+                </LinearLayout>
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    style="@style/prod_legend"
+                    android:text="E. Eólica" />
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    android:id="@+id/wind_precent"
+                    style="@style/prod_legend"
+                    android:gravity="right"
+                    android:textSize="10pt"
+                    android:text="--" />
+            </LinearLayout>
+            <!-- termica legend -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:src="@drawable/thermal_icon" />
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/temar_color" >
+                </LinearLayout>
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    style="@style/prod_legend"
+                    android:text="E. Térmica" />
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    android:id="@+id/termal_precent"
+                    style="@style/prod_legend"
+                    android:gravity="right"
+                    android:textSize="10pt"
+                    android:text="--" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/horizontal_bar_grad"
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:layout_marginTop="8dp"
+                >
+            </LinearLayout>
+
+            <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/main_bg2_prod"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Consumo total:"
+                android:textColor="@color/app_orange"
+                android:textSize="8pt" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/power_icon_prod" />
+
+                    <TextView
+                        android:id="@+id/prod_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="--"
+                        android:textColor="#000000"
+                        android:textSize="8pt" />
+                    <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="kWh"
+                        android:textColor="#000000"
+                        android:textSize="6pt" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/money_icon_prod" />
+
+                    <TextView
+                        android:id="@+id/prod_total_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="--"
+                        android:textColor="#000000"
+                        android:textSize="8pt" />
+                     <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/euro"
+                        android:textColor="#000000"
+                        android:textSize="6pt" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20px"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/tree_icon" />
+
+                    <TextView
+                        android:id="@+id/prod_total_co2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="--"
+                        android:textColor="#000000"
+                        android:textSize="8pt" />
+                    <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="gCO2"
+                        android:textColor="#000000"
+                        android:textSize="6pt" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0px"
+                android:layout_weight="0.4"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="100px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="2px"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/horizontal_bar_grad2" />
+
+                    <TextView
+                        android:id="@+id/prod_cons_comparison"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="--"
+                        android:textColor="@color/app_orange"
+                        android:textSize="8pt" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="que a sua média"
+                        android:textColor="@color/app_orange" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="100px"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="2px"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/horizontal_bar_grad" />
+
+                    <TextView
+                        android:id="@+id/renew_quota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="--"
+                        android:textColor="#03A688"
+                        android:textSize="8pt" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="renováveis"
+                        android:textColor="@color/water_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5" >
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

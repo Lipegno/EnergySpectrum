@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/week_main_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#DFDFDC"
+    android:orientation="vertical" >
+
+    <!-- Top menu layout -->
+
+    <LinearLayout
+        android:id="@+id/top_menu_layout"
+        style="@style/top_menu"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/home_btn_week"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_not"
+            android:onClick="handleHomeClick" >
+
+            <TextView
+                style="@style/top_menu_label"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/home_tab_name" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/home_icon" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/week_prod_btn"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_not_hc" >
+            <ImageView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/v_bar"
+                android:layout_gravity="center_vertical"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/prod_icon" />
+
+            <TextView
+                style="@style/top_menu_label"
+                android:text="Produção" />
+        </LinearLayout>
+
+        <!-- android:id="@+id/today_btn" -->
+
+
+        <LinearLayout
+            android:id="@+id/day_btn_week"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_left" >
+            <ImageView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/v_bar"
+                android:layout_gravity="center_vertical"/>
+           
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/ic_menu_day" />
+
+            <TextView
+                style="@style/top_menu_label"
+                android:text="Dia" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/week_btn_week"
+            style="@style/top_menu_item"
+            android:background="#E2E0DB" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_menu_week" />
+
+            <TextView
+                android:id="@+id/week_label"
+                style="@style/top_menu_label"
+                android:text="Semana" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/month_btn_week"
+            style="@style/top_menu_item"
+            android:background="@drawable/tab_selected_right" >
+
+            <ImageView
+               android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_menu_month" />
+
+            <TextView
+                style="@style/top_menu_label"
+                android:text="Mês" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Relative laytout that hold the chart and the ingo about the day's consumption -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/time_views_background"
+        android:paddingLeft="20dp" >
+
+        <!-- Layout with the chart date and button to change the date -->
+
+        <LinearLayout
+            android:id="@+id/chart_week"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="56px"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center" >
+
+                <Button
+                    android:id="@+id/minus_week"
+                    android:layout_width="55px"
+                    android:layout_height="45px"
+                    android:background="@android:color/transparent"
+                    android:onClick="handleButtonClick"
+                    android:text=" &lt; " >
+                </Button>
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    android:id="@+id/week_ID_label"
+                    style="@style/text_box_date"
+                    android:text="esta semana"
+                    android:layout_width="200px"
+                    android:textSize="21px" />
+
+                <Button
+                    android:id="@+id/plus_week"
+                    android:layout_width="55px"
+                    android:layout_height="45px"
+                    android:background="@android:color/transparent"
+                    android:onClick="handleButtonClick"
+                    android:text=" > " >
+                </Button>
+            </LinearLayout>
+
+            <com.androidplot.xy.XYPlot
+                android:id="@+id/week_cons_Plot"
+                android:layout_width="383px"
+                android:layout_height="250px"
+                title="Consumo por semana" />
+        </LinearLayout>
+
+        <!-- Layout that hold the consumption info of this view -->
+
+        <LinearLayout
+            android:id="@+id/info_week"
+            android:layout_width="300px"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="55dp"
+            android:layout_toRightOf="@id/chart_week"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/inf_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=" Total"
+                    android:textColor="#4d4d4d"
+                    android:textSize="21px" />
+            </LinearLayout>
+            <!-- TABLE WITH CONSUMPTION VALUES -->
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:id="@+id/tableRow1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0px"
+                    android:layout_weight="0.5" >
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/power_icon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/tree_icon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_height="60px"
+                        android:layout_weight="0.25" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/money_icon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/peak_icon" />
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0px"
+                    android:layout_weight="0.5" >
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25"
+                        android:orientation="vertical" >
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            android:id="@+id/total_consump_week"
+                            style="@style/summary_table_item"
+                            android:text="18"
+                            android:textSize="18px" />
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            style="@style/summary_table_item"
+                            android:text="Kwh"
+                            android:textSize="12px" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25"
+                        android:orientation="vertical" >
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            android:id="@+id/total_co2_week"
+                            style="@style/summary_table_item"
+                            android:text="0.4 g CO2"
+                            android:textSize="18px" />
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            style="@style/summary_table_item"
+                            android:text="gC02"
+                            android:textSize="12px" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25"
+                        android:orientation="vertical" >
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            android:id="@+id/total_money_week"
+                            style="@style/summary_table_item"
+                            android:text="5.4€"
+                            android:textSize="18px" />
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            style="@style/summary_table_item"
+                            android:text="€"
+                            android:textSize="12px" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/summary_table"
+                        android:layout_weight="0.25"
+                         android:layout_height="60px"
+                        android:orientation="vertical" >
+
+                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                            android:id="@+id/peak_consump_week"
+                            style="@style/summary_table_item"
+                            android:text="Segunda feira"
+                            android:textSize="18px" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
+            <!-- LINE AND COMPARISON BOX -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop ="15dp"
+                 android:layout_marginBottom ="15dp"
+                android:background="#000000" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/compare_icon" >
+                </ImageView>
+
+                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    style="@style/text_box_date"
+                    android:text=" Comparação:"
+                    android:textSize="21px" />
+            </LinearLayout>
+            <android.prsma.org.energyspectrum.customUI.ComparisonWidget
+                    android:id="@+id/comp_widget_week"
+                android:layout_width="314dp"
+                android:layout_height="73dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

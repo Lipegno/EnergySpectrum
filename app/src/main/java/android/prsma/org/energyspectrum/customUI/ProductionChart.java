@@ -257,12 +257,12 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		p2.setStyle(Style.STROKE);
 		p2.setColor(Color.parseColor("#6D6E71"));
 		p2.setStrokeWidth(1.5f);
-		c.drawLine((int)length2,getHeight()-horizontal_caption_size,(int)length2,getHeight()-(horizontal_caption_size + cons_chart_percent_height*getHeight())+10, p2);
+		//c.drawLine((int)length2,getHeight()-horizontal_caption_size,(int)length2,getHeight()-(horizontal_caption_size + cons_chart_percent_height*getHeight())+10, p2);
 		//	drawAverages( c, length2);
 		// draw top separator
 		p.setStrokeWidth(2f);
 		p.setColor(Color.parseColor("#6D6E71"));
-		float y = getHeight()-(horizontal_caption_size + cons_chart_percent_height*getHeight()+vertical_caption_size-10);	//separator between prod and cons
+		float y = getHeight()-(horizontal_caption_size + cons_chart_percent_height*getHeight()+vertical_caption_size);	//separator between prod and cons
 		c.drawLine(left_margin, y, getWidth(), y, p2);
 		
 		y = getHeight()-(horizontal_caption_size_prod + prod_chart_percent_height*getHeight()+10);

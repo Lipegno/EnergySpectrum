@@ -469,6 +469,7 @@ public final class WebServiceHandler {
 
 			}
 			cons_data = dummy.getData();
+            cons_data = getDummyValues(15,"hour");
 			return cons_data;
 		}else{
 			Log.d(MODULE, "System offline");
@@ -477,7 +478,17 @@ public final class WebServiceHandler {
 			return cons_data;
 		}	
 	}
-	
+
+    private ArrayList<ContentValues> getDummyValues(int size, String key){
+       ArrayList cons_data = new ArrayList<ContentValues>();
+        for(int i=0;i<size;i++){
+            ContentValues cv = new ContentValues();
+            cv.put(key,i);
+            cv.put("cons",(200+Math.random()*800));
+            cons_data.add(cv);
+        }
+        return cons_data;
+    }
 
 	private boolean isOnline(){
 		return RuntimeConfigs.getConfigs().getMenuHandler().isOnline();

@@ -135,7 +135,7 @@ public class EnergyProdPrediction extends ConsumptionHttpRequest {
 // Add the request to the RequestQueue.
 		queue.add(stringRequest);
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

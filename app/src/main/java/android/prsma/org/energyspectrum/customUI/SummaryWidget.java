@@ -22,7 +22,10 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 	int _color_month;
 	int _color_week;
 	int _color_day;
+	private float _text_size;
 	private final static String MODULE = "Summary widget";
+	private float _width;
+	private float _height;
 
 	public SummaryWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -51,10 +54,10 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 	private void drawComp(Canvas c) {
-		float w = getWidth();
-		float h = getHeight();
+		_width = getWidth()*0.9f;
+		_height = getHeight()*0.9f;
 
-		float r0 = (int) Math.round(h/2.3);
+		float r0 = (int) Math.round(_height/2.3);
 		float r1 = calculateRadious(_total_month,r0);//(_total_month*r0)/max_cons;
 		float r2 = calculateRadious(_total_week,r0);//(_total_week*r0)/max_cons;
 		float r3 = calculateRadious(_total_day,r0);//(_total_day*r0)/max_cons;
@@ -73,15 +76,15 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		paint_day.setAntiAlias(true);
 		
 		if( _total_month > _total_week){
-			c.drawCircle(w/2, h/2, r1, paint_month);
-			c.drawCircle(w/2, h/2, r2, paint_week);
+			c.drawCircle(_width/2, _height/2, r1, paint_month);
+			c.drawCircle(_width/2, _height/2, r2, paint_week);
 		}else{
-			c.drawCircle(w/2, h/2, r2, paint_week);
-			c.drawCircle(w/2, h/2, r1, paint_month);
+			c.drawCircle(_width/2, _height/2, r2, paint_week);
+			c.drawCircle(_width/2, _height/2, r1, paint_month);
 		}
 
 	
-		c.drawCircle(w/2, h/2,r3, paint_day);
+		c.drawCircle(_width/2, _height/2,r3, paint_day);
 		
 		drawConnections(c,r1,r2,r3);
 	}
@@ -97,25 +100,25 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 			r2=temp;
 		}
 		
-		float h = getHeight();
-		double y = (getWidth()/3)*Math.tan(Math.PI/6);
-		float c_x = getWidth()/2;
+		float h = _height;
+		double y = (_width/3)*Math.tan(Math.PI/6);
+		float c_x = _width/2;
 		
-		float month_x = (getWidth()/2)+r1+10;
-		float month_y= (float) (getHeight()/1.2);
-		float week_x =  (getWidth()/2)+r1+10;
+		float month_x = (_width/2)+r1+10;
+		float month_y= (float) (_height/1.2);
+		float week_x =  (_width/2)+r1+10;
 		float week_y= (float) (h/2);
-		float day_x = (getWidth()/2)+r1+10;
+		float day_x = (_width/2)+r1+10;
 		float day_y= (float) ( (h/2)-y);
 			
 		c.drawLine(c_x, (h/2+r1)-10, month_x-20, month_y, paint);
-		c.drawLine( month_x-20, month_y, month_x, month_y, paint);
-		c.drawLine(getWidth()/2+r2-5, (h/2), week_x, week_y, paint);
+		c.drawLine( month_x-20, month_y, month_x+_text_size, month_y, paint);
+		c.drawLine(_width/2+r2-5, (h/2), week_x+_text_size, week_y, paint);
 		c.drawLine(c_x, (h/2),day_x-20 ,day_y , paint);
-		c.drawLine(day_x-20 ,day_y,day_x ,day_y , paint);
+		c.drawLine(day_x-20 ,day_y,day_x+_text_size ,day_y , paint);
 		
 		c.drawCircle(c_x, (h/2+r1)-10, 5, paint);
-		c.drawCircle(getWidth()/2+r2-5, (h/2), 5, paint);
+		c.drawCircle(_width/2+r2-5, (h/2), 5, paint);
 		c.drawCircle(c_x,  (h/2), 5, paint);
 		
 		drawAverages(c,month_x,month_y,week_x,week_y,day_x,day_y);
@@ -123,7 +126,7 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 	private void drawAverages(Canvas c,float month_x, float month_y, float week_x,float week_y, float day_x, float day_y) {
 		Paint p = new Paint();
 		p.setAntiAlias(true);
-		p.setTextSize(13);
+		p.setTextSize(_text_size);
 		double co2Month = (_total_month)*0.762;
 		co2Month = co2Month - co2Month* DBManager.getDBManager().getThisMonthRenewPrecentage();
 		double co2Week = (_total_week)*0.762;
@@ -147,21 +150,24 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 	}
 	private void drawAverage(Canvas c, float x, float y,float val,double co2,Paint p){
 		DecimalFormat df = new DecimalFormat("#.#");
-		c.drawText(df.format(val)+" kWh", x, y, p);
-		c.drawText(df.format(co2)+" g CO2",x,y+15,p);
-		c.drawText(df.format((val)*0.12)+" €", x, y+30, p);
+		c.drawText(df.format(val)+" kWh", x+_text_size, y, p);
+		c.drawText(df.format(co2)+" g CO2",x+_text_size,y+5+_text_size,p);
+		c.drawText(df.format((val)*0.12)+" €", x+_text_size, y+5+_text_size*2, p);
 	}
 	private void drawDescription(Canvas c){
 		Paint p = new Paint();
-		p.setTextSize(12);
+		p.setTextSize(_text_size);
 		p.setColor(Color.BLACK);
 		p.setAntiAlias(true);
-		c.drawText("Aqui poderá ver um resumo do seu", 0f ,10f, p);
-		c.drawText("consumo hoje nesta semana", 0f ,25f, p);
-		c.drawText("e neste mes. O tamanho", 0f ,40f, p);
-		c.drawText("de cada circulo representa", 0f ,55f, p);
-		c.drawText("o consumo no respectivo ", 0f ,70f, p);
-		c.drawText("periodo.", 0f ,85f, p);
+		/*c.drawText("Aqui poderá ver um resumo do seu", 0f ,_text_size, p);
+		c.drawText("consumo hoje nesta semana", 0f ,_text_size*2, p);
+		c.drawText("e neste mes. O tamanho", 0f ,_text_size*3, p);
+		c.drawText(" O tamanho de cada circulo representa", 0f ,_text_size*4, p);
+		c.drawText("o consumo no respectivo ", 0f ,_text_size*5, p);
+		c.drawText("periodo.", 0f ,_text_size*6, p);*/
+		c.drawText("O tamanho de cada circulo representa", 0f ,_text_size, p);
+		c.drawText("o consumo no respectivo ", 0f ,_text_size*2, p);
+		c.drawText("periodo.", 0f ,_text_size*3, p);
 
 	}
 	private float calculateRadious(float cons, float max_r){
@@ -190,26 +196,26 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 
 		Paint p = new Paint();
 		p.setAntiAlias(true);
-		p.setTextSize(10);
+		p.setTextSize(_text_size);
 		
 		p.setColor(_color_month);
-		c.drawRect(x, getHeight()-40, 10, getHeight()-30, p);
-		c.drawText("Mês", 15,  getHeight()-30, p);
+		c.drawRect(x, _height-_text_size*3-10, 10, _height-30, p);
+		c.drawText("Mês", 15,  _height-_text_size*2-10, p);
 		
 		p.setColor(_color_week);
-		c.drawRect(x, getHeight()-25, 10, getHeight()-15, p);
-		c.drawText("Semana", 15,  getHeight()-15, p);
+		c.drawRect(x, _height-_text_size*2-10, 10, _height-15, p);
+		c.drawText("Semana", 15,  _height-_text_size-10, p);
 		
 		p.setColor(_color_day);
-		c.drawRect(x, getHeight()-10, 10, getHeight(), p);
-		c.drawText("Hoje", 15,  getHeight(), p);
+		c.drawRect(x, _height-_text_size-10, 10, _height-10, p);
+		c.drawText("Hoje", 15,  _height-10, p);
 		
 	}
 	public void drawLoading(Canvas c){
-		float y = getHeight()/2;
-		float x = getWidth()/2;
+		float y = _height/2;
+		float x = _width/2;
 		Paint p = new Paint();
-		p.setTextSize(15);
+		p.setTextSize(_text_size);
 		p.setAntiAlias(true);
 
 		p.setColor(getResources().getColor(R.color.app_main));
@@ -249,4 +255,11 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		this._total_day = _total_day;
 	}
 
+	public float get_text_size() {
+		return _text_size;
+	}
+
+	public void set_text_size(float _text_size) {
+		this._text_size = _text_size;
+	}
 }

@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.prsma.org.energyspectrum.R;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 
 	private int _comparisonBarHeight = 30;
 
+	private float _textSize;
 
 	private static final String MODULE = "Summary Comparison Widget";
 
@@ -51,12 +53,12 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 		int rect1_h = (int) Math.round(h/10);
 		int starY = 10;
 		Paint textPaint = new Paint();
-		textPaint.setTextSize(22);
+		textPaint.setTextSize(_textSize);
 		textPaint.setAntiAlias(true);
 		c.drawLine(w/2, starY, w/2, h,textPaint);
-		drawComparison(starY+35, c, _daily_cons, _daily_avg, get_maxDailyCons(),"Ontem "," Hoje");
-		drawComparison(starY + 90, c, _weekly_cons, _weekly_avg, get_maxWeeklyCons(), "Semana passada ", " Esta semana ");
-		drawComparison(starY + 145, c, _monthly_cons, _monthly_avg, get_maxMonthlyCons(), "Mês passado ", " Este Mês");
+		drawComparison(Math.round(starY+_comparisonBarHeight), c, _daily_cons, _daily_avg, get_maxDailyCons(),"Ontem "," Hoje");
+		drawComparison(Math.round(starY + _comparisonBarHeight*3), c, _weekly_cons, _weekly_avg, get_maxWeeklyCons(), "Semana passada ", " Esta semana ");
+		drawComparison(Math.round(starY + _comparisonBarHeight*5), c, _monthly_cons, _monthly_avg, get_maxMonthlyCons(), "Mês passado ", " Este Mês");
 	}
 	private int calculateBarWidth(float avg,float max){
 		return Math.round((avg*getWidth()/2)/max);
@@ -68,13 +70,15 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 		Paint p = new Paint();
 		Paint p2 = new Paint();
 		Paint textPaint = new Paint();
-		textPaint.setTextSize(15);
+		textPaint.setTextSize(_textSize);
 		textPaint.setAntiAlias(true);
 
 		p.setColor(getResources().getColor(R.color.app_main));
 		p.setAntiAlias(true);
 		p2.setColor(getResources().getColor(R.color.app_main_dark));
 		p2.setAntiAlias(true);
+		p2.setTextSize(_textSize*0.8f);
+
 		float w = getWidth();
 		int middle = (int)(w/2);
 		
@@ -84,16 +88,17 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 		c.drawRect(r, p);
 		//c.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.left_tip), middle - avg_width, y, p);
 		drawTriangle(false,c,middle - avg_width,y,p);
-    	Rect r2 = new Rect(middle, y,middle+cons_width,y+_comparisonBarHeight);
+
+		Rect r2 = new Rect(middle, y,middle+cons_width,y+_comparisonBarHeight);
     	text = textPaint.measureText(cons+"");
     	float tx = (middle+cons_width-text) > middle ? (middle+cons_width-text) : middle;
-    	
-		c.drawText(period2, w / 2, y - 5, textPaint);
+    	c.drawText(period2, w / 2, y - 5, textPaint);
 		c.drawRect(r2, p2);
 		//c.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.right_tip),middle+cons_width, y, p);
 		drawTriangle(true, c, middle + cons_width, y, p2);
 		p2.setColor(Color.WHITE);
-		c.drawText(cons+"", tx, y+18, p2);
+		p2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+		c.drawText(cons+"", tx, y+((_textSize*0.7f)/2f)+(_comparisonBarHeight/2), p2);
 
 	}
 	private void drawTriangle(boolean orientation, Canvas c, int x, int y,Paint p){
@@ -204,4 +209,14 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 	public void setLastMonth_cons(float monthly_avg) {
 		this._monthly_avg = monthly_avg;
 	}
+
+	public float get_textSize() {
+		return _textSize;
+	}
+
+	public void set_textSize(float _textSize) {
+		this._textSize = _textSize;
+		_comparisonBarHeight = Math.round(_textSize*1.8f);
+	}
+
 }

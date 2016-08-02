@@ -141,6 +141,9 @@ public class ProductionFragment extends Fragment {
             public void onClick(View v) {
                 ProductionHandler nova = new ProductionHandler();
                 nova.execute();
+
+                ConsumptionHandler c_handler = new ConsumptionHandler();
+                c_handler.execute();
             }
         });
 
@@ -181,9 +184,7 @@ public class ProductionFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * <p<a href="http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
@@ -296,14 +297,15 @@ public class ProductionFragment extends Fragment {
                 biomassa[i] = Math.round((nextNonZero(biomassa,i)+biomassa[i-1])/2);
             }
         }
+        _chart.setMax_scale((int) Math.round(max));
         _chart.setData(termica, hidrica, eolica, biomassa, foto);
         _chart.setTotal_renewables((int) Math.round(total_renew));
         _chart.setTotal((int)Math.round(total));
         _chart.requestRender();
-        _chart.setMax_scale((int) Math.round(max));
-        Log.i(MODULE,"max chart "+max);
 
-        _chart.requestRender();
+       // Log.i(MODULE,"max chart "+max);
+
+      //  _chart.requestRender();
     }
     private void calculateRenewAverages(){
         ArrayList<ContentValues> prod_average = DBManager.getDBManager().getProductionAverage();
@@ -467,6 +469,26 @@ public class ProductionFragment extends Fragment {
         protected void onPostExecute(String result) {
             if(cons_data!=null)
                 handleConsumptionData();
+            else{
+               cons_data = new ArrayList<ContentValues>();
+                average_cons =  new ArrayList<ContentValues>();
+                for(int i=0;i<300;i++) {
+                   ContentValues cv = new ContentValues();
+                    cv.put("tm_slot",i);
+                    cv.put("cons", Math.random()*500+500);
+                    cons_data.add(cv);
+                }
+
+                for(int i=0;i<24;i++) {
+                    ContentValues cv = new ContentValues();
+                    cv.put("hour",i);
+                    cv.put("cons", Math.random()*1000);
+                    average_cons.add(cv);
+                }
+
+                handleConsumptionData();
+            }
+
         }
     }
     private class RequestHandler extends Thread{

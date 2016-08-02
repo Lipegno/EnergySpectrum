@@ -142,6 +142,9 @@ public class SummaryFragment extends Fragment {
         _summaryWidget.set_total_month(30);
         _summaryWidget.set_total_week(10);
         _summaryWidget.set_total_day(5);
+
+        _summaryWidget.set_text_size(_currentConsLabel.getTextSize()*0.8f);
+        _summaryComp.set_textSize(_currentConsLabel.getTextSize()*0.8f);
         _summaryWidget.requestRender();
 
         new InitWidget().start();

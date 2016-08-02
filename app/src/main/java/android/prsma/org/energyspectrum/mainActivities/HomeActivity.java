@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import layout.DayConsumptionFragment;
 import layout.ProductionFragment;
 import layout.SummaryFragment;
 
@@ -84,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         _configs = RuntimeConfigs.getConfigs();
+        _configs.getMenuHandler().setContext(getApplicationContext());
 
         if (! DBManager.databaseExists())
             DBManager.initDatabase();
@@ -172,7 +174,10 @@ public class HomeActivity extends AppCompatActivity {
                 return _summaryFrag;
             } else if(position==2) {
                 return ProductionFragment.newInstance("aqui1", "aqui2");
-            } else {
+            }else if(position==3){
+                return DayConsumptionFragment.newInstance("aqui1","aqui2");
+            }
+            else {
                 return PlaceholderFragment.newInstance(position + 1);
             }
         }
@@ -180,7 +185,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -192,6 +197,8 @@ public class HomeActivity extends AppCompatActivity {
                     return "SECTION 2";
                 case 2:
                     return "SECTION 3";
+                case 3:
+                    return "SECTION 4";
             }
             return null;
         }

@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.prsma.org.energyspectrum.R;
+import android.prsma.org.energyspectrum.customUI.ConsumptionChart;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.services.SocketConnectionService;
@@ -43,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     *  CREATED IN DESKTOP
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -81,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                PlaceholderFragment.renderChart();
             }
         });
 
@@ -122,6 +125,9 @@ public class HomeActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+
+        static ConsumptionChart chart;
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -143,13 +149,21 @@ public class HomeActivity extends AppCompatActivity {
             return fragment;
         }
 
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            chart =(ConsumptionChart)rootView.findViewById(R.id.consumption_chart);
+            chart.requestRender();
+            chart.setText_size(((TextView)rootView.findViewById(R.id.days_chart_title)).getTextSize());
+          //  TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+           // textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
+        }
+
+        public static void renderChart(){
+            chart.requestRender();
         }
     }
 

@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -18,6 +19,9 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class EnergyProdPrediction extends ConsumptionHttpRequest {
 
@@ -72,40 +76,12 @@ public class EnergyProdPrediction extends ConsumptionHttpRequest {
 				temp2.put("timeslot", timeslot+1);
 				parsed_result.add(temp2);
 			}
-			Log.i("Energy Production", data);
+			Log.i("Energy prediction", data);
 			super.setData(parsed_result);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public void runRequest(){
-
-		RequestQueue queue = Volley.newRequestQueue(_appCtx);
-
-		Log.i(MODULE,"running request");
-		//String request = 		buildRequest();
-		String request = "http://aveiro.m-iti.org/sinais_energy_production/services/today_prediction_request.php";
-		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-		String date = s.format(new Date());
-		request = request+"?"+DATE_KEY+"="+date;
-		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,
-				new Response.Listener<String>() {
-					@Override
-					public void onResponse(String response) {
-						Log.i(MODULE,response);
-						parseData(response);
-					}
-				}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e(MODULE,error.toString());
-			}
-		});
-// Add the request to the RequestQueue.
-		queue.add(stringRequest);
-
 	}
 
 	@Override
@@ -119,24 +95,18 @@ public class EnergyProdPrediction extends ConsumptionHttpRequest {
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
 		String date = s.format(new Date());
 		request = request+"?"+DATE_KEY+"="+date;
-		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,
-				new Response.Listener<String>() {
-					@Override
-					public void onResponse(String response) {
-						Log.i(MODULE,response);
-						parseData(response);
-					}
-				}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e(MODULE,error.toString());
-			}
-		});
-// Add the request to the RequestQueue.
+		RequestFuture<String> future = RequestFuture.newFuture();
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,future,future);
 		queue.add(stringRequest);
+
 		try {
-			Thread.sleep(4000);
+			String response = future.get(15, TimeUnit.SECONDS);
+			parseData(response);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e){
 			e.printStackTrace();
 		}
 

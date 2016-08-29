@@ -8,8 +8,7 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -20,6 +19,9 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class EnergyProduction extends  ConsumptionHttpRequest {
 
@@ -30,13 +32,13 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 	public EnergyProduction(String request){
 		super.hhhaaackk = request;
 	}
-	
+
 	@Override
 	public void parseData(String data) {
-		
+
 		double total=0;
 		double total_renew=0;
-		
+
 		try {
 			JSONObject result = new JSONObject(data);
 			JSONArray prod_data = result.getJSONArray("prod_data");
@@ -49,7 +51,7 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 				total_renew = total_renew + value.getInt("hidrica")+value.getInt("eolica")+value.getInt("eolica")+value.getInt("foto");
 //								Log.i("Energy Production",value.getInt("termica")+" t");
 //								Log.i("Energy Production",value.getInt("hidrica")+" h");
-							//	Log.i("Energy Production",value.getInt("eolica")+" e");
+				//	Log.i("Energy Production",value.getInt("eolica")+" e");
 //								Log.i("Energy Production",value.getInt("biomassa")+" b");
 //								Log.i("Energy Production",value.getInt("foto")+" f");
 				DBManager.getDBManager().insertProductionData(value.getString("timestamp"), value.getInt("total"), value.getInt("termica"),
@@ -71,12 +73,12 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 				parsed_result.add(temp);
 			}
 			Log.i("Energy Production", data);
-		    super.setData(parsed_result);
+			super.setData(parsed_result);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		RuntimeConfigs.getConfigs().setRenew_percent((total_renew/total));
 	}
 
@@ -91,7 +93,10 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
 		String date = s.format(new Date());
 		request = request+"?"+DATE_KEY+"="+date;
-		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,
+
+		RequestFuture<String> future = RequestFuture.newFuture();
+
+		/*StringRequest stringRequest = new StringRequest(Request.Method.GET, request,
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
@@ -103,14 +108,22 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 			public void onErrorResponse(VolleyError error) {
 				Log.e(MODULE,error.toString());
 			}
-		});
-// Add the request to the RequestQueue.
+		});*/
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,future,future);
 		queue.add(stringRequest);
+
 		try {
-			Thread.sleep(4000);
+			String response = future.get(15, TimeUnit.SECONDS);
+			parseData(response);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e){
+			e.printStackTrace();
 		}
+		// Add the request to the RequestQueue.
+
 
 		/*//date = "2013-06-08";
 		try {

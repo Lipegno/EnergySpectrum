@@ -297,6 +297,7 @@ public class ProductionFragment extends Fragment {
                 biomassa[i] = Math.round((nextNonZero(biomassa,i)+biomassa[i-1])/2);
             }
         }
+        _chart.setText_size(_renewQuota.getTextSize());
         _chart.setMax_scale((int) Math.round(max));
         _chart.setData(termica, hidrica, eolica, biomassa, foto);
         _chart.setTotal_renewables((int) Math.round(total_renew));
@@ -335,6 +336,7 @@ public class ProductionFragment extends Fragment {
         if(minutes!=0)
             prec = 60/minutes;
 
+        hour = hour ==0?1:hour;
         avg_sofar = avg_sofar + avg_sofar*((1/hour)*prec);
 
         for(int i=0;i<cons.length;i++)
@@ -472,7 +474,7 @@ public class ProductionFragment extends Fragment {
             else{
                cons_data = new ArrayList<ContentValues>();
                 average_cons =  new ArrayList<ContentValues>();
-                for(int i=0;i<300;i++) {
+                for(int i=0;i<100;i++) {
                    ContentValues cv = new ContentValues();
                     cv.put("tm_slot",i);
                     cv.put("cons", Math.random()*500+500);

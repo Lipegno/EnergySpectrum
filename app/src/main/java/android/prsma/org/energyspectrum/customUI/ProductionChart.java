@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 @SuppressLint("WrongCall")
-public class ProductionChart extends SurfaceView implements SurfaceHolder.Callback,ConsumptionChart {
+public class ProductionChart extends SurfaceView implements SurfaceHolder.Callback,ConsumptionChartInterface {
 
 	private static final String MODULE = "Production   Chart";
 	private int height;
@@ -47,7 +47,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	private int total;
 	private int horizontal_caption_size = 30;
 	private int vertical_caption_size = 50; 
-	private int horizontal_caption_size_prod=0;  // pro char y VER ISTO
+	private int vertical_caption_size_prod =0;  // pro char y VER ISTO
 	private float prod_chart_percent_height = 0.40f;
 	private float cons_chart_percent_height = 0.37f;
 	private float left_margin = 20;
@@ -56,6 +56,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	private int min_scale;
 	private String start_time="";
 	private String finish_time="";
+
 	private String chart_title="Produção de Energia";
 	private EventSampleDTO currentSelection;
 	
@@ -65,8 +66,12 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	float solar_start = 0f;
 	float cons_start = 0f;
 	private int right_margin = 5;
+
+	private float text_size = 0f;
+	private float text_size_h = 0f;
 	Typeface roboto_thin;
-	
+	private float y_cons_title=0;
+
 	public ProductionChart(Context context, AttributeSet attr) {
 		super(context,attr);
 		getHolder().addCallback(this);
@@ -80,7 +85,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
 		height = getHeight();
-		horizontal_caption_size_prod = (int)Math.round(height*0.4)+vertical_caption_size;
+		vertical_caption_size_prod = (int)Math.round(height*0.4)+vertical_caption_size;
 		width  = getWidth();
 		requestRender();
 	}
@@ -152,7 +157,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		cons = cons==null?new int[20]:cons;
 	double [] result = new double[cons.length];	
 		for(int i=0;i<cons.length;i++){
-			result[i] =((height-horizontal_caption_size_prod) - ((cons[i]*height)*prod_chart_percent_height)/max_scale_prod);
+			result[i] =((height- vertical_caption_size_prod) - ((cons[i]*height)*prod_chart_percent_height)/max_scale_prod);
 		}
 	return result;
 	}
@@ -160,7 +165,8 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		cons = cons==null?new double[60*24]:cons;
 		double [] result = new double[cons.length];	
 		for(int i=0;i<cons.length;i++){
-			result[i] =((height-horizontal_caption_size) - ((cons[i]*height)*cons_chart_percent_height)/max_scale_cons);
+			result[i] =((height-text_size*1.1) - ((cons[i]*height)*cons_chart_percent_height)/max_scale_cons);
+			Log.i(MODULE,"cons "+cons[i]);
 		}
 	return result;
 	}
@@ -184,16 +190,16 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		Paint p = new Paint();
 		p.setColor(_color);  // color of the line and fill
 		p.setAntiAlias(true);
-		float diff = (float)((width-right_margin )-vertical_caption_size)/drawing_coords.length;
-		float increment =vertical_caption_size;
+		float diff = (float)((width-right_margin )-text_size_h)/drawing_coords.length;
+		float increment =text_size_h;
 		Path path = new Path();
-		path.moveTo(vertical_caption_size, height-horizontal_caption_size_prod);	//starts drawing
+		path.moveTo(text_size_h, height- vertical_caption_size_prod);	//starts drawing
 		for(int i=0;i<drawing_coords.length;i++){
 			path.lineTo(increment, (float)drawing_coords[i]);
 			increment=increment+diff;
 		}
-		path.lineTo(increment-diff, height-horizontal_caption_size_prod);
-		path.lineTo(0, height-horizontal_caption_size_prod);	// finishes drawing
+		path.lineTo(increment-diff, height- vertical_caption_size_prod);
+		path.lineTo(0, height- vertical_caption_size_prod);	// finishes drawing
 		c.drawPath(path, p);
 		return (float) drawing_coords[0];
 	}
@@ -203,29 +209,36 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		Paint p = new Paint(); // paint for text
 		p.setColor(Color.BLACK);
 		p.setStyle(Style.FILL);
-		p.setTextSize(17);
+		p.setTextSize(text_size);
 		p.setAntiAlias(true);
 
-		float y_title = getHeight()-(horizontal_caption_size_prod + prod_chart_percent_height*getHeight());
-		float y_prod_title = getHeight()-(horizontal_caption_size_prod + prod_chart_percent_height*getHeight())+15;
-		float y_cons_title = getHeight()-(horizontal_caption_size + cons_chart_percent_height*getHeight())+15;
-		c.drawText("Produção e consumo de energia", left_margin-5, (y_title/2)+8, p); // chart title
-		p.setTextSize(14);
-		c.drawText("Produção de energia (MWh)", vertical_caption_size, y_prod_title, p); // prod title
-		c.drawText("Consumo de energia (kWh)", vertical_caption_size, y_cons_title, p);  // cons title
+		float y_title = 0+text_size;//-(vertical_caption_size_prod + prod_chart_percent_height*getHeight());
+		float y_prod_title = y_title+text_size*2;
+		c.drawText("Produção e consumo de energia", left_margin-5, y_title, p); // chart title
+		p.setTextSize(text_size*0.9f);
+		c.drawText("Produção de energia (MWh)", left_margin, y_prod_title, p); // prod title
+		vertical_caption_size_prod = (int)Math.round(height*0.4)+Math.round(y_prod_title)+Math.round(text_size*2f);
+		y_cons_title = vertical_caption_size_prod + text_size;
+		c.drawText("Consumo de energia (kWh)", left_margin, y_cons_title, p);  // cons title
+
 		//draw scales prod
 		//p.setTypeface(roboto_thin);
-		c.drawText(max_scale_prod+"", left_margin, y_prod_title, p); // prod max
-		c.drawText("0", left_margin, getHeight() - horizontal_caption_size_prod-5 , p);  //prod min
-		float middle = (   (getHeight()-horizontal_caption_size_prod) - y_prod_title)/2;
+		c.drawText(max_scale_prod+"", left_margin, y_prod_title+text_size, p); // prod max
+		c.drawText("0", left_margin, getHeight() - vertical_caption_size_prod -5 , p);  //prod min
+		float middle = (   (getHeight()- vertical_caption_size_prod) - y_prod_title)/2;
 		c.drawText(max_scale_prod/2+"", left_margin, y_prod_title+middle  , p);  // prod middle
+		text_size_h = p.measureText((max_scale_prod/2+""));
 		// draw scales cons
 		DecimalFormat df = new DecimalFormat("##.##");
 		double vale = ((double)max_scale_cons/1000);
-		c.drawText(df.format(vale)+"", left_margin, y_cons_title, p); // prod max
+		c.drawText(df.format(vale)+"", left_margin, y_cons_title+text_size, p); // prod max
 		c.drawText("0", left_margin, getHeight() - horizontal_caption_size  , p);  //prod min
 		middle = (   (getHeight()-horizontal_caption_size) - y_cons_title)/2;
-		
+		String text_demo = +vale+" ";
+		text_size_h = p.measureText(text_demo)+left_margin;
+		//text_size_h =  text_size_h<p.measureText(text_demo)?p.measureText(max_scale_prod/2+""):text_size_h;
+		//text_size_h = text_size_h+left_margin;
+
 		if(max_scale_cons<1500){
 			double val = (((double)max_scale_cons/2)/1000);
 			c.drawText(df.format(val), left_margin, y_cons_title+middle  , p);
@@ -238,6 +251,8 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		c.drawText("24h", getWidth()-right_margin-p.measureText("24h"), getHeight()-horizontal_caption_size+15 , p);
 		middle = ((getWidth()-right_margin)-vertical_caption_size)/2+vertical_caption_size;
 		c.drawText("12h", middle-p.measureText("12h"), getHeight()-horizontal_caption_size+15, p);
+
+		Log.e("production chart","captio size "+text_size_h);
 	}
 	private void drawSeparators(Canvas c, float length){
 
@@ -246,7 +261,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		int minutes = cal.get(Calendar.MINUTE);
 		minutes = Math.round(minutes/15);
 		float diff = ((float)(width-vertical_caption_size-right_margin)/96);
-		float length2 =  (diff*((hour)*4) + diff*minutes)+vertical_caption_size;
+		float length2 =  (diff*((hour)*4) + diff*minutes)+text_size_h;
 //		Rect rect  = new Rect((int)length2,0,width-40, getHeight()-90);
 		Paint p = new Paint();
 //		p.setStyle(Paint.Style.FILL);
@@ -265,15 +280,14 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		float y = getHeight()-(horizontal_caption_size + cons_chart_percent_height*getHeight()+vertical_caption_size);	//separator between prod and cons
 	//	c.drawLine(left_margin, y, getWidth(), y, p2);
 		
-		y = getHeight()-(horizontal_caption_size_prod + prod_chart_percent_height*getHeight()+10);
-		
+		y = getHeight()-(vertical_caption_size_prod)+text_size;
 		p.setShader(new LinearGradient(left_margin-5, y, getWidth(), y, Color.parseColor("#6D6E71"), Color.parseColor("#E2E0DB"), Shader.TileMode.MIRROR));
 		c.drawLine(left_margin-5, y, getWidth(), y, p);
 		
 		p2.setColor(Color.parseColor("#E2E0DB"));
 		p2.setPathEffect(new DashPathEffect(new float[]{4,4}, 0));
 		p2.setStrokeWidth(2.5f);
-		c.drawLine((int)length2,getHeight()-horizontal_caption_size_prod,(int)length2,getHeight()-(horizontal_caption_size_prod + prod_chart_percent_height*getHeight())+10, p2);
+		c.drawLine((int)length2,getHeight()- vertical_caption_size_prod,(int)length2,getHeight()-(vertical_caption_size_prod + prod_chart_percent_height*getHeight())+10, p2);
 	}
 	private float drawConsLine(Canvas c, double[] cons, String color){
 		double[] drawing_coords = createLineCoords(cons);
@@ -285,11 +299,11 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		p.setStrokeCap(Cap.ROUND);
 		float diff = (float)(width-right_margin-vertical_caption_size)/drawing_coords.length;
 		float increment =vertical_caption_size;
-		increment =vertical_caption_size;
+		increment =text_size_h;
 		float c_x=0;
 		float c_y=0;
 		for(int i=1;i<drawing_coords.length;i=i+1){
-			if(drawing_coords[i]==getHeight()-horizontal_caption_size){
+			if(drawing_coords[i]==getHeight()-text_size*1.1){
 				c_x = increment;
 				c_y = (float) drawing_coords[i-1];
 				break;
@@ -298,7 +312,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 			increment=increment+diff;
 		}
 		p.setColor(Color.parseColor("#FAA440"));
-		c.drawCircle(c_x, c_y, 5f, p);
+		c.drawCircle(c_x, c_y, 5, p);
 		return (float) drawing_coords[0];
 	}
 	private float drawAverageCons(Canvas c,double[] cons){
@@ -310,8 +324,8 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		p.setStrokeJoin(Join.ROUND);
 		p.setStrokeCap(Cap.ROUND);
 		p.setPathEffect(new DashPathEffect(new float[]{4,4}, 0));
-		float diff = (float)(width-right_margin-vertical_caption_size)/drawing_coords.length;
-		float increment =vertical_caption_size;
+		float diff = (float)(width-text_size_h)/drawing_coords.length;
+		float increment =text_size_h;
 		float[] pts = new float[drawing_coords.length*2];
 		int j=0;
 		for(int i=1;i<drawing_coords.length;i=i+1){
@@ -354,54 +368,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 			return 0;
 		}
 	}
-	private void drawAverages(Canvas c, float pos){
-		float renew = 0;
-		if (total!=0)
-			renew = Math.round((float)total_renewables*100/total);
-		
-		Paint p = new Paint();
-		p.setStyle(Style.STROKE);
-		p.setColor(Color.BLACK);
-		p.setAntiAlias(true);
-		p.setStyle(Style.FILL);
-		p.setTextSize(15);
-		p.setAntiAlias(true);
-		c.drawText(renew+"% renewables", pos-80, getHeight()-50, p);
-		c.drawText("Average 1", pos-80, getHeight()-70, p);
-		
-		p.setTextSize(18);
-		p.setColor(Color.WHITE);
-		p.setTypeface(Typeface.DEFAULT_BOLD);
-		c.drawText("Estimativa", pos+10, 30, p);
-		
-		float renew_avg = 0;
-		if (total!=0)
-			renew_avg = Math.round((float)average_renew*100);
-		
-		String p_e_m= renew-renew_avg==0?"=": renew-renew_avg < 0?"":"+";
-		String message = p_e_m.equals("=")?"equal to your average":p_e_m+(renew-renew_avg)+" % than your average";
-		
-		Paint p2 = new Paint();
-		p2.setStyle(Style.STROKE);
-		p2.setColor(Color.BLACK);
-		p2.setAntiAlias(true);
-		p2.setStyle(Style.FILL);
-		p2.setTextSize(15);
-		p2.setAntiAlias(true);
-		p2.setTypeface(Typeface.DEFAULT_BOLD);
-		c.drawText(message, pos-80, getHeight()-30, p2);
-	}
-	private void drawTitles(Canvas c){
-		Paint p = new Paint();
-		p.setStyle(Style.STROKE);
-		p.setColor(Color.BLACK);
-		p.setAntiAlias(true);
-		p.setStyle(Style.FILL);
-		p.setTextSize(18);
-		p.setTypeface(Typeface.DEFAULT_BOLD);
-		c.drawText(chart_title, vertical_caption_size, 30, p);
-		c.drawText("O seu consumo", vertical_caption_size, height-horizontal_caption_size_prod+20, p);
-	}
+
 	public void setConsumption(double[] cons){
 		setCons_data(cons);
 	}
@@ -496,15 +463,14 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	public void setCons_data(double[] cons_data) {
 		this.cons_data = cons_data;
 	}
-
-
 	public double[] getAvg_cons_data() {
 		return avg_cons_data;
 	}
 	public void setAvg_cons_data(double[] avg_cons_data) {
 		this.avg_cons_data = avg_cons_data;
 	}
-
+	public float getText_size() {		return text_size; 	}
+	public void setText_size(float text_size) { 		this.text_size = text_size; 	}
 
 	private class ChartHandler extends Thread{
 		
@@ -522,6 +488,56 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	}
 	
 }
+/*
+	private void drawAverages(Canvas c, float pos){
+		float renew = 0;
+		if (total!=0)
+			renew = Math.round((float)total_renewables*100/total);
+
+		Paint p = new Paint();
+		p.setStyle(Style.STROKE);
+		p.setColor(Color.BLACK);
+		p.setAntiAlias(true);
+		p.setStyle(Style.FILL);
+		p.setTextSize(text_size*0.9f);
+		p.setAntiAlias(true);
+		c.drawText(renew+"% renewables", pos-80, getHeight()-50, p);
+		c.drawText("Average 1", pos-80, getHeight()-70, p);
+
+		p.setTextSize(text_size);
+		p.setColor(Color.WHITE);
+		p.setTypeface(Typeface.DEFAULT_BOLD);
+		c.drawText("Estimativa", pos+10, 30, p);
+
+		float renew_avg = 0;
+		if (total!=0)
+			renew_avg = Math.round((float)average_renew*100);
+
+		String p_e_m= renew-renew_avg==0?"=": renew-renew_avg < 0?"":"+";
+		String message = p_e_m.equals("=")?"equal to your average":p_e_m+(renew-renew_avg)+" % than your average";
+
+		Paint p2 = new Paint();
+		p2.setStyle(Style.STROKE);
+		p2.setColor(Color.BLACK);
+		p2.setAntiAlias(true);
+		p2.setStyle(Style.FILL);
+		p2.setTextSize(text_size*0.9f);
+		p2.setAntiAlias(true);
+		p2.setTypeface(Typeface.DEFAULT_BOLD);
+		c.drawText(message, pos-80, getHeight()-30, p2);
+	}
+	private void drawTitles(Canvas c){
+		Paint p = new Paint();
+		p.setStyle(Style.STROKE);
+		p.setColor(Color.BLACK);
+		p.setAntiAlias(true);
+		p.setStyle(Style.FILL);
+		p.setTextSize(text_size);
+		p.setTypeface(Typeface.DEFAULT_BOLD);
+		c.drawText(chart_title, vertical_caption_size, 30, p);
+		c.drawText("O seu consumo", vertical_caption_size, height- vertical_caption_size_prod +20, p);
+	}
+ */
 //private float drawChartPath2(Canvas c, int[] cons, int _color){
 //Calendar cal = Calendar.getInstance();
 //int hour = cal.get(Calendar.HOUR_OF_DAY);
@@ -534,7 +550,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 //float diff = (float)((width-right_margin )-vertical_caption_size)/drawing_coords.length;
 //float increment =vertical_caption_size;
 //Path path = new Path();
-//path.moveTo(vertical_caption_size, height-horizontal_caption_size_prod);	//starts drawing
+//path.moveTo(vertical_caption_size, height-vertical_caption_size_prod);	//starts drawing
 //float length2 =  (diff*((hour)*4) + diff*minutes)+vertical_caption_size;
 //int i;
 //int init=0;
@@ -545,8 +561,8 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 //		init=i;
 //		
 //}
-//path.lineTo(increment-diff, height-horizontal_caption_size_prod);
-//path.lineTo(0, height-horizontal_caption_size_prod);	// finishes drawing
+//path.lineTo(increment-diff, height-vertical_caption_size_prod);
+//path.lineTo(0, height-vertical_caption_size_prod);	// finishes drawing
 //c.drawPath(path, p);
 //increment = increment-diff;
 //p.setAntiAlias(true);

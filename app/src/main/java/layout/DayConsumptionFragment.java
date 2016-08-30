@@ -12,6 +12,7 @@ import android.os.Message;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.ComparisonWidget;
 import android.prsma.org.energyspectrum.database.DBManager;
+import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -44,6 +45,7 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class DayConsumptionFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -76,18 +78,16 @@ public class DayConsumptionFragment extends Fragment {
     private Date _today;
     private Date _queryDate;
     private int diff=0;
+    private ComparisonWidget _comp;
+    private float _defaultTextSize=0f;
 
     private ArrayList<ContentValues> day_cons;
     private ArrayList<ContentValues> today_cons;
+
+    private RuntimeConfigs _configs;
     private static final WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
-
     private UI_Handler ui_handler = new UI_Handler();
-
     private static final String MODULE = "DAY CONSUMPTION";
-
-    private ComparisonWidget _comp;
-
-    private float _defaultTextSize=0f;
 
     public DayConsumptionFragment() {
         // Required empty public constructor
@@ -118,6 +118,8 @@ public class DayConsumptionFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        _configs = RuntimeConfigs.getConfigs();
+        web_handler._ctx = getContext();
     }
 
     @Override

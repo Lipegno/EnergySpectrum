@@ -154,9 +154,9 @@ public class HomeActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-            chart =(ConsumptionChart)rootView.findViewById(R.id.consumption_chart);
-            chart.requestRender();
-            chart.setText_size(((TextView)rootView.findViewById(R.id.days_chart_title)).getTextSize());
+           // chart =(ConsumptionChart)rootView.findViewById(R.id.consumption_chart);
+          //  chart.requestRender();
+           // chart.setText_size(((TextView)rootView.findViewById(R.id.days_chart_title)).getTextSize());
           //  TextView textView = (TextView) rootView.findViewById(R.id.section_label);
            // textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 @SuppressLint("WrongCall")
-public class ProductionChart extends SurfaceView implements SurfaceHolder.Callback,ConsumptionChartInterface {
+public class ProductionChart extends SurfaceView implements SurfaceHolder.Callback {
 
 	private static final String MODULE = "Production   Chart";
 	private int height;
@@ -149,10 +149,10 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 			}
 		}
 	}
-	@Override
-	public Object getcurrentSelection() {
-		return currentSelection;
-	}
+//	@Override
+//	public Object getcurrentSelection() {
+//			return currentSelection;
+//	}
 	private double[] createDrawingCoords(int []cons){
 		cons = cons==null?new int[20]:cons;
 	double [] result = new double[cons.length];	
@@ -166,7 +166,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		double [] result = new double[cons.length];	
 		for(int i=0;i<cons.length;i++){
 			result[i] =((height-text_size*1.1) - ((cons[i]*height)*cons_chart_percent_height)/max_scale_cons);
-			Log.i(MODULE,"cons "+cons[i]);
+			//Log.i(MODULE,"cons "+cons[i]);
 		}
 	return result;
 	}

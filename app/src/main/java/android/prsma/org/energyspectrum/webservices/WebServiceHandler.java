@@ -414,6 +414,7 @@ public final class WebServiceHandler {
 		ArrayList<ContentValues> cons_data = new ArrayList<ContentValues>();
 		if(isOnline()){
 		MonthsAverage dummy = new MonthsAverage(month,year);
+		dummy._appCtx=_ctx;
 		dummy.run();
 		try {
 			dummy.join();
@@ -438,6 +439,7 @@ public final class WebServiceHandler {
 		ArrayList<ContentValues> cons_data = new ArrayList<ContentValues>();
 		if(isOnline()){
 			WeeksAverage dummy = new WeeksAverage(week,year);
+			dummy._appCtx=_ctx;
 			dummy.run();
 			try {
 				dummy.join();
@@ -462,6 +464,7 @@ public final class WebServiceHandler {
 		Log.i(MODULE,queryCal.get(Calendar.DAY_OF_MONTH)+" "+(queryCal.get(Calendar.MONTH)+1)+" "+queryCal.get(Calendar.YEAR));
 		if(isOnline()){
 			DaysAverage dummy = new DaysAverage(queryCal.get(Calendar.DAY_OF_MONTH), queryCal.get(Calendar.MONTH)+1, queryCal.get(Calendar.YEAR));
+			dummy._appCtx=_ctx;
 			dummy.run();
 			try {	
 				dummy.join();

@@ -5,7 +5,18 @@ import android.content.Context;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public abstract class ConsumptionHttpRequest extends Thread {
 	
@@ -62,7 +73,29 @@ public abstract class ConsumptionHttpRequest extends Thread {
 	public void run(){
 		Log.i(MODULE,"running request");
 		String request = 		buildRequest();
-		
+
+		RequestQueue queue = Volley.newRequestQueue(_appCtx);
+
+		Log.i(MODULE,"running request");
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+		String date = s.format(new Date());
+		RequestFuture<String> future = RequestFuture.newFuture();
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,future,future);
+		queue.add(stringRequest);
+
+		try {
+			String response = future.get(15, TimeUnit.SECONDS);
+			parseData(response);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e){
+			e.printStackTrace();
+		}
+
+	}
+
 		//String request = hhhaaackk;
 		/*
 		HttpClient httpclient = new DefaultHttpClient();
@@ -95,8 +128,6 @@ public abstract class ConsumptionHttpRequest extends Thread {
 	        	e.printStackTrace();
 	        }*/
 	        
-	}
-	
 	public ArrayList<ContentValues> getData() {
 		return data;
 	}

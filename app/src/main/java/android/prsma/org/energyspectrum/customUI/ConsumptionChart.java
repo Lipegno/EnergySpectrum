@@ -15,7 +15,7 @@ import android.view.SurfaceView;
 /**
  * Created by flp_ on 10/08/2016.
  */
-public class ConsumptionChart extends SurfaceView implements SurfaceHolder.Callback,ConsumptionChartInterface {
+public class ConsumptionChart extends SurfaceView implements SurfaceHolder.Callback {
 
     private float _height;
     private float _width;
@@ -54,11 +54,11 @@ public class ConsumptionChart extends SurfaceView implements SurfaceHolder.Callb
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 
     }
-
-    @Override
-    public Object getcurrentSelection() {
-        return null;
-    }
+//
+//    @Override
+//    public Object getcurrentSelection() {
+//        return null;
+//    }
 
     @Override
     public void onDraw(Canvas c){
@@ -119,7 +119,7 @@ public class ConsumptionChart extends SurfaceView implements SurfaceHolder.Callb
         c.drawText("0",0,_height-_text_size,p);
 
          c.drawText(middleValueText,0,(_height-_text_size)/2,p);
-        _vertical_axis_lablel_width = p.measureText(maxValueText);
+        _vertical_axis_lablel_width = p.measureText(maxValueText)+2f;
         c.drawRect(_vertical_axis_lablel_width,0, _vertical_axis_lablel_width + _separators_width,_height,p);
     }
 
@@ -136,7 +136,7 @@ public class ConsumptionChart extends SurfaceView implements SurfaceHolder.Callb
         for(int i=1;i<=6;i++){
             String hour = i*4+token;
             float adjust = p.measureText(hour);
-            c.drawText(hour, _vertical_axis_lablel_width +(i*diff)-adjust,_height,p);
+            c.drawText(hour, _vertical_axis_lablel_width +(i*diff)-adjust+2f,_height,p);
         }
 
         c.drawRect(_vertical_axis_lablel_width,_height-_text_size,_width,_height-_text_size+ _separators_width,p);

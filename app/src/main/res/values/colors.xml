@@ -20,4 +20,10 @@
     <color name="app_main">#71B4CB</color>
     <color name="app_main_dark">#33768C</color>
     <color name="app_main_darker">#1C3F4A</color>
+    <!-- Colors for the comparisons stuff -->
+    <color name="comp1_color">#88AB75</color>
+    <color name="comp2_color">#EAE151</color>
+    <color name="comp3_color">#494949</color>
+    <color name="comp4_color">#30321C</color>
+    <color name="comp5_color">#8A1C7C</color>
 </resources>

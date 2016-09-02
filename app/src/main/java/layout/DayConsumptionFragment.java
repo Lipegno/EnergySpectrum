@@ -2,15 +2,13 @@ package layout;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.prsma.org.energyspectrum.R;
-import android.prsma.org.energyspectrum.customUI.ComparisonWidget;
+import android.prsma.org.energyspectrum.customUI.LineConsumptionChart;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
@@ -20,17 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.androidplot.series.XYSeries;
-import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.SimpleXYSeries;
-import com.androidplot.xy.StepFormatter;
-import com.androidplot.xy.XYPlot;
-import com.androidplot.xy.XYStepMode;
 
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -58,27 +52,29 @@ public class DayConsumptionFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     /**
-    * VIEW STUFF
+     * VIEW STUFF
      */
-
-    private StepFormatter series1Format;
-    private XYPlot _dayPlot;
-
+    private LineConsumptionChart _consumption_chart;
     private TextView _peakConsump;
     private TextView _totalConsump;
-    private TextView _comparisonBox;
-    private TextView _viewLabel;
     private TextView _totalC02;
     private TextView _totalCost;
-    private int _was_touched=1;
-    private int _countNewEvents;
     private Button _plusDateBtn;
     private Button _minusDateBtn;
     private TextView _dayDateLabel;
+    private CheckBox _day1box;
+    private CheckBox _day2box;
+    private CheckBox _day3box;
+    private CheckBox _day4box;
+    private CheckBox _day5box;
+    private final CheckBoxHandler _comparison_handler = new CheckBoxHandler();
+    /*
+    * OTHER STUFF
+    * */
     private Date _today;
     private Date _queryDate;
     private int diff=0;
-    private ComparisonWidget _comp;
+    // private ComparisonWidget _comp;
     private float _defaultTextSize=0f;
 
     private ArrayList<ContentValues> day_cons;
@@ -88,6 +84,8 @@ public class DayConsumptionFragment extends Fragment {
     private static final WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
     private UI_Handler ui_handler = new UI_Handler();
     private static final String MODULE = "DAY CONSUMPTION";
+
+
 
     public DayConsumptionFragment() {
         // Required empty public constructor
@@ -132,32 +130,43 @@ public class DayConsumptionFragment extends Fragment {
     }
 
     private void initViewFragment(View v){
-        _peakConsump   = (TextView)v.findViewById(R.id.frag_peak_consump_day);
+      /*  _peakConsump   = (TextView)v.findViewById(R.id.frag_peak_consump_day);
         _totalConsump  = (TextView)v.findViewById(R.id.frag_total_consump_day);
         _totalC02	   = (TextView)v.findViewById(R.id.frag_total_co2_day);
         _totalCost	   = (TextView)v.findViewById(R.id.frag_total_money_day);
         _dayDateLabel  = (TextView)v.findViewById(R.id.frag_date_label_day);
         _comp		   = (ComparisonWidget)v.findViewById(R.id.frag_comparisonWidgetDay);
 
-        // Make an SQL Date
+        _defaultTextSize = ((TextView)v.findViewById(R.id.frag_total_day_label)).getTextSize();*/
+        _consumption_chart = (LineConsumptionChart)v.findViewById(R.id.day_consumption_chart);
+        _consumption_chart.setMode(LineConsumptionChart.MODE_DAY);
         _today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-        _dayDateLabel.setText(_today.getDate()+"/"+(_today.getMonth()+1)+"/"+2013);
+        //_dayDateLabel.setText(_today.getDate()+"/"+(_today.getMonth()+1)+"/"+2013);
         _queryDate=_today;
-
-        _defaultTextSize = ((TextView)v.findViewById(R.id.frag_total_day_label)).getTextSize();
-
-        initPlot(v);
-        initDateSelector(v);
-        //		updateEventsCounter();
-
-       // IntentFilter filter_evt = new IntentFilter(EventsSocketService.ACTION_KEY);
-       // registerReceiver(evt_receiver, filter_evt);
-        //
-
+        _defaultTextSize = ((TextView)v.findViewById(R.id.day_total_kwh)).getTextSize();
+        _consumption_chart.setText_size(_defaultTextSize);
         new DayConsumptionRequestWorker().execute("day");
+        createDummyValues();
+        initCheckBoxes(v);
+    }
+
+    private void initCheckBoxes(View v){
+        _day1box = (CheckBox) v.findViewById(R.id.checkbox_1day);
+        _day2box = (CheckBox) v.findViewById(R.id.checkbox_2day);
+        _day3box = (CheckBox) v.findViewById(R.id.checkbox_3day);
+        _day4box = (CheckBox) v.findViewById(R.id.checkbox_4day);
+        _day5box = (CheckBox) v.findViewById(R.id.checkbox_5day);
+        _day1box.setOnCheckedChangeListener(_comparison_handler);
+        _day2box.setOnCheckedChangeListener(_comparison_handler);
+        _day3box.setOnCheckedChangeListener(_comparison_handler);
+        _day4box.setOnCheckedChangeListener(_comparison_handler);
+        _day5box.setOnCheckedChangeListener(_comparison_handler);
+
+
     }
 
     private void initDateSelector(View v){
+       /*
         _plusDateBtn = (Button)v.findViewById(R.id.frag_day_selector_plus);
         _minusDateBtn = (Button)v.findViewById(R.id.frag_day_selector_minus);
 
@@ -175,79 +184,28 @@ public class DayConsumptionFragment extends Fragment {
                 handleDateSelection(false);
             }
         });
+    */
 
+    }
 
+    private void createDummyValues(){
+        double[] cons_data = new double[48];
+        for(int i=0;i<cons_data.length;i++)
+            cons_data[i]=100+(800*Math.random());
+        //   for(int i=25;i<48;i++)
+        //  _cons_data[i]=0;
+        double[] avg_cons_data = new double[48];
+        for(int i=0;i<avg_cons_data.length;i++)
+            avg_cons_data[i]=500+(400*Math.random());
+
+        _consumption_chart.set_avg_cons_data(avg_cons_data);
+        _consumption_chart.set_cons_data(cons_data);
+        _consumption_chart.requestRender();
     }
     /**
      * initializes the XYPlot to have the same look of the
      */
-    private void initPlot(View v){
-        // Initialize our XYPlot reference:
-        _dayPlot = (XYPlot) v.findViewById(R.id.frag_day_cons_Plot);
-        // Create two arrays of y-values to plot:
-        Number[] series1Numbers = {0,1, 8, 5, 2, 7,4,1, 8, 5, 2, 7, 4,4,8,0,0,0,0,0,0,0,0,0,0};
-        //   Number[] series2Numbers = {4, 6, 3, 8, 2, 10};
-        // Turn the above arrays into XYSeries:
-        XYSeries series1 = new SimpleXYSeries(
-                Arrays.asList(series1Numbers),          // SimpleXYSeries takes a List so turn our array into a List
-                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
-                null);                             // Set the display title of the series
 
-        series1Format = new StepFormatter(
-                Color.parseColor("#1C3F4A"),                                     // line color
-               Color.parseColor("#71B4CB"));              // fill color (optional)
-
-        Paint p = new Paint();
-        p.setARGB(0, 255, 255, 255);
-        series1Format.setVertexPaint(p);
-        // Add series1 to the xyplot:
-        _dayPlot.addSeries(series1, series1Format);
-        // removes the legend from the chart
-        _dayPlot.getLayoutManager().remove((_dayPlot.getLegendWidget()));
-        _dayPlot.setRangeStepValue(5);
-        _dayPlot.setDomainStepValue(5);
-        _dayPlot.setRangeBoundaries(0, 3500, BoundaryMode.AUTO);
-        _dayPlot.setRangeStepValue(10);
-        _dayPlot.setDomainValueFormat(new DecimalFormat("#"));
-        _dayPlot.setDomainLabel("horas      0h          4h          8h          12h          16h          20h           24h");
-        _dayPlot.setRangeLabel("consumo Wh");
-        _dayPlot.disableAllMarkup();
-        _dayPlot.getGraphWidget().setMargins(10, 10, 10, 10);
-        _dayPlot.setDomainStep(XYStepMode.INCREMENT_BY_VAL, 28);
-        _dayPlot.getGraphWidget().getBackgroundPaint().setColor(getResources().getColor(R.color.bg_color));
-        _dayPlot.getGraphWidget().getGridBackgroundPaint().setColor(getResources().getColor(R.color.bg_color));
-        _dayPlot.getGraphWidget().getDomainLabelPaint().setColor(Color.BLACK);
-        _dayPlot.getGraphWidget().getRangeLabelPaint().setColor(Color.BLACK);
-        _dayPlot.getGraphWidget().setDomainLabelTickExtension(10);
-        _dayPlot.setBorderStyle(XYPlot.BorderStyle.NONE, null, null);
-        _dayPlot.getDomainLabelWidget().getLabelPaint().setColor(Color.BLACK);
-        _dayPlot.getDomainLabelWidget().getLabelPaint().setTextSize(_defaultTextSize);
-        _dayPlot.getRangeLabelWidget().getLabelPaint().setColor(Color.BLACK);
-        _dayPlot.getRangeLabelWidget().getLabelPaint().setTextSize(_defaultTextSize);
-        _dayPlot.getTitleWidget().getLabelPaint().setColor(Color.BLACK);
-        _dayPlot.getGraphWidget().getDomainOriginLabelPaint().setColor(getResources().getColor(R.color.bg_color));
-        _dayPlot.getGraphWidget().getRangeOriginLabelPaint().setColor(Color.BLACK);
-        _dayPlot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.TRANSPARENT);
-        _dayPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.TRANSPARENT);
-        _dayPlot.getGraphWidget().setMarginRight(5);
-        // update the chart for the first time
-        Number[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        if(day_cons!=null){
-            for(int i=0;i<day_cons.size();i++)
-                cons[day_cons.get(i).getAsInteger("hour")]=(day_cons.get(i)).getAsDouble("cons");
-        }
-        _dayPlot.clear();
-        SimpleXYSeries series = new SimpleXYSeries(
-                Arrays.asList(cons),          // SimpleXYSeries takes a List so turn our array into a List
-                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
-                null);
-        _dayPlot.addSeries(series, series1Format);
-        _dayPlot.redraw();
-        //			if(day_cons.size()>0)
-        //				updateInfoBoxes();
-        //	}
-
-    }
 
     /**
      * Handles the click on the date selector on the top of the chart
@@ -256,7 +214,7 @@ public class DayConsumptionFragment extends Fragment {
     public void handleDateSelection(boolean selection){
 
         if(!selection){
-            _comp.requestRender();
+            //_comp.requestRender();
 
             diff++;
             Log.i(MODULE, diff+"");
@@ -286,9 +244,9 @@ public class DayConsumptionFragment extends Fragment {
                         day_cons=today_cons;
                         updateDayCons();
                     }else{
-                       DayConsumptionRequestWorker test = new DayConsumptionRequestWorker();
-                       test.execute("day");
-                      Log.i(MODULE, "to implement");
+                        DayConsumptionRequestWorker test = new DayConsumptionRequestWorker();
+                        test.execute("day");
+                        Log.i(MODULE, "to implement");
                     }
                 }
                 else{
@@ -306,16 +264,12 @@ public class DayConsumptionFragment extends Fragment {
                 }
             }
         }
-
-        //		if(_touchHandler.isOnline()){
-
-        //		}
     }
 
     public void initCompWidget(){
         Log.i(MODULE, "initializing comp widget");
         ArrayList<ContentValues> day_average = DBManager.getDBManager().getDayAverage();
-        if(day_cons!=null){
+       /* if(day_cons!=null){
             double total = calculateTotal(day_cons);
             double average = calculateAverageTotal(day_average);
             double max = total>average?total:average;
@@ -324,7 +278,7 @@ public class DayConsumptionFragment extends Fragment {
             _comp.setAvg_cons((int) Math.round(average));
             _comp.setLegend("Hoje");
             new InitWidget().start();
-        }
+        }*/
     }
     /**
      * Uses the data retreived by the webservice to calculate the precent difference
@@ -357,7 +311,7 @@ public class DayConsumptionFragment extends Fragment {
      */
     private void updateInfoBoxes(){
 
-        double precent_day = getDayComparison();
+        /* double precent_day = getDayComparison();
         DecimalFormat df = new DecimalFormat("#.#");
         double total_cons = calculateTotal(day_cons);
         _totalConsump.setText(Math.round(total_cons/1000)+"");
@@ -374,7 +328,7 @@ public class DayConsumptionFragment extends Fragment {
                 peak_hour=i;
             }
         }
-        _peakConsump.setText(""+peak_hour+":00 - "+(peak_hour+1)+":00");
+        _peakConsump.setText(""+peak_hour+":00 - "+(peak_hour+1)+":00");*/
     }
     /**
      * Calculates de sum of the consumption when it receives an array with the consumption
@@ -410,15 +364,15 @@ public class DayConsumptionFragment extends Fragment {
                 if(max<day_cons.get(i).getAsDouble("cons"))
                     max = day_cons.get(i).getAsDouble("cons");
             }
-            _dayPlot.clear();
+            //   _dayPlot.clear();
 
             SimpleXYSeries series = new SimpleXYSeries(
                     Arrays.asList(cons),          // SimpleXYSeries takes a List so turn our array into a List
                     SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
                     null);
-            _dayPlot.setRangeBoundaries(0, max*1.2, BoundaryMode.AUTO);
-            _dayPlot.addSeries(series, series1Format);
-            _dayPlot.redraw();
+            //  _dayPlot.setRangeBoundaries(0, max*1.2, BoundaryMode.AUTO);
+            //  _dayPlot.addSeries(series, series1Format);
+            //  _dayPlot.redraw();
 
 
             if(day_cons.size()>0)   // only updates the chart if there is data.
@@ -442,7 +396,7 @@ public class DayConsumptionFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-          //  throw new RuntimeException(context.toString()
+            //  throw new RuntimeException(context.toString()
             //        + " must implement OnFragmentInteractionListener");
         }
     }
@@ -504,6 +458,65 @@ public class DayConsumptionFragment extends Fragment {
     }
 
     /**
+     * Check box handlers stuff
+     */
+
+    private class CheckBoxHandler implements CompoundButton.OnCheckedChangeListener{
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            switch (compoundButton.getId()){
+                case R.id.checkbox_1day:
+                    if(b)
+                        addComparisonData(0,getResources().getColor(R.color.comp1_color));
+                    else
+                        removeComparisonData(0);
+                    break;
+                case R.id.checkbox_2day:
+                    if(b)
+                        addComparisonData(1,getResources().getColor(R.color.comp2_color));
+                    else
+                        removeComparisonData(1);
+                    break;
+                 case R.id.checkbox_3day:
+                     if(b)
+                         addComparisonData(2,getResources().getColor(R.color.comp3_color));
+                     else
+                         removeComparisonData(2);
+                    break;
+                case R.id.checkbox_4day:
+                    if(b)
+                        addComparisonData(3,getResources().getColor(R.color.comp4_color));
+                    else
+                        removeComparisonData(3);
+                    break;
+                case R.id.checkbox_5day:
+                    if(b)
+                        addComparisonData(4,getResources().getColor(R.color.comp5_color));
+                    else
+                        removeComparisonData(4);
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        private void addComparisonData(int index, int color){
+            final double[] stupid_array = new double[48];
+            for (int i = 0; i < 48; i++)
+                stupid_array[i] = 500 + (400 * Math.random());
+            _consumption_chart.addComparisonData(stupid_array,index,color);
+            _consumption_chart.requestRender();
+        }
+        private void removeComparisonData(int index){
+            _consumption_chart.removeComparisonData(index);
+            _consumption_chart.requestRender();
+        }
+    }
+
+    /**
      * UI HANDLER STUFF THE SECOND ONE COULD BE REMOVED
      */
     private class UI_Handler extends Handler {
@@ -530,7 +543,7 @@ public class DayConsumptionFragment extends Fragment {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            _comp.requestRender();
+            // _comp.requestRender();
         }
     }
 }

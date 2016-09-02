@@ -28,7 +28,7 @@
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/current_cons_label"
-                    android:text="Daily consumption / Average (kWh)"
+                    android:text="Week consumption / Average (kWh)"
                     android:padding="5sp"
                     android:layout_marginBottom="5sp"
                     android:textColor="#FFFFFF"
@@ -47,20 +47,32 @@
                     android:layout_weight="0.49"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <android.prsma.org.energyspectrum.customUI.LineConsumptionChart
-                        android:id="@+id/day_consumption_chart"
+                    <android.prsma.org.energyspectrum.customUI.BarConsumptionChart
+                        android:id="@+id/week_cons_chart"
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
                         android:layout_weight="0.8"/>
                     <!-- check boxes for other consumptions -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        style="@style/table_item_label"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/main_bg2"
+                        android:padding="2dp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="10sp"
                         android:layout_height="0sp"
-                        android:layout_weight="0.2"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        >
-                    </LinearLayout>
+                        android:layout_weight="0.1"
+                        android:text="Compare with:"
+                        android:textColor="#000000"
+                        />
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="0sp"-->
+                        <!--android:layout_weight="0.2"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:gravity="center"-->
+                        <!--&gt
+                    </LinearLayout>;-->
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="1sp"
@@ -87,61 +99,61 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.33"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="10sp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/power_icon"/>
-                            <TextView
-                                android:id="@+id/day_total_kwh"
-                                style="@style/table_item_body"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="200 kWh"/>
-                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_weight="0.33"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10sp">
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/money_icon"/>
-                            <TextView
-                                style="@style/table_item_body"
-                                android:layout_width="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/power_icon"/>
+                                <TextView
+                                    android:id="@+id/week_total_kwh"
+                                    style="@style/table_item_body"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="200 kWh"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="0.33"
                                 android:layout_height="wrap_content"
-                                android:text="10€"/>
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/money_icon"/>
+                                <TextView
+                                    style="@style/table_item_body"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="10€"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="0.33"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/tree_icon"/>
+                                <TextView
+                                    style="@style/table_item_body"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2g CO2"/>
+                            </LinearLayout>
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="0.33"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/tree_icon"/>
-                            <TextView
-                                style="@style/table_item_body"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2g CO2"/>
-                        </LinearLayout>
-                    </LinearLayout>
                     </LinearLayout>
                     <!-- COMPARISON CONSUMPTION LABEL -->
                     <TextView
@@ -240,109 +252,51 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <TableLayout
+            <RadioGroup
+                android:id="@+id/week_selector_first_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radio_average"
+                    android:text="Average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/radio_1week"
+                    android:text="Last week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/radio_2week"
+                    android:text="Two weeks ago"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/radio_3week"
+                    android:text="Three weeks ago"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/week_selector_second_line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                >
-                <TableRow
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10sp">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:text="Yesterday"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp1_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_1day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="29-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp2_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_2day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radio_high_week"
+                    android:text="Highest consumption week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/radio_low_week"
+                    android:text="Lowest consumption week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="28-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp3_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_3day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="27-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp4_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_4day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="26-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp5_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_5day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10sp">
-
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10sp">
-
-                </TableRow>
-            </TableLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

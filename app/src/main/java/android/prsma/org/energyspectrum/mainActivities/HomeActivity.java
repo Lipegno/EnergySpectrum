@@ -8,7 +8,10 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.prsma.org.energyspectrum.R;
-import android.prsma.org.energyspectrum.customUI.ConsumptionChart;
+
+import layout.MonthConsumptionFragment;
+import layout.WeekConsumptionFragment;
+import android.prsma.org.energyspectrum.customUI.LineConsumptionChart;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.services.SocketConnectionService;
@@ -20,14 +23,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import layout.DayConsumptionFragment;
 import layout.ProductionFragment;
@@ -64,8 +65,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -126,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
-        static ConsumptionChart chart;
+        static LineConsumptionChart chart;
 
         /**
          * The fragment argument representing the section number for this
@@ -148,7 +149,6 @@ public class HomeActivity extends AppCompatActivity {
             fragment.setArguments(args);
             return fragment;
         }
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -182,37 +182,38 @@ public class HomeActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                return PlaceholderFragment.newInstance(position + 1);
-            }else if (position == 1){
                 _summaryFrag =  SummaryFragment.newInstance("aqui1", "aqui2");
                 return _summaryFrag;
-            } else if(position==2) {
-                return ProductionFragment.newInstance("aqui1", "aqui2");
-            }else if(position==3){
+            }else if (position == 1){
                 return DayConsumptionFragment.newInstance("aqui1","aqui2");
-            }
-            else {
-                return PlaceholderFragment.newInstance(position + 1);
-            }
+            } else if(position == 2) {
+                return WeekConsumptionFragment.newInstance("test", "test");
+            }else if(position ==3){
+                return MonthConsumptionFragment.newInstance("test", "test");
+            }else
+                return ProductionFragment.newInstance("aqui1", "aqui2");
+
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Summary";
                 case 1:
-                    return "SECTION 2";
+                    return "Daily Consumption";
                 case 2:
-                    return "SECTION 3";
+                    return "Weekly Consumption";
                 case 3:
-                    return "SECTION 4";
+                    return "Monthly Consumption";
+                case 4:
+                    return "Energy Availability";
             }
             return null;
         }

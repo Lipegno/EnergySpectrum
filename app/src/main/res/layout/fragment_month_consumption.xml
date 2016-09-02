@@ -28,7 +28,7 @@
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/current_cons_label"
-                    android:text="Daily consumption / Average (kWh)"
+                    android:text="Monthly consumption / Average (kWh)"
                     android:padding="5sp"
                     android:layout_marginBottom="5sp"
                     android:textColor="#FFFFFF"
@@ -48,7 +48,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <android.prsma.org.energyspectrum.customUI.LineConsumptionChart
-                        android:id="@+id/day_consumption_chart"
+                        android:id="@+id/month_consumption_chart"
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
                         android:layout_weight="0.8"/>
@@ -87,61 +87,61 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.33"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="10sp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/power_icon"/>
-                            <TextView
-                                android:id="@+id/day_total_kwh"
-                                style="@style/table_item_body"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="200 kWh"/>
-                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_weight="0.33"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10sp">
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/money_icon"/>
-                            <TextView
-                                style="@style/table_item_body"
-                                android:layout_width="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/power_icon"/>
+                                <TextView
+                                    android:id="@+id/month_total_kwh"
+                                    style="@style/table_item_body"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="200 kWh"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="0.33"
                                 android:layout_height="wrap_content"
-                                android:text="10€"/>
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/money_icon"/>
+                                <TextView
+                                    style="@style/table_item_body"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="10€"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="0.33"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/tree_icon"/>
+                                <TextView
+                                    style="@style/table_item_body"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2g CO2"/>
+                            </LinearLayout>
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="0.33"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/tree_icon"/>
-                            <TextView
-                                style="@style/table_item_body"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2g CO2"/>
-                        </LinearLayout>
-                    </LinearLayout>
                     </LinearLayout>
                     <!-- COMPARISON CONSUMPTION LABEL -->
                     <TextView
@@ -261,7 +261,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <CheckBox
-                            android:id="@+id/checkbox_1day"
+                            android:id="@+id/checkbox_1month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -276,7 +276,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <CheckBox
-                            android:id="@+id/checkbox_2day"
+                            android:id="@+id/checkbox_2month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -292,7 +292,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <CheckBox
-                            android:id="@+id/checkbox_3day"
+                            android:id="@+id/checkbox_3month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -307,7 +307,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <CheckBox
-                            android:id="@+id/checkbox_4day"
+                            android:id="@+id/checkbox_4month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>

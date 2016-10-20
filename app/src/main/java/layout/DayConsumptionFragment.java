@@ -13,6 +13,7 @@ import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidplot.xy.SimpleXYSeries;
@@ -67,6 +69,9 @@ public class DayConsumptionFragment extends Fragment {
     private CheckBox _day3box;
     private CheckBox _day4box;
     private CheckBox _day5box;
+    private LinearLayout _daySideBar;
+    private LinearLayout _dayChartContainer;
+    private LinearLayout _dayChartContainer2;
     private final CheckBoxHandler _comparison_handler = new CheckBoxHandler();
     /*
     * OTHER STUFF
@@ -145,9 +150,20 @@ public class DayConsumptionFragment extends Fragment {
         _queryDate=_today;
         _defaultTextSize = ((TextView)v.findViewById(R.id.day_total_kwh)).getTextSize();
         _consumption_chart.setText_size(_defaultTextSize);
+        _daySideBar        = (LinearLayout)v.findViewById(R.id.day_side_bar);
+        _dayChartContainer = (LinearLayout)v.findViewById(R.id.day_chart_container);
+        _dayChartContainer2 = (LinearLayout)v.findViewById(R.id.day_chart_containe2);
         new DayConsumptionRequestWorker().execute("day");
         createDummyValues();
         initCheckBoxes(v);
+
+        Button _full_screen_btn = (Button)v.findViewById(R.id.maximize_chart_day);
+        _full_screen_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                maximizeScreen();
+            }
+        });
     }
 
     private void initCheckBoxes(View v){
@@ -163,6 +179,17 @@ public class DayConsumptionFragment extends Fragment {
         _day5box.setOnCheckedChangeListener(_comparison_handler);
 
 
+    }
+
+    private void maximizeScreen(){
+
+        if(_daySideBar.getVisibility()==View.VISIBLE) {
+            _daySideBar.setVisibility(View.GONE);
+            _consumption_chart.requestRender();
+        }else{
+            _daySideBar.setVisibility(View.VISIBLE);
+            _consumption_chart.requestRender();
+        }
     }
 
     private void initDateSelector(View v){

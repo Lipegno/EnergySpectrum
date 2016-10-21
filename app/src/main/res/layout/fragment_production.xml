@@ -26,12 +26,16 @@
             android:background="@color/bg_color"
             android:orientation="vertical" >
 
-            <Button
+          <!--  <Button
                 android:id="@+id/prod_request_simple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="prod_req"/>
-
+                android:text="prod_req"/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
             <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
@@ -168,14 +172,14 @@
                     android:textSize="10pt"
                     android:text="--" />
             </LinearLayout>
-
-            <LinearLayout
-                android:background="@drawable/horizontal_bar_grad"
-                android:layout_width="fill_parent"
-                android:layout_height="2px"
-                android:layout_marginTop="8dp"
-                >
-            </LinearLayout>
+        </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:background="@drawable/horizontal_bar_grad"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="2px"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--&gt;-->
+            <!--</LinearLayout>-->
 
             <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                 android:layout_width="fill_parent"
@@ -289,13 +293,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="0px"
                 android:layout_weight="0.4"
                 android:orientation="horizontal" >
 
                 <LinearLayout
-                    android:layout_width="100px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:orientation="vertical" >
@@ -325,12 +329,14 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="100px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    >
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="2px"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
@@ -353,11 +359,7 @@
                         android:textColor="@color/water_color" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5" >
-                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

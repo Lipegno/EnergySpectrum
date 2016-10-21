@@ -80,7 +80,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     @Override
     public void onDraw(Canvas c){
         if(c!=null){
-            c.drawColor(Color.parseColor("#f2f2f2"));
+            c.drawColor(Color.parseColor("#ffffff"));
             drawVerticalAxis(c);
             drawHorizontalAxis(c,_token);
             drawAveragePath(c);

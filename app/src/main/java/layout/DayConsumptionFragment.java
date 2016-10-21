@@ -70,8 +70,6 @@ public class DayConsumptionFragment extends Fragment {
     private CheckBox _day4box;
     private CheckBox _day5box;
     private LinearLayout _daySideBar;
-    private LinearLayout _dayChartContainer;
-    private LinearLayout _dayChartContainer2;
     private final CheckBoxHandler _comparison_handler = new CheckBoxHandler();
     /*
     * OTHER STUFF
@@ -151,8 +149,6 @@ public class DayConsumptionFragment extends Fragment {
         _defaultTextSize = ((TextView)v.findViewById(R.id.day_total_kwh)).getTextSize();
         _consumption_chart.setText_size(_defaultTextSize);
         _daySideBar        = (LinearLayout)v.findViewById(R.id.day_side_bar);
-        _dayChartContainer = (LinearLayout)v.findViewById(R.id.day_chart_container);
-        _dayChartContainer2 = (LinearLayout)v.findViewById(R.id.day_chart_containe2);
         new DayConsumptionRequestWorker().execute("day");
         createDummyValues();
         initCheckBoxes(v);

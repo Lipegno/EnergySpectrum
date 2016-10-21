@@ -12,7 +12,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,6 +45,13 @@
                         android:text="Full screen"/>
                     </LinearLayout>
             </LinearLayout>
+           <!--     DATES STUFF -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +61,6 @@
                 <LinearLayout
                     android:layout_width="0sp"
                     android:layout_weight="0.49"
-                    android:id="@+id/day_chart_containe2"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <android.prsma.org.energyspectrum.customUI.LineConsumptionChart
@@ -61,7 +68,103 @@
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
                         android:layout_weight="0.8"/>
-                    <!-- check boxes for other consumptions -->
+                    <TextView
+                        style="@style/table_item_label"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/main_bg2"
+                        android:padding="2dp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:layout_height="0sp"
+                        android:layout_weight="0.1"
+                        android:text="Compare with:"
+                        android:textColor="#000000"
+                        />
+                    <TableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+                        <TableRow
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:gravity="center_horizontal"
+                            >
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_horizontal">
+                                <TextView
+                                    android:text="Yesterday"
+                                    android:textColor="@color/comp1_color"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <CheckBox
+                                    android:id="@+id/checkbox_1day"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:text="29-08-2016"
+                                    android:textColor="@color/comp2_color"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <CheckBox
+                                    android:id="@+id/checkbox_2day"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:text="28-08-2016"
+                                    android:textColor="@color/comp3_color"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <CheckBox
+                                    android:id="@+id/checkbox_3day"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:text="27-08-2016"
+                                    android:textColor="@color/comp4_color"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <CheckBox
+                                    android:id="@+id/checkbox_4day"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:text="26-08-2016"
+                                    android:textColor="@color/comp5_color"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <CheckBox
+                                    android:id="@+id/checkbox_5day"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                        </TableRow>
+                    </TableLayout>
+                    <!-- check boxes for other consumptions
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
@@ -69,7 +172,7 @@
                         android:orientation="horizontal"
                         android:gravity="center"
                         >
-                    </LinearLayout>
+                    </LinearLayout>-->
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="1sp"
@@ -245,115 +348,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5% wind"/>
-
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
-                <TableRow
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10sp">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:text="Yesterday"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp1_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_1day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="29-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp2_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_2day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="28-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp3_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_3day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="27-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp4_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_4day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="26-08-2016"
-                            style="@style/table_item_body"
-                            android:textColor="@color/comp5_color"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <CheckBox
-                            android:id="@+id/checkbox_5day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10sp">
-
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10sp">
-
-                </TableRow>
-            </TableLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

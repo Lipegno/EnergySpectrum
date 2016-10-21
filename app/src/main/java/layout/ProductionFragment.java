@@ -135,17 +135,17 @@ public class ProductionFragment extends Fragment {
         _chart.setStart_time("17:04");
         _chart.setFinsh_time("20:04");
 
-        Button button_test = (Button)v.findViewById(R.id.prod_request_simple);
-        button_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProductionHandler nova = new ProductionHandler();
-                nova.execute();
+      //  Button button_test = (Button)v.findViewById(R.id.prod_request_simple);
+      //  button_test.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+          //  public void onClick(View v) {
+       ProductionHandler nova = new ProductionHandler();
+       nova.execute();
 
-                ConsumptionHandler c_handler = new ConsumptionHandler();
-                c_handler.execute();
-            }
-        });
+       ConsumptionHandler c_handler = new ConsumptionHandler();
+       c_handler.execute();
+            //}
+        //});
 
       //  RequestHandler nova = new RequestHandler();
       //  nova.start();

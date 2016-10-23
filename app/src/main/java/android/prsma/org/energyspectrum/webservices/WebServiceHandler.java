@@ -494,7 +494,7 @@ public final class WebServiceHandler {
     }
 
 	private boolean isOnline(){
-		return RuntimeConfigs.getConfigs().getMenuHandler().isOnline();
+		return true;
 	}
 
 	//	public void getWeekConsumptionByDay(String date){

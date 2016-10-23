@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.ComparisonWidget;
-import android.prsma.org.energyspectrum.customUI.TabbedMenuHandler;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
@@ -65,7 +64,6 @@ public class MonthConsumptionActivity extends Activity implements Observer {
 	private static final String MODULE = "MONTH CONSUMPTION";
 
 	private RuntimeConfigs _configs;
-	private TabbedMenuHandler _touchHandler;
 	private ArrayList<ContentValues> month_cons;
 	private LastEvtBroadCastReceiver evt_receiver = new LastEvtBroadCastReceiver(); // broadcast receiver
 	private ComparisonWidget _comp;
@@ -98,12 +96,8 @@ public class MonthConsumptionActivity extends Activity implements Observer {
 	public void onResume(){
 		_configs			  = RuntimeConfigs.getConfigs();
 		_configs.getScreenHandler().addObserver(this);
-		_touchHandler = _configs.getMenuHandler();
-		_touchHandler = _configs.getMenuHandler();
-		_touchHandler.setContext(getApplicationContext());
 		_countNewEvents = _configs.getEventsCount();
 		Log.e(MODULE, ""+_countNewEvents);
-		_touchHandler.resetTouch();
 
 		DBManager.getDBManager().insertUserEvent(MODULE);
 
@@ -135,10 +129,6 @@ public class MonthConsumptionActivity extends Activity implements Observer {
 		_totalC02 	   = (TextView)findViewById(R.id.total_co2_month);
 		_totalCost	   = (TextView)findViewById(R.id.total_money_month);
 
-		_mainView.setOnTouchListener(_touchHandler);
-		_dayBtn.setOnTouchListener(_touchHandler);
-		_weekBtn.setOnTouchListener(_touchHandler);
-		_prodBtn.setOnTouchListener(_touchHandler);
 
 		Calendar cal = Calendar.getInstance();
 		_currentMonth=cal.get(Calendar.MONTH)+1;
@@ -423,23 +413,6 @@ public class MonthConsumptionActivity extends Activity implements Observer {
 	}
 	@Override
 	public void update(Observable observable, Object data) {
-		// TODO Auto-generated method stub
-		Log.e(MODULE, "Beat");
-		Log.i(MODULE,""+_touchHandler.getTouchStatus());
-		if(_touchHandler.getTouchStatus()==1){
-			_was_touched=1;
-		}
-		else if(_was_touched==0){
-			Log.e(MODULE,"ARRENKA");
-			Intent newInt = new Intent(getApplicationContext(), ProductionActivity.class);
-			newInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);	
-			startActivity(newInt);
-		}
-		else if(_touchHandler.getTouchStatus()==0){
-			Log.e(MODULE, "PRIMEIRO");
-			_was_touched=0;
-		}
-		_touchHandler.resetTouch();
 	}
 	/**
 	 * Update the counter with num of new events 

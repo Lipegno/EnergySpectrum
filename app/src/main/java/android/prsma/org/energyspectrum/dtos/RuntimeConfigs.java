@@ -2,7 +2,6 @@ package android.prsma.org.energyspectrum.dtos;
 
 import android.content.Context;
 import android.prsma.org.energyspectrum.customUI.ScreenSaverHandler;
-import android.prsma.org.energyspectrum.customUI.TabbedMenuHandler;
 import android.prsma.org.energyspectrum.services.SocketConnectionService;
 import android.util.Log;
 
@@ -10,7 +9,6 @@ public final class RuntimeConfigs {
 
 	private final static String MODULE = "Runtime configurations";
 	private final static ScreenSaverHandler screenH = new ScreenSaverHandler(50000);
-	private final static TabbedMenuHandler tabMenuH = new TabbedMenuHandler();
 	private SocketConnectionService requestReplySocket;
 	private int eventsCount;
 	private String meterIp;
@@ -48,14 +46,6 @@ public final class RuntimeConfigs {
 		screenH.start();
 	}
 	
-	public void setTabbedMenuContext(Context ctx){
-		tabMenuH.setContext(ctx);
-	}
-	
-	public TabbedMenuHandler getMenuHandler(){
-		return tabMenuH;
-	}
-
 	public String getMeterIp() {
 		return meterIp;
 	}

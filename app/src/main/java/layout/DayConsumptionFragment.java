@@ -7,12 +7,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.LineConsumptionChart;
 import android.prsma.org.energyspectrum.database.DBManager;
+import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +43,7 @@ import java.util.Date;
  * Use the {@link DayConsumptionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DayConsumptionFragment extends Fragment {
+public class DayConsumptionFragment extends Fragment implements LineConsumptionChart.ChartInteractionListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,6 +67,8 @@ public class DayConsumptionFragment extends Fragment {
     private Button _plusDateBtn;
     private Button _minusDateBtn;
     private TextView _dayDateLabel;
+
+    private TextView _event_name_label;
     private CheckBox _day1box;
     private CheckBox _day2box;
     private CheckBox _day3box;
@@ -87,8 +92,6 @@ public class DayConsumptionFragment extends Fragment {
     private static final WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
     private UI_Handler ui_handler = new UI_Handler();
     private static final String MODULE = "DAY CONSUMPTION";
-
-
 
     public DayConsumptionFragment() {
         // Required empty public constructor
@@ -143,6 +146,8 @@ public class DayConsumptionFragment extends Fragment {
         _defaultTextSize = ((TextView)v.findViewById(R.id.frag_total_day_label)).getTextSize();*/
         _consumption_chart = (LineConsumptionChart)v.findViewById(R.id.day_consumption_chart);
         _consumption_chart.setMode(LineConsumptionChart.MODE_DAY);
+        _consumption_chart.SetChartInteractionListener(this);
+        _event_name_label = (TextView)v.findViewById(R.id.event_info_label);
         _today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
         //_dayDateLabel.setText(_today.getDate()+"/"+(_today.getMonth()+1)+"/"+2013);
         _queryDate=_today;
@@ -212,7 +217,7 @@ public class DayConsumptionFragment extends Fragment {
     }
 
     private void createDummyValues(){
-        double[] cons_data = new double[48];
+        double[] cons_data = new double[24];
         for(int i=0;i<cons_data.length;i++)
             cons_data[i]=100+(800*Math.random());
         //   for(int i=25;i<48;i++)
@@ -221,6 +226,20 @@ public class DayConsumptionFragment extends Fragment {
         for(int i=0;i<avg_cons_data.length;i++)
             avg_cons_data[i]=500+(400*Math.random());
 
+        ArrayList<EventSampleDTO> events = new ArrayList<EventSampleDTO>();
+
+        for(int i=0;i<24;i++){
+            EventSampleDTO sample = new EventSampleDTO("Event "+i,null,
+                    (int)Math.round(Math.random()*200),
+                    i,
+                    i,
+                    this+""+System.currentTimeMillis(),
+                    null);
+
+            sample.set_color((ContextCompat.getColor(getContext(), R.color.event_color_1)));
+            events.add(sample);
+        }
+        _consumption_chart.set_events(events);
         _consumption_chart.set_avg_cons_data(avg_cons_data);
         _consumption_chart.set_cons_data(cons_data);
         _consumption_chart.requestRender();
@@ -428,6 +447,17 @@ public class DayConsumptionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    /**
+     * handler of the stuff that happens in the cons chart
+     * @param event
+     */
+    @Override
+    public void onEventSelect(EventSampleDTO event) {
+        Log.i("Received Event", event.get_guess());
+        _event_name_label.setText(event.get_guess());
     }
 
     /**

@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.ComparisonWidget;
-import android.prsma.org.energyspectrum.customUI.TabbedMenuHandler;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
@@ -73,8 +72,6 @@ public class DayConsumptionActivity extends Activity implements Observer {
 
 	private LastEvtBroadCastReceiver evt_receiver = new LastEvtBroadCastReceiver(); // broadcast receiver
 	private RuntimeConfigs _configs;
-	private TabbedMenuHandler _touchHandler;
-
 
 	private TextView _dayDateLabel;
 	private Date _today;
@@ -106,10 +103,7 @@ public class DayConsumptionActivity extends Activity implements Observer {
 		_configs 		= RuntimeConfigs.getConfigs();
 		_configs.getScreenHandler().addObserver(this);
 
-		_touchHandler = _configs.getMenuHandler();
-		_touchHandler.setContext(getApplicationContext());
 		_countNewEvents = _configs.getEventsCount();
-		_touchHandler.resetTouch();
 
 		DBManager.getDBManager().insertUserEvent(MODULE);
 		day_cons = web_handler.day_cons;
@@ -135,10 +129,6 @@ public class DayConsumptionActivity extends Activity implements Observer {
 		_comp		   = (ComparisonWidget)findViewById(R.id.comparisonWidgetDay);
 
 		//_homeBtn.setOnTouchListener(_touchHandler);
-		_weekBtn.setOnTouchListener(_touchHandler);
-		_monthBtn.setOnTouchListener(_touchHandler);
-		_mainView.setOnTouchListener(_touchHandler);
-		_prodBtn.setOnTouchListener(_touchHandler);
 
 		SpannableString s = new SpannableString("Dia"); 
 		s.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0); 
@@ -436,23 +426,6 @@ public class DayConsumptionActivity extends Activity implements Observer {
 	}
 	@Override
 	public void update(Observable observable, Object data) {  
-		// TODO Auto-generated method stub
-		Log.e(MODULE, "Beat");
-		Log.i(MODULE,""+_touchHandler.getTouchStatus());
-		if(_touchHandler.getTouchStatus()==1){
-			_was_touched=1;
-		}
-		else if(_was_touched==0){
-			Log.e(MODULE,"ARRENKA");
-			Intent newInt = new Intent(getApplicationContext(), ProductionActivity.class);
-			newInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);	
-			startActivity(newInt);
-		}
-		else if(_touchHandler.getTouchStatus()==0){
-			Log.e(MODULE, "PRIMEIRO");
-			_was_touched=0;
-		}
-		_touchHandler.resetTouch();
 	}
 
 	@Override

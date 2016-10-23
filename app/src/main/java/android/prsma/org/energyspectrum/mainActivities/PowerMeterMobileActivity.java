@@ -21,7 +21,6 @@ import android.preference.PreferenceManager;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.SummaryComparisonWidget;
 import android.prsma.org.energyspectrum.customUI.SummaryWidget;
-import android.prsma.org.energyspectrum.customUI.TabbedMenuHandler;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
@@ -86,7 +85,6 @@ public class PowerMeterMobileActivity extends Activity implements Observer {
 	@SuppressWarnings("unused")
 	private ExitHandler exit_h;
 	private int _was_touched=0;
-	private TabbedMenuHandler _touchHandler;
 	private static final String MODULE = "HOME MAC";
 
 	// variables used to gather the current consumption
@@ -126,10 +124,6 @@ public class PowerMeterMobileActivity extends Activity implements Observer {
 		_configs = RuntimeConfigs.getConfigs();
 		_configs.getScreenHandler().start();
 		_countNewEvents = _configs.getEventsCount();
-		_touchHandler = _configs.getMenuHandler();
-		_touchHandler.setContext(getApplicationContext());
-		if(_touchHandler.isOnline())
-			initServices();
 	}
 
 	@Override
@@ -142,10 +136,8 @@ public class PowerMeterMobileActivity extends Activity implements Observer {
 		_configs.getScreenHandler().addObserver(this);
 		_configs.setWebserver_port(Integer.parseInt(sp.getString("webserver_port", "11")));
 		String teste_binary="vamos testar isto, parece que esta a funcionar"; 
-		_touchHandler.resetTouch();
 	//	Log.i(MODULE,"touch");
 		_was_touched=1;
-		findViewById(R.id.home_main_layout).setOnTouchListener(_touchHandler);
 		//Log.e(MODULE, "creating screesaver handler thread");
 		DBManager.getDBManager().insertUserEvent(MODULE);
 		initView();
@@ -219,12 +211,6 @@ public class PowerMeterMobileActivity extends Activity implements Observer {
 		//        _compDay.setBackgroundResource(R.drawable.round_box_green);
 		//        _compWeek.setBackgroundResource(R.drawable.round_box_orange);
 		//        _compMonth.setBackgroundResource(R.drawable.round_box_red);
-
-		_dayBtn.setOnTouchListener(_touchHandler);
-		_weekBtn.setOnTouchListener(_touchHandler);
-		_monthBtn.setOnTouchListener(_touchHandler);
-		_prodBtn.setOnTouchListener(_touchHandler);
-		
 		//_eventsBtn.setOnTouchListener(_touchHandler);
 		_resetButton.setVisibility(View.INVISIBLE);
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -560,24 +546,6 @@ public class PowerMeterMobileActivity extends Activity implements Observer {
 
 	@Override
 	public void update(Observable observable, Object data) {
-		// TODO Auto-generated method stub
-		Log.e(MODULE, "Beat");
-		Log.i(MODULE,""+_touchHandler.getTouchStatus());
-		Log.i(MODULE,"touch "+_was_touched);
-		if(_touchHandler.getTouchStatus()==1){
-			_was_touched=1;
-		}
-		else if(_was_touched==0){
-			Log.e(MODULE,"ARRENKA");
-			Intent newInt = new Intent(getApplicationContext(), ProductionActivity.class);
-			newInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);	
-			startActivity(newInt);
-		}
-		else if(_touchHandler.getTouchStatus()==0){
-			Log.e(MODULE, "PRIMEIRO");
-			_was_touched=0;
-		}
-		_touchHandler.resetTouch();
 	}
 
 	private void displayConnectionSuccessful(){

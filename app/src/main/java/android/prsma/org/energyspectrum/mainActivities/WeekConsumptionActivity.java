@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.ComparisonWidget;
-import android.prsma.org.energyspectrum.customUI.TabbedMenuHandler;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
@@ -82,8 +81,7 @@ public class WeekConsumptionActivity extends Activity implements Observer {
     
 	private LastEvtBroadCastReceiver evt_receiver = new LastEvtBroadCastReceiver(); // broadcast receiver
     private RuntimeConfigs _configs;
-    TabbedMenuHandler _touchHandler;
-    
+
 	private int _was_touched=1;
 	private final static WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
 
@@ -102,11 +100,6 @@ public class WeekConsumptionActivity extends Activity implements Observer {
 	@Override
     public void onResume(){
     	_configs 		= RuntimeConfigs.getConfigs();
-    	_touchHandler = _configs.getMenuHandler();
-    	_touchHandler.setContext(getApplicationContext());
-		_countNewEvents = _configs.getEventsCount();
-	    _configs.getScreenHandler().addObserver(this);
-		_touchHandler.resetTouch();
 		DBManager.getDBManager().insertUserEvent(MODULE);
 		week_cons = new ArrayList<ContentValues>();
 	    ui_handler = new UI_Handler();
@@ -133,12 +126,7 @@ public class WeekConsumptionActivity extends Activity implements Observer {
         _totalC02		= (TextView)findViewById(R.id.total_co2_week);
         _totalCost		= (TextView)findViewById(R.id.total_money_week);
         _comp		    = (ComparisonWidget)findViewById(R.id.comp_widget_week);
-        _mainView.setOnTouchListener(_touchHandler);
-      //  _homeBtn.setOnTouchListener(_touchHandler);
-        _dayBtn.setOnTouchListener(_touchHandler);
-        _monthBtn.setOnTouchListener(_touchHandler);
-        _prodBtn.setOnTouchListener(_touchHandler);
-        
+
         SpannableString s = new SpannableString("Semana"); 
         s.setSpan(new StyleSpan(Typeface.BOLD), 0, 6, 0); 
         _viewLabel.setText(s);
@@ -213,23 +201,6 @@ public class WeekConsumptionActivity extends Activity implements Observer {
 	}
 	@Override
 	public void update(Observable observable, Object data) {
-		// TODO Auto-generated method stub
-		Log.e(MODULE, "Beat");
-		Log.i(MODULE,""+_touchHandler.getTouchStatus());
-		if(_touchHandler.getTouchStatus()==1){
-			_was_touched=1; 
-		}
-		else if(_was_touched==0){
-			Log.e(MODULE,"ARRENKA");
-			Intent newInt = new Intent(getApplicationContext(), ProductionActivity.class);
-			newInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);	
-			startActivity(newInt);
-		}
-		else if(_touchHandler.getTouchStatus()==0){
-			Log.e(MODULE, "PRIMEIRO");
-			_was_touched=0;
-		}
-		_touchHandler.resetTouch();
 	}
 	
 	public void handleButtonClick(View v){

@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.customUI.ProductionChart;
-import android.prsma.org.energyspectrum.customUI.TabbedMenuHandler;
 import android.prsma.org.energyspectrum.database.DBManager;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
@@ -42,7 +41,6 @@ public class ProductionActivity extends Activity{
 	private TextView _windPrecent;
 	private TextView _termalPrecent;
 	private RuntimeConfigs _configs;
-	private TabbedMenuHandler _touchHandler;
 	private double [] cons;
 	private double[] avg_cons;
 	private ArrayList<ContentValues> day_cons;
@@ -61,9 +59,6 @@ public class ProductionActivity extends Activity{
 		super.onResume();
 		_chart = (ProductionChart)findViewById(R.id.prod_chart);
 		_configs 		= RuntimeConfigs.getConfigs();
-		_touchHandler = _configs.getMenuHandler();
-		_touchHandler.setContext(getApplicationContext());
-		_touchHandler.resetTouch();
 		day_cons = web_handler.day_cons;
 		average_cons = DBManager.getDBManager().getDayAverage();
 		DBManager.getDBManager().insertUserEvent(MODULE);
@@ -87,9 +82,6 @@ public class ProductionActivity extends Activity{
 		_termalPrecent = (TextView)findViewById(R.id.termal_precent);
 		
 		//_homeBtn.setOnTouchListener(_touchHandler);
-		_dayBtn.setOnTouchListener(_touchHandler);
-		_weekBtn.setOnTouchListener(_touchHandler);
-		_monthBtn.setOnTouchListener(_touchHandler);
 		_chart.setColor("#d0f154");
 		_chart.setBgColor("#FFFFFF");
 		_chart.setMax_scale(250);

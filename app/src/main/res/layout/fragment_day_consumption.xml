@@ -75,8 +75,7 @@
                         android:padding="2dp"
                         android:layout_marginTop="10sp"
                         android:layout_marginBottom="10sp"
-                        android:layout_height="0sp"
-                        android:layout_weight="0.1"
+                        android:layout_height="wrap_content"
                         android:text="Compare with:"
                         android:textColor="#000000"
                         />
@@ -350,6 +349,26 @@
                             android:text="5% wind"/>
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Event Information:  "/>
+
+                <TextView
+                    android:id="@+id/event_info_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="--"/>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

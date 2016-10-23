@@ -26,4 +26,7 @@
     <color name="comp3_color">#494949</color>
     <color name="comp4_color">#30321C</color>
     <color name="comp5_color">#8A1C7C</color>
+    <!-- Color for the events bubbles -->
+    <color name="event_color_1">#33768C</color>
+    <color name="event_color_2">#8A1C7C</color>
 </resources>

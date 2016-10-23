@@ -89,7 +89,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         _configs = RuntimeConfigs.getConfigs();
-        _configs.getMenuHandler().setContext(getApplicationContext());
 
         if (! DBManager.databaseExists())
             DBManager.initDatabase();

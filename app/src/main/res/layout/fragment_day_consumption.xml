@@ -66,8 +66,8 @@
                     <android.prsma.org.energyspectrum.customUI.LineConsumptionChart
                         android:id="@+id/day_consumption_chart"
                         android:layout_width="match_parent"
-                        android:layout_height="0sp"
-                        android:layout_weight="0.8"/>
+                        android:layout_height="wrap_content"
+                        />
                     <TextView
                         style="@style/table_item_label"
                         android:layout_width="fill_parent"

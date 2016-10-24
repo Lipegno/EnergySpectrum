@@ -33,8 +33,7 @@
                 android:text="prod_req"/>-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                 android:layout_width="fill_parent"

@@ -83,8 +83,24 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        _height = getHeight();
         _width = getWidth();
+        Log.i("LineChart","width "+_width);
+        _height = _width*0.5f;
+        android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
+        lp.height = (int)_height; // required height
+        lp.width = (int)_width;
+        this.setLayoutParams(lp);
+        requestRender();
+    }
+
+    public void updateSize(){
+        _width = getWidth();
+        Log.i("LineChart","width "+_width);
+        _height = _width*0.5f;
+        android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
+        lp.height = (int)_height; // required height
+        lp.width = (int)_width;
+        this.setLayoutParams(lp);
         requestRender();
     }
 
@@ -130,6 +146,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         //System.gc();
         Canvas c = null;
         SurfaceHolder sh = getHolder();
+        Log.i("LineConsChart","rendering");
         try {
             c = sh.lockCanvas(null);
             synchronized (sh){
@@ -376,10 +393,11 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     public boolean onTouchEvent(MotionEvent event) {
         synchronized (getHolder()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                checkTouch(event.getX(),event.getY());
+
                 //Log.d("Line Cons Chart", "touch Down");
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                checkTouch(event.getX(),event.getY());
                 //Log.d("Line Cons Chart","touch Up");
             }
             return true;
@@ -388,29 +406,27 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
 
     private void checkTouch(float x, float y){
 
-        int i = 0;
 
         int itemr=20;
+        int select_color = ContextCompat.getColor(_app_context,R.color.event_color_2);
+        int normal_color = ContextCompat.getColor(_app_context,R.color.event_color_1);
 
-
-        boolean selected = false;
-        for(i=0;i<_events.size();i++){
+        for(int i=0;i<_events.size();i++){
 
             float[] cords = _events.get(i).get_cords();
 
             if((x>cords[0]-itemr)&&(x<cords[0]+itemr)){
                 if((y>cords[1]-itemr)&&(y<cords[1]+itemr)){
-                    Log.d("Line Chart","EXISTE AQUI ->"+i);
-                    _events.get(i).set_color(ContextCompat.getColor(_app_context,R.color.event_color_2));
-                    requestRender();
-                    v.vibrate(50);
+                  //  Log.d("Line Chart","EXISTE AQUI ->"+i);
+                    _events.get(i).set_color(select_color);
+                    v.vibrate(10);
                     this._listener.onEventSelect(_events.get(i));
                 }
             }else{
-                _events.get(i).set_color(ContextCompat.getColor(_app_context,R.color.event_color_1));
-                requestRender();
+                _events.get(i).set_color(normal_color);
             }
         }
+        requestRender();
     }
 
 

@@ -186,10 +186,14 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
 
         if(_daySideBar.getVisibility()==View.VISIBLE) {
             _daySideBar.setVisibility(View.GONE);
-            _consumption_chart.requestRender();
+            _consumption_chart.invalidate();
+            _consumption_chart.updateSize();
+            Log.i("DayFragment", "width"+_consumption_chart.getWidth());
         }else{
             _daySideBar.setVisibility(View.VISIBLE);
-            _consumption_chart.requestRender();
+            _consumption_chart.invalidate();
+            _consumption_chart.updateSize();
+            Log.i("DayFragment", "width"+_consumption_chart.getWidth());
         }
     }
 
@@ -219,12 +223,12 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     private void createDummyValues(){
         double[] cons_data = new double[24];
         for(int i=0;i<cons_data.length;i++)
-            cons_data[i]=100+(800*Math.random());
+            cons_data[i]=500+(300*Math.random());
         //   for(int i=25;i<48;i++)
         //  _cons_data[i]=0;
         double[] avg_cons_data = new double[48];
         for(int i=0;i<avg_cons_data.length;i++)
-            avg_cons_data[i]=500+(400*Math.random());
+            avg_cons_data[i]=500+(200*Math.random());
 
         ArrayList<EventSampleDTO> events = new ArrayList<EventSampleDTO>();
 
@@ -244,12 +248,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _consumption_chart.set_cons_data(cons_data);
         _consumption_chart.requestRender();
     }
-    /**
-     * initializes the XYPlot to have the same look of the
-     */
-
-
-    /**
+      /**
      * Handles the click on the date selector on the top of the chart
      * @param selection - true plus - false minus
      */

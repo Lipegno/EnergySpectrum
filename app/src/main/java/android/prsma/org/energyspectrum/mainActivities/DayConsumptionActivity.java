@@ -87,7 +87,6 @@ public class DayConsumptionActivity extends Activity implements Observer {
 
 	private ComparisonWidget _comp;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

@@ -10,11 +10,14 @@ import android.os.Vibrator;
 import android.prsma.org.energyspectrum.R;
 import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -58,9 +61,9 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
 
     private Vibrator v;
 
-
-
     private ChartInteractionListener _listener;
+
+    private ViewGroup.LayoutParams _normalLayout;
 
     public LineConsumptionChart(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,39 +72,74 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         setFocusable(true);
         _app_context = context;
         v = (Vibrator) _app_context.getSystemService(Context.VIBRATOR_SERVICE);
-
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        Log.i("ConsChart", "surface created");
+        initComparisonData();
         _height = getHeight();
         _width = getWidth();
     //    createDummyValues();
-        initComparisonData();
+
+
+        _height = _width*0.65f;
+        android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
+        lp.height = (int)_height; // required height
+        lp.width = (int)_width;
+        this.setLayoutParams(lp);
+        _height = getHeight();
+        _width = getWidth();
+
+       // _normalLayout = this.getLayoutParams();*/
         requestRender();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        _width = getWidth();
+       /* _width = getWidth();
+
         Log.i("LineChart","width "+_width);
-        _height = _width*0.5f;
+        _height = _width*0.65f;
         android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
         lp.height = (int)_height; // required height
         lp.width = (int)_width;
         this.setLayoutParams(lp);
+
+        requestRender();*/
+        Log.i("ConsChart", "surface changed");
+        _height = getHeight();
+        _width = getWidth();
         requestRender();
     }
 
-    public void updateSize(){
-        _width = getWidth();
-        Log.i("LineChart","width "+_width);
-        _height = _width*0.5f;
+    public void adjustSize(){
+       /* Log.i("ConsChart", "adjusting size big");
         android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
-        lp.height = (int)_height; // required height
-        lp.width = (int)_width;
+        lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;//(int)_width;
         this.setLayoutParams(lp);
-        requestRender();
+        float width = getWidth();
+        android.view.ViewGroup.LayoutParams lp2 = this.getLayoutParams();
+        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT;//(int)_width;
+        float temp2 = width*0.55f;
+        lp2.height =  Math.round(temp2);//, ViewGroup.LayoutParams.WRAP_CONTENT(int)_height; // required height
+
+        Log.e("ConsChart","height "+_width+" ");*/
+
+        android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
+        lp.width  = Math.round(_width*1.8f);
+        lp.height  = Math.round(_height*1.8f);
+
+        this.setLayoutParams(lp);
+    }
+
+    public void adjustSizeNormal(){
+        Log.i("ConsChart", "adjusting size small");
+      //  this.setLayoutParams(_normalLayout);
+        android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
+        lp.width  = Math.round(_width/1.8f);
+        lp.height  = Math.round(_height/1.8f);
+        this.setLayoutParams(lp);
     }
 
     @Override
@@ -169,7 +207,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
             if(_cons_data[i]>max)
                 max= _cons_data[i];
 
-        return max;
+        return max*1.3;
     }
 
     private void drawVerticalAxis(Canvas c){
@@ -338,11 +376,11 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         return result;
     }
 
-    private double createDrawingCoords(double value){
+/*    private double createDrawingCoords(double value){
         double  result = 0;
         result =(_height- _horizontal_axis_label_height) - ((value*(_height- _horizontal_axis_label_height))/ _maxValue);
         return result;
-    }
+    }*/
 
     public void addComparisonData(double[] cons,int index, int color){
         _comparison_data.set(index,cons);

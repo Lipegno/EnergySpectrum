@@ -60,14 +60,15 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
      * VIEW STUFF
      */
     private LineConsumptionChart _consumption_chart;
-    private TextView _peakConsump;
+  /*  private TextView _peakConsump;
     private TextView _totalConsump;
     private TextView _totalC02;
     private TextView _totalCost;
     private Button _plusDateBtn;
-    private Button _minusDateBtn;
+    private Button _minusDateBtn;*/
     private TextView _dayDateLabel;
 
+    private LinearLayout _mainContainer;
     private TextView _event_name_label;
     private CheckBox _day1box;
     private CheckBox _day2box;
@@ -75,6 +76,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     private CheckBox _day4box;
     private CheckBox _day5box;
     private LinearLayout _daySideBar;
+    private LinearLayout _chartSideBar;
     private final CheckBoxHandler _comparison_handler = new CheckBoxHandler();
     /*
     * OTHER STUFF
@@ -92,6 +94,9 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     private static final WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
     private UI_Handler ui_handler = new UI_Handler();
     private static final String MODULE = "DAY CONSUMPTION";
+
+    private int width_b;
+    private int width_s;
 
     public DayConsumptionFragment() {
         // Required empty public constructor
@@ -145,15 +150,20 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
 
         _defaultTextSize = ((TextView)v.findViewById(R.id.frag_total_day_label)).getTextSize();*/
         _consumption_chart = (LineConsumptionChart)v.findViewById(R.id.day_consumption_chart);
+        _event_name_label  = (TextView)v.findViewById(R.id.event_info_label);
+        _defaultTextSize   = ((TextView)v.findViewById(R.id.day_total_kwh)).getTextSize();
+        _mainContainer     = (LinearLayout)v.findViewById(R.id.day_chart_container);
+        _daySideBar        = (LinearLayout)v.findViewById(R.id.day_side_bar);
+        _chartSideBar      = (LinearLayout)v.findViewById(R.id.chart_day_sidebar);
+
         _consumption_chart.setMode(LineConsumptionChart.MODE_DAY);
         _consumption_chart.SetChartInteractionListener(this);
-        _event_name_label = (TextView)v.findViewById(R.id.event_info_label);
+
         _today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
         //_dayDateLabel.setText(_today.getDate()+"/"+(_today.getMonth()+1)+"/"+2013);
         _queryDate=_today;
-        _defaultTextSize = ((TextView)v.findViewById(R.id.day_total_kwh)).getTextSize();
+
         _consumption_chart.setText_size(_defaultTextSize);
-        _daySideBar        = (LinearLayout)v.findViewById(R.id.day_side_bar);
         new DayConsumptionRequestWorker().execute("day");
         createDummyValues();
         initCheckBoxes(v);
@@ -186,15 +196,14 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
 
         if(_daySideBar.getVisibility()==View.VISIBLE) {
             _daySideBar.setVisibility(View.GONE);
-            _consumption_chart.invalidate();
-            _consumption_chart.updateSize();
-            Log.i("DayFragment", "width"+_consumption_chart.getWidth());
+            _consumption_chart.adjustSize();
+
         }else{
             _daySideBar.setVisibility(View.VISIBLE);
-            _consumption_chart.invalidate();
-            _consumption_chart.updateSize();
-            Log.i("DayFragment", "width"+_consumption_chart.getWidth());
+            _consumption_chart.adjustSizeNormal();
+          //  _consumption_chart.updateSize();
         }
+
     }
 
     private void initDateSelector(View v){

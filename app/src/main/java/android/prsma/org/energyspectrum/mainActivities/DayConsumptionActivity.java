@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,7 +46,9 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public class DayConsumptionActivity extends Activity implements Observer {
+import layout.ConsumptionLogFragment;
+
+public class DayConsumptionActivity extends Activity implements ConsumptionLogFragment.OnFragmentInteractionListener {
 
 	private LinearLayout _mainView;
 	private LinearLayout _homeBtn;
@@ -100,7 +103,7 @@ public class DayConsumptionActivity extends Activity implements Observer {
 	@Override
 	public void onResume(){
 		_configs 		= RuntimeConfigs.getConfigs();
-		_configs.getScreenHandler().addObserver(this);
+//		_configs.getScreenHandler().addObserver(this);
 
 		_countNewEvents = _configs.getEventsCount();
 
@@ -220,7 +223,7 @@ public class DayConsumptionActivity extends Activity implements Observer {
 		SpannableString s = new SpannableString("Dia"); 
 		s.setSpan(new StyleSpan(Typeface.NORMAL), 0, 3, 0); 
 		_viewLabel.setText(s);
-		_configs.getScreenHandler().deleteObserver(this);
+		//_configs.getScreenHandler().deleteObserver(this);
 
 		try{
 			unregisterReceiver(evt_receiver);
@@ -423,15 +426,18 @@ public class DayConsumptionActivity extends Activity implements Observer {
 			_eventsCount.setVisibility(View.VISIBLE);
 		}
 	}
-	@Override
-	public void update(Observable observable, Object data) {  
-	}
 
 	@Override
 	public void onStop(){
 		clean_up();
 		super.onStop();
 	}
+
+	@Override
+	public void onFragmentInteraction(Uri uri) {
+
+	}
+
 	/**
 	 * Broadcast receiver responsible for handling the power events from the service/socket
 	 * @author filipequintal

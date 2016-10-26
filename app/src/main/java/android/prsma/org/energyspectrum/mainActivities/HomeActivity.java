@@ -5,10 +5,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.prsma.org.energyspectrum.R;
 
+import layout.ConsumptionLogFragment;
 import layout.MonthConsumptionFragment;
 import layout.WeekConsumptionFragment;
 import android.prsma.org.energyspectrum.customUI.LineConsumptionChart;
@@ -36,7 +38,7 @@ import layout.SummaryFragment;
 
 import static android.prsma.org.energyspectrum.webservices.WebServiceHandler.MODULE;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements ConsumptionLogFragment.OnFragmentInteractionListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -121,6 +123,11 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -187,17 +194,19 @@ public class HomeActivity extends AppCompatActivity {
                 return DayConsumptionFragment.newInstance("aqui1","aqui2");
             } else if(position == 2) {
                 return WeekConsumptionFragment.newInstance("test", "test");
-            }else if(position ==3){
+            }else if(position == 3){
                 return MonthConsumptionFragment.newInstance("test", "test");
-            }else
+            }else if(position == 4)
                 return ProductionFragment.newInstance("aqui1", "aqui2");
+            else
+                return ConsumptionLogFragment.newInstance("dummy","dummy");
 
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 5;
+            return 6;
         }
 
         @Override
@@ -213,6 +222,8 @@ public class HomeActivity extends AppCompatActivity {
                     return "Monthly Consumption";
                 case 4:
                     return "Energy Availability";
+                case 5:
+                    return "Consumption Log";
             }
             return null;
         }

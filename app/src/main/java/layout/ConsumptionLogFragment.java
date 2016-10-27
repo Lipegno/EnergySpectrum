@@ -1,14 +1,27 @@
 package layout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.prsma.org.energyspectrum.R;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +42,9 @@ public class ConsumptionLogFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ListView _eventLogView;
+    private Context _appContext;
 
     public ConsumptionLogFragment() {
         // Required empty public constructor
@@ -80,6 +96,7 @@ public class ConsumptionLogFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        _appContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -110,6 +127,80 @@ public class ConsumptionLogFragment extends Fragment {
     }
 
     private void initView(View layout){
+        _eventLogView = (ListView)layout.findViewById(R.id.events_log);
+        ArrayList<EventSampleDTO> dummy = getDummyValues();
+        ConsumptionLogAdapter _adapter = new ConsumptionLogAdapter(_appContext,R.layout.event_item_layout,dummy);
+        _eventLogView.setAdapter(_adapter);
 
+
+        dummy.add(new EventSampleDTO("MERDAAA",null,2000,10,10,"123123123123123123",null));
+        _adapter.notifyDataSetChanged();
+
+        _eventLogView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("ConsumptionLog","The "+i+" was selected");
+            }
+        });
     }
+
+    private ArrayList<EventSampleDTO> getDummyValues(){
+        ArrayList<EventSampleDTO> events = new ArrayList<EventSampleDTO>();
+
+        for(int i=0;i<24;i++){
+            EventSampleDTO sample = new EventSampleDTO("Event "+i,null,
+                    (int)Math.round(Math.random()*200),
+                    i,
+                    i,
+                    this+""+System.currentTimeMillis(),
+                    null);
+
+            sample.set_color((ContextCompat.getColor(getContext(), R.color.event_color_1)));
+            events.add(sample);
+        }
+        return events;
+    }
+
+    private class ConsumptionLogAdapter extends ArrayAdapter<EventSampleDTO>{
+
+        private final Context _context;
+        private final int _layout_resource_id;
+        private ArrayList<EventSampleDTO> _values;
+
+        public ConsumptionLogAdapter(Context context, int resource, ArrayList<EventSampleDTO> objects) {
+            super(context, resource, objects);
+            _context = context;
+            _layout_resource_id = resource;
+            _values = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View current_item = convertView;
+            if(current_item == null){
+                LayoutInflater inflater = ((android.app.Activity)_context).getLayoutInflater();
+                current_item = inflater.inflate(_layout_resource_id,parent,false);
+            }
+            //current_item.setBackgroundColor(Color.parseColor("#FF0000"));
+            EventItemHolder holder = new EventItemHolder();
+            holder.event_icon  = (ImageView)current_item.findViewById(R.id.event_img);
+
+            if(position%2 == 0)
+                holder.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.power_icon,null ));
+            else
+                holder.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.prod_icon,null ));
+
+
+            holder.event_label = (TextView) current_item.findViewById(R.id.event_list_label);
+            holder.event_label.setText(_values.get(position).get_guess());
+            return current_item;
+        }
+
+        class EventItemHolder{
+
+            ImageView event_icon;
+            TextView event_label;
+
+        }
+}
 }

@@ -47,9 +47,8 @@
             />
 </LinearLayout>
     <LinearLayout
-        android:background="@color/light_blue"
         android:layout_width="match_parent"
-        android:layout_height="507dp"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
         <ListView
             android:id="@+id/events_log"
@@ -58,14 +57,19 @@
             android:layout_weight="0.5">
         </ListView>
         <LinearLayout
-            android:background="@color/orange"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            android:orientation="vertical">
             <TextView
-                android:text="TEXT EXAMPLE"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/table_item_label"
+                android:layout_width="fill_parent"
+                android:background="@drawable/main_bg2"
+                android:padding="2dp"
+                android:layout_height="wrap_content"
+                android:text="Details"
+                android:textColor="#000000"
+                />
         </LinearLayout>
     </LinearLayout>
 

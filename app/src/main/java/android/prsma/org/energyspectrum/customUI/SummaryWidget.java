@@ -61,7 +61,7 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		float r1 = calculateRadious(_total_month,r0);//(_total_month*r0)/max_cons;
 		float r2 = calculateRadious(_total_week,r0);//(_total_week*r0)/max_cons;
 		float r3 = calculateRadious(_total_day,r0);//(_total_day*r0)/max_cons;
-		Log.i(MODULE,"radious: month"+r1+" week"+r2+" day"+r3);
+		//Log.i(MODULE,"radious: month"+r1+" week"+r2+" day"+r3);
 		
 		Paint paint_month = new Paint();
 		paint_month.setColor(_color_month);
@@ -175,7 +175,7 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		float result = 0f;
 		result = (cons*max_r)/max_cons;
 		double dat_data = (Math.log((cons/max_cons)));
-		Log.e(MODULE, "Dat data "+dat_data);
+		//Log.e(MODULE, "Dat data "+dat_data);
 		return result+ (float)(result*Math.abs(dat_data));
 	}
 	@Override

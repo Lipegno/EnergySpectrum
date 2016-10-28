@@ -25,12 +25,12 @@ public final class RuntimeConfigs {
 	}
 
 	public void setEventsCount(int _eventsCount) {
-		Log.i(MODULE, "Setting events count to "+ _eventsCount);
+		//Log.i(MODULE, "Setting events count to "+ _eventsCount);
 		this.eventsCount = _eventsCount;
 	}
 
 	public int getEventsCount() {
-		Log.i(MODULE, "Getting events count to "+ eventsCount);
+		//Log.i(MODULE, "Getting events count to "+ eventsCount);
 		return eventsCount;
 	}
 	
@@ -75,7 +75,7 @@ public final class RuntimeConfigs {
 	}
 
 	public void setRenew_percent(double renew_percent) {
-		Log.i(MODULE, "renew quota updated");
+		//Log.i(MODULE, "renew quota updated");
 		this.renew_percent = renew_percent;
 	}
 

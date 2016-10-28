@@ -409,6 +409,18 @@ public final class WebServiceHandler {
 		return detail_cons.getData();
 	}
 
+	public synchronized ArrayList<ContentValues> getTodayDetailedCons(String path,String keys){
+		TodayDetailedCons detail_cons = new TodayDetailedCons();
+		detail_cons._appCtx = _ctx;
+		detail_cons.run(path,keys);
+		try {
+			detail_cons.join();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return detail_cons.getData();
+	}
+
 	private ArrayList<ContentValues> processMonthRequest(int month, int year){
 
 		ArrayList<ContentValues> cons_data = new ArrayList<ContentValues>();

@@ -39,7 +39,7 @@ public final class DBManager {
 						Environment.getExternalStorageDirectory() + "/PowerMeterMobile/" + DB_NAME,
 						null,
 						0);
-			Log.i(MODULE,"Db openned");
+			//Log.i(MODULE,"Db openned");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,7 +65,7 @@ public final class DBManager {
 			File db_storage_file = new File(Environment.getExternalStorageDirectory(), "/PowerMeterMobile");
 			if(!db_storage_file.exists())
 				if(! db_storage_file.mkdir()){
-					Log.e(MODULE,"error creating /touchCloud directory");
+					//Log.e(MODULE,"error creating /touchCloud directory");
 					return;
 				}
 			db_storage_file = new File(db_storage_file, DB_NAME);
@@ -112,7 +112,7 @@ public final class DBManager {
 			stm.close();
 			db.endTransaction();
 			last_evt_Inserted = events.get(events.size()-1).get_event_id();
-			Log.d(MODULE, "new event Data inserted");
+			//Log.d(MODULE, "new event Data inserted");
 		}
 
 		return res;
@@ -139,7 +139,7 @@ public final class DBManager {
 			stm.bindLong(4,event.get_deltaPMean());
 			stm.bindString(5, event.get_timestamp()+"");
 			if (stm.executeInsert() <= 0)
-				Log.d(MODULE, "Failed insertion of event into database");
+				//Log.d(MODULE, "Failed insertion of event into database");
 
 			// Signal success and update result value
 			db.setTransactionSuccessful();
@@ -150,7 +150,7 @@ public final class DBManager {
 			stm.close();
 			db.endTransaction();
 			last_evt_Inserted = event.get_event_id();
-			Log.d(MODULE, "new event Data inserted");
+			//Log.d(MODULE, "new event Data inserted");
 		}
 
 		return res;
@@ -243,7 +243,7 @@ public final class DBManager {
 				stm = db.compileStatement(sql);
 
 				if (stm.executeInsert() <= 0)
-					Log.d(MODULE, "Failed insertion of appliance into database");
+					//Log.d(MODULE, "Failed insertion of appliance into database");
 
 				// Signal success and update result value
 
@@ -256,7 +256,7 @@ public final class DBManager {
 		} finally	{
 			stm.close();
 			db.endTransaction();
-			Log.d(MODULE, "new appliance data inserted");
+			//Log.d(MODULE, "new appliance data inserted");
 
 		}
 
@@ -430,7 +430,7 @@ public final class DBManager {
 				stm = db.compileStatement(sql);
 
 				if (stm.executeInsert() <= 0)
-					Log.d(MODULE, "Failed insertion of day sample into database");
+					//Log.d(MODULE, "Failed insertion of day sample into database");
 
 				// Signal success and update result value
 
@@ -443,7 +443,7 @@ public final class DBManager {
 		} finally	{
 			stm.close();
 			db.endTransaction();
-			Log.d(MODULE, "new day data inserted");
+			//Log.d(MODULE, "new day data inserted");
 
 		}
 
@@ -509,7 +509,7 @@ public final class DBManager {
 				stm = db.compileStatement(sql);
 
 				if (stm.executeInsert() <= 0)
-					Log.d(MODULE, "Failed insertion of day sample into database");
+					//Log.d(MODULE, "Failed insertion of day sample into database");
 
 
 				res = true;
@@ -521,7 +521,7 @@ public final class DBManager {
 			e.printStackTrace();
 		} finally	{
 			db.endTransaction();
-			Log.d(MODULE, "new day data inserted");
+			//Log.d(MODULE, "new day data inserted");
 			updateDayTotal(data);	
 		}
 
@@ -541,7 +541,7 @@ public final class DBManager {
 			stm = db.compileStatement(sql);
 
 			if(stm.executeInsert()<=0)
-				Log.d(MODULE, "Failed updtating the dailyconsumption");
+				//Log.d(MODULE, "Failed updtating the dailyconsumption");
 
 			res = true;
 			db.setTransactionSuccessful();
@@ -551,7 +551,7 @@ public final class DBManager {
 		}finally{
 			stm.close();
 			db.endTransaction();
-			Log.i(MODULE, "Daily consumption updated");
+			//Log.i(MODULE, "Daily consumption updated");
 			updateDayTotal(cons_data);					// updates the total of the current day with the sum of each hour 
 
 		}
@@ -575,7 +575,7 @@ public final class DBManager {
 			stm = db.compileStatement(sql);
 
 			if (stm.executeInsert() <= 0)
-				Log.d(MODULE, "Failed insertion of day sample into database");
+				//Log.d(MODULE, "Failed insertion of day sample into database");
 
 			// Signal success and update result value
 
@@ -588,7 +588,7 @@ public final class DBManager {
 		} finally	{
 			stm.close();
 			db.endTransaction();
-			Log.d(MODULE, "new day data updated");
+			//Log.d(MODULE, "new day data updated");
 		}
 
 		return res;
@@ -650,11 +650,11 @@ public final class DBManager {
 		stm = db.compileStatement(sql);
 		
 		if(stm.executeInsert() != -1){
-			Log.d(MODULE, "prod data inserted");
+			//Log.d(MODULE, "prod data inserted");
 			return true;
 			}
 		else {
-			Log.d(MODULE, "no new data to add");
+			//Log.d(MODULE, "no new data to add");
 			return false;
 		}
 		
@@ -725,9 +725,9 @@ public final class DBManager {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		Log.i(MODULE, data);
+		//Log.i(MODULE, data);
 		result = (hidrica+eolica+foto)/total;
-		Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
+		//Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
 		
 		return Double.isNaN(result) ? 0 : result;
 	}
@@ -749,9 +749,9 @@ public final class DBManager {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		Log.i(MODULE, data);
+		//Log.i(MODULE, data);
 		result = (hidrica+eolica+foto)/total;
-		Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
+		//Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
 		return Double.isNaN(result) ? 0 : result;
 	}
 	public double getThisWeekRenewPercentage(){
@@ -767,15 +767,15 @@ public final class DBManager {
 			eolica  = c.getDouble(2);
 			foto    = c.getDouble(3);
 		}
-		Log.i(MODULE, "semana "+week);
+		//Log.i(MODULE, "semana "+week);
 		result = (hidrica+eolica+foto)/total;
-		Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
+		//Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
 		return Double.isNaN(result) ? 0 : result;
 	}
 	
 	
 	private static void createDatabase(String path){
-		Log.i(MODULE, "Creating new database");
+		//Log.i(MODULE, "Creating new database");
 		db = SQLiteDatabase.openDatabase(
 				path,
 				null,

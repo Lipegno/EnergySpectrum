@@ -1,9 +1,13 @@
 package android.prsma.org.energyspectrum.webservices.services;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.prsma.org.energyspectrum.webservices.ConsumptionHttpRequest;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,11 +23,39 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class TodayDetailedCons extends ConsumptionHttpRequest {
 
+	private final static String TAG = "today cons request";
+
 	public TodayDetailedCons(){
 		super.setRequestType("todayDetailed");
 	}
-	
+
 	@Override
+	public void parseData(String data){
+		Log.i(TAG,data);
+
+		try {
+			JSONArray result = new JSONArray(data);
+			ArrayList<ContentValues> cons_data = new ArrayList<ContentValues>();
+				for(int i=0;i<result.length();i++){
+				Log.i(TAG,"------- Object "+i+"--------");
+				Log.i(TAG, "Date " + ((JSONObject)(result.get(i))).getString("Date"));
+				Log.i(TAG, "Hour " + ((JSONObject)(result.get(i))).getString("Hour"));
+				Log.i(TAG, "Power " + ((JSONObject)(result.get(i))).getString("Power"));
+				ContentValues dummy = new ContentValues();
+				dummy.put("Date",((JSONObject)(result.get(i))).getString("Date"));
+				dummy.put("Power",Float.parseFloat(((JSONObject)(result.get(i))).getString("Power"))*1000);
+				dummy.put("Hour",Integer.parseInt(((JSONObject)(result.get(i))).getString("Hour")));
+
+				cons_data.add(dummy);
+			}
+			this.setData(cons_data);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	/**@Override
 	public void parseData(String data) {
 		double cons;
 		ArrayList<ContentValues> result = new ArrayList<ContentValues>();
@@ -69,7 +101,6 @@ public class TodayDetailedCons extends ConsumptionHttpRequest {
 			e.printStackTrace();
 		} 
 		super.setData(result);
-
-}
+	}**/
 }
 

@@ -15,7 +15,7 @@ public class ScreenSaverHandler extends  Observable {
 	public ScreenSaverHandler(long updatePeriod){
 		_updatePeriod=updatePeriod;
 		_isRunning=true;
-		Log.i(MODULE,	"handler created");
+		//Log.i(MODULE,	"handler created");
 	}
 	
 	public void finish(){
@@ -23,7 +23,7 @@ public class ScreenSaverHandler extends  Observable {
 	}
 	
 	public void start(){
-		Log.i(MODULE,	"thread started");
+		//Log.i(MODULE,	"thread started");
 		_handler.start();
 	}
 	

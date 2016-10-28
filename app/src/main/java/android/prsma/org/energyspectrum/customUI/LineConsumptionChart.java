@@ -76,7 +76,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Log.i("ConsChart", "surface created");
+        //Log.i("ConsChart", "surface created");
         initComparisonData();
         _height = getHeight();
         _width = getWidth();
@@ -99,7 +99,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
        /* _width = getWidth();
 
-        Log.i("LineChart","width "+_width);
+        //Log.i("LineChart","width "+_width);
         _height = _width*0.65f;
         android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
         lp.height = (int)_height; // required height
@@ -107,14 +107,14 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         this.setLayoutParams(lp);
 
         requestRender();*/
-        Log.i("ConsChart", "surface changed");
+        //Log.i("ConsChart", "surface changed");
         _height = getHeight();
         _width = getWidth();
         requestRender();
     }
 
     public void adjustSize(){
-       /* Log.i("ConsChart", "adjusting size big");
+       /* //Log.i("ConsChart", "adjusting size big");
         android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
         lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;//(int)_width;
         this.setLayoutParams(lp);
@@ -124,7 +124,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         float temp2 = width*0.55f;
         lp2.height =  Math.round(temp2);//, ViewGroup.LayoutParams.WRAP_CONTENT(int)_height; // required height
 
-        Log.e("ConsChart","height "+_width+" ");*/
+        //Log.e("ConsChart","height "+_width+" ");*/
 
         android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
         lp.width  = Math.round(_width*1.8f);
@@ -134,7 +134,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     }
 
     public void adjustSizeNormal(){
-        Log.i("ConsChart", "adjusting size small");
+        //Log.i("ConsChart", "adjusting size small");
       //  this.setLayoutParams(_normalLayout);
         android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
         lp.width  = Math.round(_width/1.8f);
@@ -164,7 +164,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
                 if(_comparison_data.get(i)[0]!=0)
                  drawComparisonPath(c,_comparison_data.get(i),_comparison_colors[i]);
             }
-            //Log.i("Cons Chart", "rendering");
+            ////Log.i("Cons Chart", "rendering");
             if(_events!=null && _events.size()>0)
                 drawEventData(c);
 
@@ -184,7 +184,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         //System.gc();
         Canvas c = null;
         SurfaceHolder sh = getHolder();
-        Log.i("LineConsChart","rendering");
+        //Log.i("LineConsChart","rendering");
         try {
             c = sh.lockCanvas(null);
             synchronized (sh){
@@ -432,11 +432,11 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         synchronized (getHolder()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-                //Log.d("Line Cons Chart", "touch Down");
+                ////Log.d("Line Cons Chart", "touch Down");
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 checkTouch(event.getX(),event.getY());
-                //Log.d("Line Cons Chart","touch Up");
+                ////Log.d("Line Cons Chart","touch Up");
             }
             return true;
         }
@@ -455,7 +455,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
 
             if((x>cords[0]-itemr)&&(x<cords[0]+itemr)){
                 if((y>cords[1]-itemr)&&(y<cords[1]+itemr)){
-                  //  Log.d("Line Chart","EXISTE AQUI ->"+i);
+                  //  //Log.d("Line Chart","EXISTE AQUI ->"+i);
                     _events.get(i).set_color(select_color);
                     v.vibrate(10);
                     this._listener.onEventSelect(_events.get(i));

@@ -80,7 +80,7 @@ public class BarConsumptionChart extends SurfaceView implements SurfaceHolder.Ca
 //                if(_comparison_data.get(i)[0]!=0)
 //                // drawComparisonPath(c,_comparison_data.get(i),_comparison_colors[i]);
 //            }
-            Log.i("Cons Chart", "rendering");
+            //Log.i("Cons Chart", "rendering");
 
         }
     }

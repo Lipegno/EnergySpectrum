@@ -26,7 +26,7 @@ public class EventSampleDTO implements Bundleable {
 		set_timestamp(timestamp);
 		set_clusterResults(clusterResults);
 		_cords = new float[2];
-//		Log.e(MODULE, "Cluster Result "+clusterResults[0]+" "+clusterResults[1]+" "+clusterResults[2]);
+//		//Log.e(MODULE, "Cluster Result "+clusterResults[0]+" "+clusterResults[1]+" "+clusterResults[2]);
 //		Timestamp temp	 = new Timestamp(timestamp);
 	}
 
@@ -111,7 +111,7 @@ public class EventSampleDTO implements Bundleable {
 	}
 
 	public void set_timestamp(String _timestamp) {
-		Log.i(MODULE, _timestamp);
+		//Log.i(MODULE, _timestamp);
 		this._timestamp = _timestamp.substring(0, 16);  // removes the seconds and miliseconds from the hour name
 	}
 

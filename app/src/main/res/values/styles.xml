@@ -103,6 +103,26 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="event_detail_label">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0sp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Large</item>
+        <item name="android:layout_marginBottom">3sp</item>
+        <item name="android:layout_marginTop">10sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="event_detail_item">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0sp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Medium</item>
+        <item name="android:layout_marginBottom">3sp</item>
+        <item name="android:layout_marginTop">5sp</item>
+        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+
     <style name="info_text">
         <item name="android:textSize">8pt</item>
         <item name="android:paddingLeft">5px</item>

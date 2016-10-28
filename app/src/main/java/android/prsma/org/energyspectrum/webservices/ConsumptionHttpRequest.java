@@ -57,26 +57,21 @@ public abstract class ConsumptionHttpRequest extends Thread {
 		return request;
 		
 	}
+
+
 	
-	private String buildRequest(String request){
+	private String buildRequest(String path, String keys){
 		
-		
-		int iid   = RuntimeConfigs.getConfigs().getInstallation_id();
-		String ip = RuntimeConfigs.getConfigs().getMeterIp();
-		
-		request = "http://"+ip+":8000/slimREST/iid_"+requestType+"/"+iid+"/"+requestCode;
+		String request = path+"/"+keys;
 		Log.e(MODULE, "AQUI "+request);
 		return request;
 		
 	}
 
 	public void run(){
-		Log.i(MODULE,"running request");
 		String request = 		buildRequest();
-
 		RequestQueue queue = Volley.newRequestQueue(_appCtx);
 
-		Log.i(MODULE,"running request");
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
 		String date = s.format(new Date());
 		RequestFuture<String> future = RequestFuture.newFuture();
@@ -91,6 +86,31 @@ public abstract class ConsumptionHttpRequest extends Thread {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e){
+			e.printStackTrace();
+		}
+
+	}
+
+	public void run(String path,String keys){
+		Log.i(MODULE,"running request");
+		String request = buildRequest(path,keys);
+
+		RequestQueue queue = Volley.newRequestQueue(_appCtx);
+
+		RequestFuture<String> future = RequestFuture.newFuture();
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,future,future);
+		queue.add(stringRequest);
+
+		try {
+			String response = future.get(10, TimeUnit.SECONDS);
+			parseData(response);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e){
+			e.printStackTrace();
+		}catch (Exception e){
 			e.printStackTrace();
 		}
 

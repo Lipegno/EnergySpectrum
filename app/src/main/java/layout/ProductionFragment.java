@@ -19,8 +19,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.prsma.org.energyspectrum.webservices.WebServiceHandler.MODULE;
 
@@ -101,7 +103,6 @@ public class ProductionFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         _configs = RuntimeConfigs.getConfigs();
-        web_handler._ctx = getContext();
     }
 
     @Override
@@ -161,6 +162,7 @@ public class ProductionFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        web_handler._ctx = getContext();
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -197,21 +199,34 @@ public class ProductionFragment extends Fragment {
      */
 
     private void handleConsumptionData(){
-        cons = new double[24*(60/4)];
+        cons = new double[24];
+        double max_cons = 0;
+
         for(int i=0;i<cons.length;i++)
             cons[i]=1;
 
         for(int i=0; i<cons_data.size();i++){
-            cons[cons_data.get(i).getAsInteger("tm_slot")]=(cons_data.get(i)).getAsDouble("cons");
+            cons[cons_data.get(i).getAsInteger("Hour")]=(cons_data.get(i)).getAsDouble("Power");
 //			Log.i(MODULE, "cons detailed "+cons[cons_data.get(i).getAsInteger("tm_slot")]+" time slot "+cons_data.get(i).getAsInteger("tm_slot"));
         }
-        if(cons_data.get(cons_data.size()-1).getAsInteger("tm_slot")<cons.length){
-            for(int j=cons_data.get(cons_data.size()-1).getAsInteger("tm_slot");j<cons.length;j++)
+        if(cons_data.get(cons_data.size()-1).getAsInteger("Hour")<cons.length){
+            for(int j=cons_data.get(cons_data.size()-1).getAsInteger("Hour");j<cons.length;j++)
                 cons[j]=0;
         }
 
+        for(int i=0;i<cons.length;i++){
+            if(cons[i]>max_cons)
+                max_cons=cons[i];
+        }
+
         avg_cons = new double[24];
-        for(int i=0; i<average_cons.size();i++)
+
+        _chart.setMaxCons(max_cons*1.3);
+        _chart.setCons_data(cons);
+        _chart.setAvg_cons_data(cons);
+        _chart.requestRender();
+        calculateConsMetrics();
+        /*for(int i=0; i<average_cons.size();i++)
             avg_cons[average_cons.get(i).getAsInteger("hour")]=(average_cons.get(i)).getAsDouble("cons");
 
         double max_cons = 0;
@@ -227,7 +242,7 @@ public class ProductionFragment extends Fragment {
         _chart.setMaxCons(max_cons*1.3);
         _chart.setAvg_cons_data(avg_cons);
         _chart.requestRender();
-        calculateConsMetrics();
+        */
     }
     private void createProductionData(){
         int size =96;
@@ -452,7 +467,9 @@ public class ProductionFragment extends Fragment {
         protected String doInBackground(String... params) {
             Log.i(MODULE, "Querying day detailed ");
             try{
-                cons_data = web_handler.getTodayDetailedCons();
+                Date cDate = new Date();
+                String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+                cons_data = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
                 Log.i(MODULE, "Querying day detailed ");
             }catch(Exception e){
                 Log.e(MODULE, "YOOOO DAWWW YOU GOT SOME EXCEPTION UP IN THIS SHIT");
@@ -473,13 +490,13 @@ public class ProductionFragment extends Fragment {
                 handleConsumptionData();
             else{
                cons_data = new ArrayList<ContentValues>();
-                average_cons =  new ArrayList<ContentValues>();
-                for(int i=0;i<100;i++) {
-                   ContentValues cv = new ContentValues();
-                    cv.put("tm_slot",i);
-                    cv.put("cons", Math.random()*500+500);
-                    cons_data.add(cv);
-                }
+               average_cons =  new ArrayList<ContentValues>();
+               for(int i=0;i<100;i++) {
+                  ContentValues cv = new ContentValues();
+                   cv.put("tm_slot",i);
+                   cv.put("cons", Math.random()*500+500);
+                   cons_data.add(cv);
+               }
 
                 for(int i=0;i<24;i++) {
                     ContentValues cv = new ContentValues();
@@ -501,8 +518,8 @@ public class ProductionFragment extends Fragment {
                 ProductionHandler nova = new ProductionHandler();
                 nova.execute();
 
-               // ConsumptionHandler req = new ConsumptionHandler();
-               // req.execute();
+                ConsumptionHandler req = new ConsumptionHandler();
+                req.execute();
 
                 try {
                     Thread.sleep(30000);

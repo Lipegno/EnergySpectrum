@@ -40,7 +40,7 @@ public class ComparisonWidget extends SurfaceView implements SurfaceHolder.Callb
 
 		int w = Math.round(getWidth());
 		int h = Math.round(getHeight());
-		Log.i("comp","AQQQUIIIII");
+		//Log.i("comp","AQQQUIIIII");
 
 		int rect1_w = Math.round(today_cons*w/max_cons);
 		int rect2_w = Math.round(avg_cons*w/max_cons);
@@ -107,7 +107,7 @@ public class ComparisonWidget extends SurfaceView implements SurfaceHolder.Callb
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		Log.e("COMP","COMP WIDGET CREATED");
+		//Log.e("COMP","COMP WIDGET CREATED");
 		requestRender();
 	}
 

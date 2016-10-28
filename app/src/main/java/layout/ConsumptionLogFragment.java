@@ -1,11 +1,10 @@
 package layout;
 
+import android.support.v4.app.Fragment;
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -45,6 +44,12 @@ public class ConsumptionLogFragment extends Fragment {
 
     private ListView _eventLogView;
     private Context _appContext;
+
+    private TextView _eventLabel;
+    private TextView _eventTms;
+    private TextView _eventCons;
+    private TextView _eventOccur;
+    private TextView _eventHap;
 
     public ConsumptionLogFragment() {
         // Required empty public constructor
@@ -127,11 +132,17 @@ public class ConsumptionLogFragment extends Fragment {
     }
 
     private void initView(View layout){
+
         _eventLogView = (ListView)layout.findViewById(R.id.events_log);
-        ArrayList<EventSampleDTO> dummy = getDummyValues();
+        _eventLabel   = (TextView) layout.findViewById(R.id.event_detail_label);
+        _eventTms     = (TextView) layout.findViewById(R.id.event_detail_timestamp);
+        _eventCons    = (TextView) layout.findViewById(R.id.event_detail_consumption);
+        _eventOccur   = (TextView) layout.findViewById(R.id.event_detail_occurrences);
+        _eventHap     = (TextView) layout.findViewById(R.id.event_detail_usual_occurrences);
+
+        final ArrayList<EventSampleDTO> dummy = getDummyValues();
         ConsumptionLogAdapter _adapter = new ConsumptionLogAdapter(_appContext,R.layout.event_item_layout,dummy);
         _eventLogView.setAdapter(_adapter);
-
 
         dummy.add(new EventSampleDTO("MERDAAA",null,2000,10,10,"123123123123123123",null));
         _adapter.notifyDataSetChanged();
@@ -140,6 +151,11 @@ public class ConsumptionLogFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i("ConsumptionLog","The "+i+" was selected");
+                _eventLabel.setText(dummy.get(i).get_guess());
+                _eventTms.setText(dummy.get(i).get_timestamp());
+                _eventCons.setText(dummy.get(i).get_deltaPMean()+" Watts");
+                _eventOccur.setText("Also happened today at 7:30 and 10:30");
+                _eventHap.setText("Usally happens in the morning");
             }
         });
     }
@@ -155,7 +171,7 @@ public class ConsumptionLogFragment extends Fragment {
                     this+""+System.currentTimeMillis(),
                     null);
 
-            sample.set_color((ContextCompat.getColor(getContext(), R.color.event_color_1)));
+            sample.set_color((ContextCompat.getColor(_appContext, R.color.event_color_1)));
             events.add(sample);
         }
         return events;

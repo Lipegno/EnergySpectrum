@@ -368,7 +368,7 @@ public class ProductionActivity extends Activity{
 				cons_data = web_handler.getTodayDetailedCons();
 				Log.i(MODULE, "Querying day detailed ");
 			}catch(Exception e){
-				Log.e(MODULE, "YOOOO DAWWW YOU GOT SOME EXCEPTION UP IN THIS SHIT");
+				e.printStackTrace();
 			}
 			return "Executed";
 		}      

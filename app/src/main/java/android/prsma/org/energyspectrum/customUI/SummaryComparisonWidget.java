@@ -150,7 +150,7 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		Log.e("COMP","COMP WIDGET CREATED");
+		//Log.e("COMP","COMP WIDGET CREATED");
 		requestRender();
 	}
 

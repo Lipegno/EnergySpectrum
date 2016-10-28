@@ -97,6 +97,7 @@
                                 android:gravity="center_horizontal">
                                 <TextView
                                     android:text="Yesterday"
+                                    android:id="@+id/day_1_check"
                                     android:textColor="@color/comp1_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -111,6 +112,7 @@
                                 android:orientation="horizontal">
                                 <TextView
                                     android:text="29-08-2016"
+                                    android:id="@+id/day_2_check"
                                     android:textColor="@color/comp2_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -126,6 +128,7 @@
                                 android:orientation="horizontal">
                                 <TextView
                                     android:text="28-08-2016"
+                                    android:id="@+id/day_3_check"
                                     android:textColor="@color/comp3_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -140,6 +143,7 @@
                                 android:orientation="horizontal">
                                 <TextView
                                     android:text="27-08-2016"
+                                    android:id="@+id/day_4_check"
                                     android:textColor="@color/comp4_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -155,6 +159,7 @@
                                 android:orientation="horizontal">
                                 <TextView
                                     android:text="26-08-2016"
+                                    android:id="@+id/day_5_check"
                                     android:textColor="@color/comp5_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -218,7 +223,7 @@
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/power_icon"/>
                             <TextView
-                                android:id="@+id/day_total_kwh"
+                                android:id="@+id/frag_day_total_kwh"
                                 style="@style/table_item_body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -235,6 +240,7 @@
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/money_icon"/>
                             <TextView
+                                android:id="@+id/frag_day_total_cost"
                                 style="@style/table_item_body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -251,6 +257,7 @@
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/tree_icon"/>
                             <TextView
+                                android:id="@+id/frag_day_total_c02"
                                 style="@style/table_item_body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -275,16 +282,19 @@
                         android:orientation="horizontal"
                         android:layout_marginBottom="10sp">
                         <TextView
+                            android:id="@+id/frag_day_comp_yesterday"
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="+ 10% than yesterday"/>
                         <TextView
+                            android:id="@+id/frag_day_comp_average"
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="- 5% than your average"/>
                         <TextView
+                            android:id="@+id/frag_day_comp_fact"
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -309,7 +319,8 @@
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="between 10:00 and 12:00"/>
+                            android:text="between 10:00 and 12:00"
+                            android:id="@+id/frag_day_peak_cons" />
 
                     </LinearLayout>
 
@@ -327,6 +338,7 @@
                         style="@style/table_item_body"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/frag_day_renew_today"
                         android:text="20% of renewable"/>
                     <LinearLayout
                         style="@style/table_item_body"
@@ -338,16 +350,19 @@
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/frag_day_solar"
                             android:text="5% solar"/>
                         <TextView
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/frag_day_hydro"
                             android:text="10% hydro"/>
                         <TextView
                             style="@style/table_item_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/frag_day_wind"
                             android:text="5% wind"/>
                     </LinearLayout>
                 </LinearLayout>

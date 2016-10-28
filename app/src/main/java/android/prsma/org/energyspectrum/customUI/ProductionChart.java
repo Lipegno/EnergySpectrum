@@ -166,7 +166,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		double [] result = new double[cons.length];	
 		for(int i=0;i<cons.length;i++){
 			result[i] =((height-text_size*1.1) - ((cons[i]*height)*cons_chart_percent_height)/max_scale_cons);
-			//Log.i(MODULE,"cons "+cons[i]);
+			////Log.i(MODULE,"cons "+cons[i]);
 		}
 	return result;
 	}
@@ -205,7 +205,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 	}
 
 	private void drawChartLayout(Canvas c){
-		Log.i(MODULE, "Drawing chart layout");
+		//Log.i(MODULE, "Drawing chart layout");
 		Paint p = new Paint(); // paint for text
 		p.setColor(Color.BLACK);
 		p.setStyle(Style.FILL);
@@ -252,7 +252,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		middle = ((getWidth()-right_margin)-vertical_caption_size)/2+vertical_caption_size;
 		c.drawText("12h", middle-p.measureText("12h"), getHeight()-horizontal_caption_size+15, p);
 
-		Log.e("production chart","captio size "+text_size_h);
+		//Log.e("production chart","captio size "+text_size_h);
 	}
 	private void drawSeparators(Canvas c, float length){
 
@@ -298,7 +298,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		p.setStrokeJoin(Join.MITER);
 		p.setStrokeCap(Cap.ROUND);
 		float diff = (float)(width-right_margin-vertical_caption_size)/drawing_coords.length;
-		float increment =vertical_caption_size;
+		float increment = vertical_caption_size;
 		increment =text_size_h;
 		float c_x=0;
 		float c_y=0;
@@ -423,10 +423,10 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				//if(events!=null && events.size()>0) checkTouch(event.getX(),event.getY());
-				Log.d(MODULE, "touch Down "+event.getX()+" "+event.getY());
+				//Log.d(MODULE, "touch Down "+event.getX()+" "+event.getY());
 
 			} else if (event.getAction() == MotionEvent.ACTION_UP) {
-				Log.d(MODULE,"touch Up");
+				//Log.d(MODULE,"touch Up");
 				requestRender();
 			}
 			return true;

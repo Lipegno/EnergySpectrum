@@ -5,6 +5,7 @@ import android.content.Context;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.RequestFuture;
@@ -29,9 +30,15 @@ public abstract class ConsumptionHttpRequest extends Thread {
 	private String requestType;
 
 	public String hhhaaackk; 
-
 	public Context _appCtx;
-	
+
+	public static int NEW_REQUEST_MODE = 2;
+	public static int OLD_REQUEST_MODE = 1;
+
+	private int _request_mode;
+
+	private String _request;
+
 	public void getConsumption(String token){
 		
 		if(token.equals("dummy")){
@@ -40,8 +47,12 @@ public abstract class ConsumptionHttpRequest extends Thread {
 		}
 		
 	}
+
+	public void setRequestMode(int mode){
+		this._request_mode = mode;
+	}
 	
-	private String buildRequest(){
+	public String buildRequest(){
 		
 		String request;
 		
@@ -60,62 +71,60 @@ public abstract class ConsumptionHttpRequest extends Thread {
 
 
 	
-	private String buildRequest(String path, String keys){
+	public String buildRequest(String path, String keys){
 		
 		String request = path+"/"+keys;
-		Log.e(MODULE, "AQUI "+request);
+		this._request = request;
 		return request;
 		
 	}
 
+	@Override
 	public void run(){
-		String request = 		buildRequest();
-		RequestQueue queue = Volley.newRequestQueue(_appCtx);
+		String request = "";
 
-		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-		String date = s.format(new Date());
+		if(_request_mode==OLD_REQUEST_MODE) {
+			request = buildRequest();
+		}else{
+			request = _request;
+		}
+
+		RequestQueue queue = Volley.newRequestQueue(_appCtx);
 		RequestFuture<String> future = RequestFuture.newFuture();
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,future,future);
+		stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+				5000,
+				3,
+				DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
 		queue.add(stringRequest);
 
 		try {
-			String response = future.get(15, TimeUnit.SECONDS);
+			Log.e(MODULE, "-----   running request  ------");
+			String response = future.get();
 			parseData(response);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-		} catch (TimeoutException e){
-			e.printStackTrace();
 		}
 
 	}
 
-	public void run(String path,String keys){
-		Log.i(MODULE,"running request");
-		String request = buildRequest(path,keys);
+	public synchronized void run(String path,String keys) throws InterruptedException, ExecutionException, TimeoutException {
+
+		String request = buildRequest(path, keys);
 
 		RequestQueue queue = Volley.newRequestQueue(_appCtx);
 
 		RequestFuture<String> future = RequestFuture.newFuture();
-		StringRequest stringRequest = new StringRequest(Request.Method.GET, request,future,future);
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, request, future, future);
 		queue.add(stringRequest);
 
-		try {
-			String response = future.get(10, TimeUnit.SECONDS);
-			parseData(response);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e){
-			e.printStackTrace();
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-
+		//	try {
+		String response = future.get();
+		parseData(response);
 	}
-
 		//String request = hhhaaackk;
 		/*
 		HttpClient httpclient = new DefaultHttpClient();

@@ -29,11 +29,15 @@ import android.widget.TextView;
 import com.androidplot.xy.SimpleXYSeries;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.prsma.org.energyspectrum.webservices.WebServiceHandler.MODULE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,13 +64,8 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
      * VIEW STUFF
      */
     private LineConsumptionChart _consumption_chart;
-  /*  private TextView _peakConsump;
-    private TextView _totalConsump;
-    private TextView _totalC02;
-    private TextView _totalCost;
-    private Button _plusDateBtn;
-    private Button _minusDateBtn;*/
-    private TextView _dayDateLabel;
+
+    private ArrayList<ContentValues> prod_data;
 
     private LinearLayout _mainContainer;
     private TextView _event_name_label;
@@ -117,6 +116,8 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     private TextView _yesterdayComp;
     private TextView _solar_average;
     private TextView _wind_average;
+
+    DecimalFormat df = new DecimalFormat("#0.00");
 
     public DayConsumptionFragment() {
         // Required empty public constructor
@@ -178,7 +179,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _defaultTextSize = ((TextView)v.findViewById(R.id.frag_day_peak_cons)).getTextSize();
         _consumption_chart = (LineConsumptionChart)v.findViewById(R.id.day_consumption_chart);
         _event_name_label  = (TextView)v.findViewById(R.id.event_info_label);
-        _defaultTextSize   = ((TextView)v.findViewById(R.id.day_total_kwh)).getTextSize();
+        _defaultTextSize   = ((TextView)v.findViewById(R.id.frag_day_total_kwh)).getTextSize();
         _mainContainer     = (LinearLayout)v.findViewById(R.id.day_chart_container);
         _daySideBar        = (LinearLayout)v.findViewById(R.id.day_side_bar);
         _chartSideBar      = (LinearLayout)v.findViewById(R.id.chart_day_sidebar);
@@ -191,7 +192,6 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _queryDate=_today;
 
         _consumption_chart.setText_size(_defaultTextSize);
-        new DayConsumptionRequestWorker().execute("day");
         createDummyValues();
         initCheckBoxes(v);
 
@@ -203,6 +203,8 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             }
         });
 
+
+        doFirstRequest();
     }
 
     private void initCheckBoxes(View v){
@@ -259,6 +261,11 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
 
     }
 
+    public void doFirstRequest(){
+        new DayConsumptionRequestWorker().execute("day");
+        new ProductionRequestWorker().execute("prod");
+    }
+
     private void initDateSelector(View v){
        /*
         _plusDateBtn = (Button)v.findViewById(R.id.frag_day_selector_plus);
@@ -310,64 +317,6 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _consumption_chart.set_cons_data(cons_data);
         _consumption_chart.requestRender();
     }
-      /**
-     * Handles the click on the date selector on the top of the chart
-     * @param selection - true plus - false minus
-     */
-    public void handleDateSelection(boolean selection){
-
-        if(!selection){
-            //_comp.requestRender();
-
-            diff++;
-            Log.i(MODULE, diff+"");
-            Calendar today = Calendar.getInstance();
-            // Subtract 1 day
-            today.add(Calendar.DAY_OF_YEAR, -diff);
-            // Make an SQL Date out of that
-            java.sql.Date yesterday = new java.sql.Date(today.getTimeInMillis());
-            _queryDate = yesterday;
-            _dayDateLabel.setText(yesterday.getDate()+"/"+(yesterday.getMonth()+1)+"/"+2012);
-
-            //  DayConsumptionActivity.DayConsumptionRequestWorker test = new DayConsumptionActivity.DayConsumptionRequestWorker();
-            //test.execute("day");
-
-        }
-        else if(selection){
-            if(diff==0)
-                Log.i(MODULE, "cant predict the future");
-            else{
-                diff--;
-                if(diff==0){
-                    Calendar today = Calendar.getInstance();
-                    java.sql.Date yesterday = new java.sql.Date(today.getTimeInMillis());
-                    _queryDate = yesterday;
-                    _dayDateLabel.setText(yesterday.getDate()+"/"+(yesterday.getMonth()+1)+"/"+2012);
-                    if(today_cons!=null){
-                        day_cons=today_cons;
-                        updateDayCons();
-                    }else{
-                        DayConsumptionRequestWorker test = new DayConsumptionRequestWorker();
-                        test.execute("day");
-                        Log.i(MODULE, "to implement");
-                    }
-                }
-                else{
-                    Calendar today = Calendar.getInstance();
-                    // Subtract 1 day
-                    today.add(Calendar.DAY_OF_YEAR, -diff);
-
-                    // Make an SQL Date out of that
-                    java.sql.Date yesterday = new java.sql.Date(today.getTimeInMillis());
-                    _queryDate = yesterday;
-                    _dayDateLabel.setText(yesterday.getDate()+"/"+(yesterday.getMonth()+1)+"/"+2012);
-                    DayConsumptionRequestWorker test = new DayConsumptionRequestWorker();
-                    test.execute("day");
-                    Log.i(MODULE, "to implement");
-                }
-            }
-        }
-    }
 
     public void initCompWidget(){
         Log.i(MODULE, "initializing comp widget");
@@ -410,30 +359,6 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         return precent_day>2000?0:Math.round(precent_day);
     }
     /**
-     * Update the boxes with the information regarding the daily consumption (at the right of the chart)
-     */
-    private void updateInfoBoxes(){
-
-        /* double precent_day = getDayComparison();
-        DecimalFormat df = new DecimalFormat("#.#");
-        double total_cons = calculateTotal(day_cons);
-        _totalConsump.setText(Math.round(total_cons/1000)+"");
-        _totalCost.setText(df.format((total_cons/1000)*0.12)+"");
-        double co2Day = (total_cons/1000)*0.762;
-        co2Day = co2Day - co2Day*DBManager.getDBManager().getTodayRenewPrecentage();
-        _totalC02.setText(df.format(co2Day));
-        int peak_hour=0;
-        double peak_cons;
-        peak_cons = day_cons.get(0).getAsDouble("cons");
-        for(int i=1;i<day_cons.size();i++){
-            if(day_cons.get(i).getAsDouble("cons")>=peak_cons){
-                peak_cons= day_cons.get(i).getAsDouble("cons");
-                peak_hour=i;
-            }
-        }
-        _peakConsump.setText(""+peak_hour+":00 - "+(peak_hour+1)+":00");*/
-    }
-    /**
      * Calculates de sum of the consumption when it receives an array with the consumption
      * @param data ContentValues array with consumption of the time slot in particular
      * @return double with a
@@ -469,20 +394,33 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             }
             _consumption_chart.set_cons_data(cons);
             _consumption_chart.requestRender();
-            //   _dayPlot.clear();
 
+            updateTotal(cons,null,null);
 
-            //  _dayPlot.setRangeBoundaries(0, max*1.2, BoundaryMode.AUTO);
-            //  _dayPlot.addSeries(series, series1Format);
-            //  _dayPlot.redraw();
-
-
-            if(day_cons.size()>0)   // only updates the chart if there is data.
-                updateInfoBoxes();
         }catch(Exception e){
             e.printStackTrace();
             Log.i(MODULE, "erro de net");
         }
+    }
+
+    private void updateTotal(double[] today_cons, double[] yesterday_cons, double[] average_cons){
+        double placeholder = 0;
+        double max=0;
+        int time=0;
+
+        for(int i=0;i<today_cons.length;i++) {
+            placeholder += today_cons[i];
+            if(today_cons[i]>max) {
+                max = today_cons[i];
+                time = i;
+            }
+        }
+
+        _totalConsump.setText(String.format("%s Wh", df.format(placeholder)));
+        _totalCost.setText(String.format("%s €", df.format((placeholder / 1000) * 0.16)));
+        _peakConsump.setText(String.format("Between %d:00 and %d:00", time, time + 1));
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -602,8 +540,51 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         }
     }
 
+    /**
+     Request stuff - services and handlers modafaquer
+     */
+    private class ProductionRequestWorker extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected String doInBackground(String... params) {
+            Log.i(MODULE, "Querying day ");
+            try{
+                prod_data = web_handler.getEnergyProduction();
+            }catch(Exception e){
+                Log.e(MODULE, "YOOOO DAWWW YOU GOT SOME EXCEPTION UP IN THIS SHIT");
+            }
+            return "Executed";
+        }
 
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+        @Override
+        protected void onPostExecute(String result) {
+
+            float solar,thermal,wind,hydro = 0;
+
+            solar   = prod_data.get(0).getAsInteger("foto");
+            wind    = prod_data.get(0).getAsInteger("eolica");
+            hydro   = prod_data.get(0).getAsInteger("hidrica");
+            thermal = prod_data.get(0).getAsInteger("biomassa") + prod_data.get(0).getAsInteger("termica");
+
+            float quotas[] = {solar,wind,hydro,thermal};
+            Message msg = Message.obtain();
+            msg.arg1=3;
+            Bundle data = new Bundle();
+            data.putFloatArray("renew_quotas",quotas);
+            msg.setData(data);
+            ui_handler.sendMessage(msg);
+
+            Log.i("DayFragment","got new data");
+
+        }
+    }
 
     /**
      * Check box handlers stuff
@@ -687,28 +668,28 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
                     double[] data = msg.getData().getDoubleArray("ConsData");
                     int index = msg.getData().getInt("Index");
                     addComparisonData(data,index);
+
+                case 3:
+                    float[] quotas = msg.getData().getFloatArray("renew_quotas");
+                    updateRenewQuotas(quotas);
                 default:
                     break;
             }
-
         }
 
         private void addComparisonData(double[] stupid_array, int index){
             _consumption_chart.addComparisonData(stupid_array,index, Color.parseColor("#FF0000"));
             _consumption_chart.requestRender();
         }
-    }
-    private class InitWidget extends Thread{
-        @Override
-        public void run(){
-            Log.i(MODULE, "Running !!!");
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            // _comp.requestRender();
+
+        private void updateRenewQuotas(float[] quotas){
+            float total         = quotas[0]+quotas[1]+quotas[2]+quotas[3];
+            float renew_precent = (quotas[0]+quotas[1]+quotas[2])/total;
+
+            _renewable_total.setText(String.format("%s %% total", df.format(renew_precent)));
+            _solar_average.setText(String.format("%s %% solar", df.format(quotas[0] / total)));
+            _wind_average.setText(String.format("%s %% wind", df.format(quotas[1] / total)));
+            _hydro_average.setText(String.format("%s %% hydro", df.format(quotas[2] / total)));
         }
     }
 }

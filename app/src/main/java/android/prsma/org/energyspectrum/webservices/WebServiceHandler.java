@@ -11,11 +11,13 @@ import android.prsma.org.energyspectrum.webservices.services.MonthsAverage;
 import android.prsma.org.energyspectrum.webservices.services.TodayConsService;
 import android.prsma.org.energyspectrum.webservices.services.TodayDetailedCons;
 import android.prsma.org.energyspectrum.webservices.services.WeeksAverage;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 public final class WebServiceHandler {
 
@@ -412,7 +414,9 @@ public final class WebServiceHandler {
 	public synchronized ArrayList<ContentValues> getTodayDetailedCons(String path,String keys){
 		TodayDetailedCons detail_cons = new TodayDetailedCons();
 		detail_cons._appCtx = _ctx;
-		detail_cons.run(path,keys);
+		detail_cons.buildRequest(path,keys);
+		detail_cons.setRequestMode(ConsumptionHttpRequest.NEW_REQUEST_MODE);
+		detail_cons.run();
 		try {
 			detail_cons.join();
 		}catch(Exception e){

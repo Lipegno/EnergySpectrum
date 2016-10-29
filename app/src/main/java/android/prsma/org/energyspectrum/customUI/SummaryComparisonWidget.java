@@ -56,9 +56,9 @@ public class SummaryComparisonWidget  extends SurfaceView implements SurfaceHold
 		textPaint.setTextSize(_textSize);
 		textPaint.setAntiAlias(true);
 		c.drawLine(w/2, starY, w/2, h,textPaint);
-		drawComparison(Math.round(starY+_comparisonBarHeight), c, _daily_cons, _daily_avg, get_maxDailyCons(),"Ontem "," Hoje");
-		drawComparison(Math.round(starY + _comparisonBarHeight*3), c, _weekly_cons, _weekly_avg, get_maxWeeklyCons(), "Semana passada ", " Esta semana ");
-		drawComparison(Math.round(starY + _comparisonBarHeight*5), c, _monthly_cons, _monthly_avg, get_maxMonthlyCons(), "Mês passado ", " Este Mês");
+		drawComparison(Math.round(starY+_comparisonBarHeight), c, _daily_cons, _daily_avg, get_maxDailyCons(),getContext().getString(R.string.yesterday)+" "," "+getContext().getString(R.string.today));
+		drawComparison(Math.round(starY + _comparisonBarHeight*3), c, _weekly_cons, _weekly_avg, get_maxWeeklyCons(), getContext().getString(R.string.last_week)+" ", getContext().getString(R.string.this_week));
+		drawComparison(Math.round(starY + _comparisonBarHeight*5), c, _monthly_cons, _monthly_avg, get_maxMonthlyCons(), getContext().getString(R.string.last_month)+" ", getContext().getString(R.string.this_month));
 	}
 	private int calculateBarWidth(float avg,float max){
 		return Math.round((avg*getWidth()/2)/max);

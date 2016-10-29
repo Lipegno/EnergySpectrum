@@ -164,10 +164,10 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		c.drawText("e neste mes. O tamanho", 0f ,_text_size*3, p);
 		c.drawText(" O tamanho de cada circulo representa", 0f ,_text_size*4, p);
 		c.drawText("o consumo no respectivo ", 0f ,_text_size*5, p);
-		c.drawText("periodo.", 0f ,_text_size*6, p);*/
+		c.drawText("periodo.", 0f ,_text_size*6, p);
 		c.drawText("O tamanho de cada circulo representa", 0f ,_text_size, p);
 		c.drawText("o consumo no respectivo ", 0f ,_text_size*2, p);
-		c.drawText("periodo.", 0f ,_text_size*3, p);
+		c.drawText("periodo.", 0f ,_text_size*3, p);*/
 
 	}
 	private float calculateRadious(float cons, float max_r){
@@ -200,15 +200,15 @@ public class SummaryWidget extends SurfaceView implements SurfaceHolder.Callback
 		
 		p.setColor(_color_month);
 		c.drawRect(x, _height-_text_size*3-10, 10, _height-30, p);
-		c.drawText("Mês", 15,  _height-_text_size*2-10, p);
+		c.drawText(getContext().getString(R.string.month), 15,  _height-_text_size*2-10, p);
 		
 		p.setColor(_color_week);
 		c.drawRect(x, _height-_text_size*2-10, 10, _height-15, p);
-		c.drawText("Semana", 15,  _height-_text_size-10, p);
+		c.drawText(getContext().getString(R.string.week), 15,  _height-_text_size-10, p);
 		
 		p.setColor(_color_day);
 		c.drawRect(x, _height-_text_size-10, 10, _height-10, p);
-		c.drawText("Hoje", 15,  _height-10, p);
+		c.drawText(getContext().getString(R.string.today), 15,  _height-10, p);
 		
 	}
 	public void drawLoading(Canvas c){

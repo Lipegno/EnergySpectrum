@@ -13,6 +13,7 @@ import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -59,6 +60,7 @@ public class ProductionFragment extends Fragment {
     private ArrayList<ContentValues> day_cons;
     private ArrayList<ContentValues> average_cons; // MUDAR PARA M�DIA IMPORTANTE...
 
+
     //view stuff
     private TextView _totalCons;
     private TextView _totalCost;
@@ -70,7 +72,6 @@ public class ProductionFragment extends Fragment {
     private TextView _windPrecent;
     private TextView _termalPrecent;
     private RuntimeConfigs _configs;
-
 
     public ProductionFragment() {
         // Required empty public constructor
@@ -145,6 +146,7 @@ public class ProductionFragment extends Fragment {
 
        ConsumptionHandler c_handler = new ConsumptionHandler();
        c_handler.execute();
+
             //}
         //});
 
@@ -200,6 +202,7 @@ public class ProductionFragment extends Fragment {
 
     private void handleConsumptionData(){
         cons = new double[24];
+        avg_cons = new double[24];
         double max_cons = 0;
 
         for(int i=0;i<cons.length;i++)
@@ -214,16 +217,25 @@ public class ProductionFragment extends Fragment {
                 cons[j]=0;
         }
 
+        for(int i=0; i<average_cons.size();i++){
+            avg_cons[average_cons.get(i).getAsInteger("Hour")]=(average_cons.get(i)).getAsDouble("Power");
+//			Log.i(MODULE, "cons detailed "+cons[cons_data.get(i).getAsInteger("tm_slot")]+" time slot "+cons_data.get(i).getAsInteger("tm_slot"));
+        }
+        if(average_cons.get(average_cons.size()-1).getAsInteger("Hour")<avg_cons.length){
+            for(int j=average_cons.get(average_cons.size()-1).getAsInteger("Hour");j<avg_cons.length;j++)
+                avg_cons[j]=0;
+        }
+
         for(int i=0;i<cons.length;i++){
             if(cons[i]>max_cons)
                 max_cons=cons[i];
+            if(avg_cons[i]>max_cons)
+                max_cons=avg_cons[i];
         }
-
-        avg_cons = new double[24];
 
         _chart.setMaxCons(max_cons*1.3);
         _chart.setCons_data(cons);
-        _chart.setAvg_cons_data(cons);
+        _chart.setAvg_cons_data(avg_cons);
         _chart.requestRender();
         calculateConsMetrics();
         /*for(int i=0; i<average_cons.size();i++)
@@ -470,6 +482,12 @@ public class ProductionFragment extends Fragment {
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
                 cons_data = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
+                Calendar c = Calendar.getInstance();
+                c.setTime(cDate);
+                c.add(Calendar.DATE, -1);
+                cDate = c.getTime();
+                fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+                average_cons = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
                 Log.i(MODULE, "Querying day detailed ");
             }catch(Exception e){
                 Log.e(MODULE, "YOOOO DAWWW YOU GOT SOME EXCEPTION UP IN THIS SHIT");

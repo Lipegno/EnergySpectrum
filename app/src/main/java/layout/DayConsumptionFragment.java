@@ -17,7 +17,9 @@ import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,18 +28,11 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.androidplot.xy.SimpleXYSeries;
-
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.prsma.org.energyspectrum.webservices.WebServiceHandler.MODULE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +48,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "DayFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -93,8 +89,9 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     // private ComparisonWidget _comp;
     private float _defaultTextSize=0f;
 
-    private ArrayList<ContentValues> day_cons;
+    private ArrayList<ContentValues> _day_cons;
     private ArrayList<ContentValues> today_cons;
+    private ArrayList<ContentValues> _yesterday_cons;
 
     private RuntimeConfigs _configs;
     private static final WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
@@ -202,7 +199,6 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
                 maximizeScreen();
             }
         });
-
 
         doFirstRequest();
     }
@@ -321,8 +317,8 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     public void initCompWidget(){
         Log.i(MODULE, "initializing comp widget");
         ArrayList<ContentValues> day_average = DBManager.getDBManager().getDayAverage();
-       /* if(day_cons!=null){
-            double total = calculateTotal(day_cons);
+       /* if(_day_cons!=null){
+            double total = calculateTotal(_day_cons);
             double average = calculateAverageTotal(day_average);
             double max = total>average?total:average;
             _comp.setmax_cons((int)Math.round(max*1.5));
@@ -387,10 +383,10 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             double max = 0;
             double[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
             Log.i(MODULE, "Updating day consumption");
-            for(int i=0;i<day_cons.size();i++){
-                cons[day_cons.get(i).getAsInteger("Hour")]=Math.round((day_cons.get(i)).getAsDouble("Power"));
-                if(max<day_cons.get(i).getAsDouble("Power"))
-                    max = day_cons.get(i).getAsDouble("Power");
+            for(int i = 0; i< _day_cons.size(); i++){
+                cons[_day_cons.get(i).getAsInteger("Hour")]=Math.round((_day_cons.get(i)).getAsDouble("Power"));
+                if(max< _day_cons.get(i).getAsDouble("Power"))
+                    max = _day_cons.get(i).getAsDouble("Power");
             }
             _consumption_chart.set_cons_data(cons);
             _consumption_chart.requestRender();
@@ -460,6 +456,11 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _event_name_label.setText(event.get_guess());
     }
 
+    @Override
+    public void onDoubleClick() {
+        maximizeScreen();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -485,28 +486,20 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             if(params[0].equals("day")){
                 Date cDate = new Date();
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-                day_cons = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
+                _day_cons = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
+                Message msg = new Message();
+                msg.arg1=1;
+                ui_handler.sendMessage(msg);
+                Calendar c = Calendar.getInstance();
+                c.setTime(cDate);
+                c.add(Calendar.DATE, -1);
+                cDate = c.getTime();
+                fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+                _yesterday_cons = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
                 return "Executed";
             }else{
                 return "error";
             }
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            Log.i(MODULE, "executed");
-            Message msg = new Message();
-            msg.arg1=1;
-            Log.i(MODULE, _queryDate.getDay() +"  -  "+ new Date().getDay());
-            if(_queryDate.getDay() == new Date().getDay())
-                today_cons=day_cons;
-            ui_handler.sendMessage(msg);
-            initCompWidget();
-        }
-        @Override
-        protected void onPreExecute() {
-        }
-        @Override
-        protected void onProgressUpdate(Void... values) {
         }
     }
 
@@ -642,7 +635,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             dt = c.getTime();
 
             String fDate = new SimpleDateFormat("yyyy-MM-dd").format(dt);
-            day_cons = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
+            _day_cons = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
 
             _consumption_chart.addComparisonData(stupid_array,index,color);
             _consumption_chart.requestRender();*/
@@ -668,13 +661,46 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
                     double[] data = msg.getData().getDoubleArray("ConsData");
                     int index = msg.getData().getInt("Index");
                     addComparisonData(data,index);
-
+                    break;
                 case 3:
                     float[] quotas = msg.getData().getFloatArray("renew_quotas");
                     updateRenewQuotas(quotas);
+                case 4:
+                    updateYesterDayComp();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void updateYesterDayComp(){
+            // first the labels;
+            double today_total=0;
+            double yesterday_total=0;
+            for(int i =0;i<_day_cons.size();i++){
+                today_total     +=  _day_cons.get(i).getAsDouble("Power");
+                yesterday_total +=  _yesterday_cons.get(i).getAsDouble("Power");
+            }
+            double comp = today_total/yesterday_total;
+            if(comp > 1){
+                comp = 1-comp;
+                String comp_text = df.format(comp*100);
+                _yesterdayComp.setText("+ "+comp_text+" % than yesterday");
+            }else{
+                comp = 1-comp;
+                String comp_text = df.format(comp*100);
+                _yesterdayComp.setText("- "+comp_text+" % than yesterday");
+            }
+            // now the chart
+            double[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            for(int i=0;i<_yesterday_cons.size();i++){
+                cons[_yesterday_cons.get(i).getAsInteger("Hour")]=Math.round((_yesterday_cons.get(i)).getAsDouble("Power"));
+            }
+
+            _consumption_chart.set_avg_cons_data(cons);
+            _consumption_chart.requestRender();
+
+            Log.i(TAG,((today_total/yesterday_total)*100)+" %");
         }
 
         private void addComparisonData(double[] stupid_array, int index){
@@ -686,10 +712,11 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             float total         = quotas[0]+quotas[1]+quotas[2]+quotas[3];
             float renew_precent = (quotas[0]+quotas[1]+quotas[2])/total;
 
-            _renewable_total.setText(String.format("%s %% total", df.format(renew_precent)));
-            _solar_average.setText(String.format("%s %% solar", df.format(quotas[0] / total)));
-            _wind_average.setText(String.format("%s %% wind", df.format(quotas[1] / total)));
-            _hydro_average.setText(String.format("%s %% hydro", df.format(quotas[2] / total)));
+            _renewable_total.setText(String.format("%s %% total", df.format(renew_precent* 100)));
+            _solar_average.setText(String.format("%s %% solar", df.format(quotas[0] * 100 / total)));
+            _wind_average.setText(String.format("%s %% wind", df.format(quotas[1] * 100 / total )));
+            _hydro_average.setText(String.format("%s %% hydro", df.format(quotas[2] * 100 / total )));
         }
     }
+
 }

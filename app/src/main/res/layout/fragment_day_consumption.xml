@@ -288,20 +288,14 @@
                         <TextView
                             android:id="@+id/frag_day_comp_yesterday"
                             style="@style/table_item_body"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="+ 10% than yesterday"/>
                         <TextView
                             android:id="@+id/frag_day_comp_average"
                             style="@style/table_item_body"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="- 5% than your average"/>
                         <TextView
                             android:id="@+id/frag_day_comp_fact"
                             style="@style/table_item_body"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="lowest consumption day in a month"/>
                     </LinearLayout>
                     <!-- PEAK CONSUMPTION LABEL -->
@@ -352,18 +346,29 @@
                         android:layout_marginBottom="10sp">
                         <TextView
                             style="@style/table_item_body"
+                            android:layout_gravity="center_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/frag_day_solar"
                             android:text="5% solar"/>
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/app_main_darker"/>
                         <TextView
                             style="@style/table_item_body"
+                            android:gravity="center_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/frag_day_hydro"
                             android:text="10% hydro"/>
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/app_main_darker"/>
                         <TextView
                             style="@style/table_item_body"
+                            android:gravity="center_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/frag_day_wind"

@@ -30,6 +30,7 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
 
     public static final String MODE_DAY = "day";
     public static final String MODE_MONTH = "month";
+    private static final String TAG = "LineConsChart";
 
     private float _height;
     private float _width;
@@ -64,6 +65,8 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     private ChartInteractionListener _listener;
 
     private ViewGroup.LayoutParams _normalLayout;
+
+    private long last_touch;
 
     public LineConsumptionChart(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -430,12 +433,23 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         synchronized (getHolder()) {
+
+
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
                 ////Log.d("Line Cons Chart", "touch Down");
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 checkTouch(event.getX(),event.getY());
+
+                Log.i(TAG,(System.currentTimeMillis()-last_touch)+" ");
+
+                if(System.currentTimeMillis()-last_touch<250){
+                    Log.i(TAG,"double click");
+                    _listener.onDoubleClick();
+                }
+
+                last_touch = System.currentTimeMillis();
                 ////Log.d("Line Cons Chart","touch Up");
             }
             return true;
@@ -475,5 +489,6 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     public interface ChartInteractionListener{
 
         void onEventSelect(EventSampleDTO event);
+        void onDoubleClick();
     }
 }

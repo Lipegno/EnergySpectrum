@@ -190,7 +190,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		Paint p = new Paint();
 		p.setColor(_color);  // color of the line and fill
 		p.setAntiAlias(true);
-		float diff = (float)((width-right_margin )-text_size_h)/drawing_coords.length;
+		float diff = ((width-right_margin )-text_size_h)/drawing_coords.length;
 		float increment =text_size_h;
 		Path path = new Path();
 		path.moveTo(text_size_h, height- vertical_caption_size_prod);	//starts drawing
@@ -298,8 +298,7 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		p.setStrokeJoin(Join.MITER);
 		p.setStrokeCap(Cap.ROUND);
 		float diff = (float)(width-right_margin-vertical_caption_size)/drawing_coords.length;
-		float increment = vertical_caption_size;
-		increment =text_size_h;
+		float increment = text_size_h;
 		float c_x=0;
 		float c_y=0;
 		for(int i=1;i<drawing_coords.length;i=i+1){
@@ -324,7 +323,8 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 		p.setStrokeJoin(Join.ROUND);
 		p.setStrokeCap(Cap.ROUND);
 		p.setPathEffect(new DashPathEffect(new float[]{4,4}, 0));
-		float diff = (float)(width-text_size_h)/drawing_coords.length;
+		//float diff = (float)(width-text_size_h)/drawing_coords.length;
+		float diff = (float)(width-right_margin-vertical_caption_size)/drawing_coords.length;
 		float increment =text_size_h;
 		float[] pts = new float[drawing_coords.length*2];
 		int j=0;

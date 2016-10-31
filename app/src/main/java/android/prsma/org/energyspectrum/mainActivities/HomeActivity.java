@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements ConsumptionLogFra
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(_viewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements ConsumptionLogFra
                         .setAction("Action", null).show();
                 PlaceholderFragment.renderChart();
             }
-        });
+        });*/
 
         _configs = RuntimeConfigs.getConfigs();
 

@@ -50,12 +50,12 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 				JSONObject value = prod_data.getJSONObject(i);
 				total = value.getInt("total")+total;
 				total_renew = total_renew + value.getInt("hidrica")+value.getInt("eolica")+value.getInt("eolica")+value.getInt("foto");
-								Log.i("Energy Production"," --------------- ");
-								Log.i("Energy Production",value.getInt("termica")+" t");
-								Log.i("Energy Production",value.getInt("hidrica")+" h");
-								Log.i("Energy Production",value.getInt("eolica")+" e");
-								Log.i("Energy Production",value.getInt("biomassa")+" b");
-								Log.i("Energy Production",value.getInt("foto")+" f");
+//								Log.i("Energy Production"," --------------- ");
+//								Log.i("Energy Production",value.getInt("termica")+" t");
+//								Log.i("Energy Production",value.getInt("hidrica")+" h");
+//								Log.i("Energy Production",value.getInt("eolica")+" e");
+//								Log.i("Energy Production",value.getInt("biomassa")+" b");
+//								Log.i("Energy Production",value.getInt("foto")+" f");
 				DBManager.getDBManager().insertProductionData(value.getString("timestamp"), value.getInt("total"), value.getInt("termica"),
 						value.getInt("hidrica"), value.getInt("eolica"), value.getInt("biomassa"), value.getInt("foto"));
 				String date = value.getString("timestamp");
@@ -63,7 +63,7 @@ public class EnergyProduction extends  ConsumptionHttpRequest {
 				int hour = Integer.parseInt(day_time.split(":")[0]);
 				int minutes = Integer.parseInt(day_time.split(":")[1]);
 				int timeslot = (int) (((hour)*4)+Math.ceil(minutes/15));
-				Log.i(MODULE, "->"+timeslot);
+				//Log.i(MODULE, "->"+timeslot);
 				temp.put("timestamp", value.getString("timestamp"));
 				temp.put("total", value.getInt("total"));
 				temp.put("termica", value.getInt("termica"));

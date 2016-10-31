@@ -749,9 +749,9 @@ public final class DBManager {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		//Log.i(MODULE, data);
+		Log.i(MODULE, data);
 		result = (hidrica+eolica+foto)/total;
-		//Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
+		Log.i(MODULE, "total "+total+" hidrica "+hidrica+" eolica "+eolica+" "+" foto "+foto+" percentage "+result);
 		return Double.isNaN(result) ? 0 : result;
 	}
 	public double getThisWeekRenewPercentage(){

@@ -164,12 +164,12 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_label"
                     android:text="E. Solar" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/solar_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
                     android:textSize="10pt"
                     android:text="--" />
@@ -194,12 +194,12 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_label"
                     android:text="E. Hidrica" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/water_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
                     android:textSize="10pt"
                     android:text="--" />
@@ -224,12 +224,12 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_label"
                     android:text="E. Eólica" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/wind_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
                     android:textSize="10pt"
                     android:text="--" />
@@ -254,12 +254,12 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_label"
                     android:text="E. Térmica" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/termal_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
                     android:textSize="10pt"
                     android:text="--" />

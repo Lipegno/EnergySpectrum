@@ -44,7 +44,7 @@
                 android:background="@drawable/main_bg2_prod"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Origem"
+                android:text="Source"
                 android:textColor="@color/app_orange"
                 android:textSize="8pt" />
             <!-- solar legend -->
@@ -69,14 +69,13 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
-                    android:text="E. Solar" />
+                    style="@style/prod_legend_label"
+                    android:text="Solar Energy" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/frag_solar_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
-                    android:textSize="10pt"
                     android:text="--" />
             </LinearLayout>
             <!-- Hidrica legend -->
@@ -100,14 +99,13 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
-                    android:text="E. Hidrica" />
+                    style="@style/prod_legend_label"
+                    android:text="Hydroelectric Energy" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/frag_water_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
-                    android:textSize="10pt"
                     android:text="--" />
             </LinearLayout>
             <!-- eolica legend -->
@@ -131,14 +129,13 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
-                    android:text="E. Eólica" />
+                    style="@style/prod_legend_label"
+                    android:text="Wind Energy" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/frag_wind_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
-                    android:textSize="10pt"
                     android:text="--" />
             </LinearLayout>
             <!-- termica legend -->
@@ -162,14 +159,13 @@
                 </LinearLayout>
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
-                    style="@style/prod_legend"
-                    android:text="E. Térmica" />
+                    style="@style/prod_legend_label"
+                    android:text="Thermal Energy" />
 
                 <android.prsma.org.energyspectrum.dtos.TextView_Roboto
                     android:id="@+id/frag_termal_precent"
-                    style="@style/prod_legend"
+                    style="@style/prod_legend_item"
                     android:gravity="right"
-                    android:textSize="10pt"
                     android:text="--" />
             </LinearLayout>
         </LinearLayout>
@@ -189,7 +185,7 @@
                 android:background="@drawable/main_bg2_prod"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Consumo total:"
+                android:text="Total consumption:"
                 android:textColor="@color/app_orange"
                 android:textSize="8pt" />
 
@@ -324,7 +320,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="que a sua média"
+                        android:gravity="center_horizontal"
+                        android:text="Than your average"
                         android:textColor="@color/app_orange" />
                 </LinearLayout>
 
@@ -343,7 +340,7 @@
                         android:background="@drawable/horizontal_bar_grad" />
 
                     <TextView
-                        android:id="@+id/frag_renew_quota"
+                        android:id="@+id/frag_prod_renew_quota"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -355,8 +352,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="renováveis"
-                        android:textColor="@color/water_color" />
+                        android:text="Renewable"
+                        android:textColor="#03A688" />
                 </LinearLayout>
 
 

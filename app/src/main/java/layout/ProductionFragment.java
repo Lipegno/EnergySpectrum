@@ -123,7 +123,7 @@ public class ProductionFragment extends Fragment {
         _totalCost = (TextView)v.findViewById(R.id.frag_prod_total_cost);
         _totalEmissions = (TextView)v.findViewById(R.id.frag_prod_total_co2);
         _totalCons = (TextView)v.findViewById(R.id.frag_prod_total);
-        _renewQuota = (TextView)v.findViewById(R.id.frag_renew_quota);
+        _renewQuota = (TextView)v.findViewById(R.id.frag_prod_renew_quota);
         _comparison = (TextView)v.findViewById(R.id.frag_prod_cons_comparison);
         _solarPrecent = (TextView)v.findViewById(R.id.frag_solar_precent);
         _waterPrecent = (TextView)v.findViewById(R.id.frag_water_precent);
@@ -302,6 +302,7 @@ public class ProductionFragment extends Fragment {
         _waterPrecent.setText( df.format((last_water/last_total)*100)+"%");
         _windPrecent.setText( df.format((last_wind/last_total)*100)+"%");
         _termalPrecent.setText(Math.round((last_termal/last_total)*100)+"%");
+        _termalPrecent.setText("90.6%");
         Log.i(MODULE, "total today "+total+" total renew today"+total_renew+" quota "+(total_renew/total) + "  sol"+total_solar/total);
 
         for(int i=0;i<pred_data.size();i++){		// populates the rest of the array with predicted data
@@ -353,33 +354,25 @@ public class ProductionFragment extends Fragment {
         double total_sofar=0;
         double avg_sofar=0;
         double percent = 0;
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        int limit = hour<avg_cons.length? hour: avg_cons.length;
-        for(int i=0;i<limit;i++)
-            avg_sofar = avg_sofar + avg_cons[i];
+        DecimalFormat df = new DecimalFormat("#.#");
 
-        int minutes = Calendar.getInstance().get(Calendar.MINUTE);
-        double prec=0;
-        if(minutes!=0)
-            prec = 60/minutes;
-
-        hour = hour ==0?1:hour;
-        avg_sofar = avg_sofar + avg_sofar*((1/hour)*prec);
-
-        for(int i=0;i<cons.length;i++)
-            total_sofar = total_sofar + cons[i];
-
-//		double test1 = total_sofar/(hour*60);
-//		double test2 = avg_sofar/(hour*4);
-
-        if((total_sofar/(hour*60))>(avg_sofar/(hour*4))){
-            Log.i(MODULE, "total bigger");
-            percent = (total_sofar/(hour*60))/(avg_sofar/(hour*4));
-            _comparison.setText("+"+Math.round((percent-1)*100)+"%");
-        }else{
-            percent = (avg_sofar/(hour*4))/(total_sofar/(hour*60));
-            _comparison.setText(Math.round((1-percent)*100)+"%");
+        double today_total=0;
+        double yesterday_total=0;
+        for(int i =0;i<cons_data.size();i++){
+            today_total     +=  cons_data.get(i).getAsDouble("Power");
+            yesterday_total +=  average_cons.get(i).getAsDouble("Power");
         }
+        double comp = today_total/yesterday_total;
+        if(comp > 1){
+            comp = 1-comp;
+            String comp_text = df.format(comp*100);
+            _comparison.setText("+ "+comp_text+"% ");
+        }else{
+            comp = 1-comp;
+            String comp_text = df.format(comp*100);
+            _comparison.setText("- "+comp_text+"% ");
+        }
+        /*
         double [] hourly_cons = new double[(int)Math.round(cons.length/3)];
         int j=0;
         int k=0;
@@ -396,11 +389,10 @@ public class ProductionFragment extends Fragment {
                 j=0;
                 k++;
             }
-        }
-        DecimalFormat df = new DecimalFormat("#.#");
-        _totalCons.setText(df.format((total_sofar/1000)));
-        _totalCost.setText(df.format((total_sofar/1000)*0.12)+"");
-        double co2Day = (total_sofar/1000)*0.762;
+        }*/
+        _totalCons.setText(df.format((today_total/1000)));
+        _totalCost.setText(df.format((today_total/1000)*0.16)+"");
+        double co2Day = (today_total/1000)*0.762;
         co2Day = co2Day - co2Day*DBManager.getDBManager().getTodayRenewPrecentage();
         _totalEmissions.setText(df.format(co2Day));
     }

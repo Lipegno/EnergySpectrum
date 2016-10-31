@@ -25,7 +25,7 @@
                 android:orientation="horizontal">
                 <TextView
                     style="@style/table_item_label"
-                    android:layout_weight="0.49"
+                    android:layout_weight="0.7"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/current_cons_label"
@@ -35,14 +35,14 @@
                     android:textColor="#FFFFFF"
                     android:textStyle="bold" />
                 <LinearLayout
-                    android:layout_weight="0.49"
+                    android:layout_weight="0.3"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/maximize_chart_day"
-                        android:text="Full screen"/>
+                    <!--<Button-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/maximize_chart_day"-->
+                        <!--android:text="Full screen"/>-->
                     </LinearLayout>
             </LinearLayout>
            <!--     DATES STUFF -->
@@ -102,7 +102,6 @@
                                     android:layout_height="wrap_content" />
                                 <CheckBox
                                     android:id="@+id/checkbox_1day"
-                                    android:backgroundTint="@color/orange"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -113,7 +112,6 @@
                                 <TextView
                                     android:text="29-08-2016"
                                     android:id="@+id/day_2_check"
-                                    android:textColor="@color/comp2_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                                 <CheckBox
@@ -128,7 +126,6 @@
                                 <TextView
                                     android:text="28-08-2016"
                                     android:id="@+id/day_3_check"
-                                    android:textColor="@color/comp3_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                                 <CheckBox
@@ -148,7 +145,6 @@
                                 <TextView
                                     android:text="27-08-2016"
                                     android:id="@+id/day_4_check"
-                                    android:textColor="@color/comp4_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                                 <CheckBox
@@ -164,7 +160,6 @@
                                 <TextView
                                     android:text="26-08-2016"
                                     android:id="@+id/day_5_check"
-                                    android:textColor="@color/comp5_color"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                                 <CheckBox
@@ -223,9 +218,10 @@
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
                             <ImageView
+                                android:layout_marginTop="5sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/power_icon"/>
+                                android:src="@drawable/power_icon_prod"/>
                             <TextView
                                 android:id="@+id/frag_day_total_kwh"
                                 style="@style/table_item_body"
@@ -240,9 +236,10 @@
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
                             <ImageView
+                                android:layout_marginTop="5sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/money_icon"/>
+                                android:src="@drawable/money_icon_prod"/>
                             <TextView
                                 android:id="@+id/frag_day_total_cost"
                                 style="@style/table_item_body"
@@ -257,9 +254,10 @@
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
                             <ImageView
+                                android:layout_marginTop="5sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/tree_icon"/>
+                                android:src="@drawable/tree_icon_prod"/>
                             <TextView
                                 android:id="@+id/frag_day_total_c02"
                                 style="@style/table_item_body"
@@ -292,10 +290,11 @@
                         <TextView
                             android:id="@+id/frag_day_comp_average"
                             style="@style/table_item_body"
-                            android:text="- 5% than your average"/>
+                            android:text="- 5% \n than your average"/>
                         <TextView
                             android:id="@+id/frag_day_comp_fact"
                             style="@style/table_item_body"
+                            android:layout_gravity="center_horizontal"
                             android:text="lowest consumption day in a month"/>
                     </LinearLayout>
                     <!-- PEAK CONSUMPTION LABEL -->

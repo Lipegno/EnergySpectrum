@@ -189,16 +189,16 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _queryDate=_today;
 
         _consumption_chart.setText_size(_defaultTextSize);
-        createDummyValues();
+       // createDummyValues();
         initCheckBoxes(v);
 
-        Button _full_screen_btn = (Button)v.findViewById(R.id.maximize_chart_day);
+     /*   Button _full_screen_btn = (Button)v.findViewById(R.id.maximize_chart_day);
         _full_screen_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 maximizeScreen();
             }
-        });
+        });*/
 
         doFirstRequest();
     }
@@ -286,18 +286,18 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     }
 
     private void createDummyValues(){
-        double[] cons_data = new double[24];
+     /*   double[] cons_data = new double[24];
         for(int i=0;i<cons_data.length;i++)
             cons_data[i]=500+(300*Math.random());
         //   for(int i=25;i<48;i++)
         //  _cons_data[i]=0;
         double[] avg_cons_data = new double[48];
         for(int i=0;i<avg_cons_data.length;i++)
-            avg_cons_data[i]=500+(200*Math.random());
+            avg_cons_data[i]=500+(200*Math.random());*/
 
         ArrayList<EventSampleDTO> events = new ArrayList<EventSampleDTO>();
 
-        for(int i=0;i<24;i++){
+        for(int i=0;i<_day_cons.size();i++){
             EventSampleDTO sample = new EventSampleDTO("Event "+i,null,
                     (int)Math.round(Math.random()*200),
                     i,
@@ -309,8 +309,8 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             events.add(sample);
         }
         _consumption_chart.set_events(events);
-        _consumption_chart.set_avg_cons_data(avg_cons_data);
-        _consumption_chart.set_cons_data(cons_data);
+        // _consumption_chart.set_avg_cons_data(avg_cons_data);
+        //_consumption_chart.set_cons_data(cons_data);
         _consumption_chart.requestRender();
     }
 
@@ -381,7 +381,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
 
         try{
             double max = 0;
-            double[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            double[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
             Log.i(MODULE, "Updating day consumption");
             for(int i = 0; i< _day_cons.size(); i++){
                 cons[_day_cons.get(i).getAsInteger("Hour")]=Math.round((_day_cons.get(i)).getAsDouble("Power"));
@@ -389,7 +389,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
                     max = _day_cons.get(i).getAsDouble("Power");
             }
             _consumption_chart.set_cons_data(cons);
-            _consumption_chart.requestRender();
+           // _consumption_chart.requestRender();
 
             updateTotal(cons,null,null);
 
@@ -575,14 +575,12 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             ui_handler.sendMessage(msg);
 
             Log.i("DayFragment","got new data");
-
         }
     }
 
     /**
      * Check box handlers stuff
      */
-
     private class CheckBoxHandler implements CompoundButton.OnCheckedChangeListener{
 
         @Override
@@ -685,21 +683,21 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             if(comp > 1){
                 comp = 1-comp;
                 String comp_text = df.format(comp*100);
-                _yesterdayComp.setText("+ "+comp_text+" % than yesterday");
+                _yesterdayComp.setText("+ "+comp_text+" % \n than yesterday");
             }else{
                 comp = 1-comp;
                 String comp_text = df.format(comp*100);
-                _yesterdayComp.setText("- "+comp_text+" % than yesterday");
+                _yesterdayComp.setText("- "+comp_text+" % \n than yesterday");
             }
             // now the chart
-            double[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            double[] cons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
             for(int i=0;i<_yesterday_cons.size();i++){
                 cons[_yesterday_cons.get(i).getAsInteger("Hour")]=Math.round((_yesterday_cons.get(i)).getAsDouble("Power"));
             }
 
             _consumption_chart.set_avg_cons_data(cons);
             _consumption_chart.requestRender();
-
+            createDummyValues();  // we can create dummy event values now
             Log.i(TAG,((today_total/yesterday_total)*100)+" %");
         }
 

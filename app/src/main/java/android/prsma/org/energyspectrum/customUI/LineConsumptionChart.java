@@ -161,11 +161,14 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
             c.drawColor(Color.parseColor("#ffffff"));
             drawVerticalAxis(c);
             drawHorizontalAxis(c,_token);
-            drawAveragePath(c);
-            drawChartPath(c);
-            for(int i=0;i<_comparison_data.size();i++){
-                if(_comparison_data.get(i)[0]!=0)
-                 drawComparisonPath(c,_comparison_data.get(i),_comparison_colors[i]);
+            if(_avg_cons_data!=null && _cons_data!=null) {
+
+                for (int i = 0; i < _comparison_data.size(); i++) {
+                    if (_comparison_data.get(i)[0] != 0)
+                        drawComparisonPath(c, _comparison_data.get(i), _comparison_colors[i]);
+                }
+                drawAveragePath(c);
+                drawChartPath(c);
             }
             ////Log.i("Cons Chart", "rendering");
             if(_events!=null && _events.size()>0)
@@ -201,15 +204,16 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
     }
 
     private double getMaxValue(){
-        double max = 0;
-        for(int i = 0; i< _avg_cons_data.length; i++)
-           if(_avg_cons_data[i]>max)
-               max= _avg_cons_data[i];
+        double max = 1;
+        if(_avg_cons_data!=null && _cons_data!=null) {
+            for (int i = 0; i < _avg_cons_data.length; i++)
+                if (_avg_cons_data[i] > max)
+                    max = _avg_cons_data[i];
 
-        for(int i = 0; i< _cons_data.length; i++)
-            if(_cons_data[i]>max)
-                max= _cons_data[i];
-
+            for (int i = 0; i < _cons_data.length; i++)
+                if (_cons_data[i] > max)
+                    max = _cons_data[i];
+        }
         return max*1.3;
     }
 
@@ -324,9 +328,9 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         Paint p = new Paint();
         p.setAntiAlias(true);
         p.setColor(color);  // color of the line and fill
-        p.setStrokeWidth(2);
+        p.setStrokeWidth(5);
         p.setStrokeJoin(Paint.Join.MITER);
-        p.setPathEffect(new DashPathEffect(new float[]{3,3}, 2));
+        p.setPathEffect(new DashPathEffect(new float[]{2,2}, 2));
 
         float diff = (_width- _vertical_axis_label_width) /drawing_coords.length;
         float increment = _vertical_axis_label_width + _separators_width;
@@ -342,12 +346,12 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
         Paint p = new Paint();
         p.setAntiAlias(true);
 
-        float max_radius =  _height*0.08f;
+        float max_radius =  _height*0.1f;
         float y = _height/2f;
         float shift = _vertical_axis_label_width + _separators_width;
         for(int i=0; i<_events.size();i++){
             p.setColor(_events.get(i).get_color());
-            float radius = (_events.get(i).get_deltaPMean())*max_radius/_max_event_delta;
+            float radius = (float)(_cons_data[i]*max_radius)/_maxValue;
             float[] cords = calculateEventYPos(_events.get(i),i,0);
             c.drawCircle(cords[0],
                     cords[1],
@@ -440,13 +444,15 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
                 ////Log.d("Line Cons Chart", "touch Down");
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                checkTouch(event.getX(),event.getY());
+                if(_events!=null && _events.size()!=0)
+                    checkTouch(event.getX(),event.getY());
 
                 Log.i(TAG,(System.currentTimeMillis()-last_touch)+" ");
 
                 if(System.currentTimeMillis()-last_touch<250){
                     Log.i(TAG,"double click");
-                    _listener.onDoubleClick();
+                    if(_listener!=null)
+                        _listener.onDoubleClick();
                 }
 
                 last_touch = System.currentTimeMillis();

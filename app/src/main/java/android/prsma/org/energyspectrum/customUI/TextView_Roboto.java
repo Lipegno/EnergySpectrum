@@ -1,4 +1,4 @@
-package android.prsma.org.energyspectrum.dtos;
+package android.prsma.org.energyspectrum.customUI;
 
 import android.content.Context;
 import android.graphics.Typeface;

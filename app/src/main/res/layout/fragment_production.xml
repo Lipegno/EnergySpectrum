@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+            <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="10dp"
@@ -68,11 +68,11 @@
                     android:background="@color/solar_color" >
                 </LinearLayout>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     style="@style/prod_legend_label"
                     android:text="Solar Energy" />
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     android:id="@+id/frag_solar_precent"
                     style="@style/prod_legend_item"
                     android:gravity="right"
@@ -98,11 +98,11 @@
                     android:background="@color/water_color" >
                 </LinearLayout>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     style="@style/prod_legend_label"
                     android:text="Hydroelectric Energy" />
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     android:id="@+id/frag_water_precent"
                     style="@style/prod_legend_item"
                     android:gravity="right"
@@ -128,11 +128,11 @@
                     android:background="@color/wind_color" >
                 </LinearLayout>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     style="@style/prod_legend_label"
                     android:text="Wind Energy" />
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     android:id="@+id/frag_wind_precent"
                     style="@style/prod_legend_item"
                     android:gravity="right"
@@ -158,11 +158,11 @@
                     android:background="@color/temar_color" >
                 </LinearLayout>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     style="@style/prod_legend_label"
                     android:text="Thermal Energy" />
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     android:id="@+id/frag_termal_precent"
                     style="@style/prod_legend_item"
                     android:gravity="right"
@@ -177,7 +177,7 @@
                 <!--&gt;-->
             <!--</LinearLayout>-->
 
-            <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+            <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="4dp"
@@ -216,7 +216,7 @@
                         android:text="--"
                         android:textColor="#000000"
                         android:textSize="8pt" />
-                    <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -247,7 +247,7 @@
                         android:text="--"
                         android:textColor="#000000"
                         android:textSize="8pt" />
-                    <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -278,7 +278,7 @@
                         android:text="--"
                         android:textColor="#000000"
                         android:textSize="8pt" />
-                    <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                    <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

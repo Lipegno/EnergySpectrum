@@ -157,7 +157,7 @@
                     android:text=" &lt; " >
                 </Button>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     android:id="@+id/month_ID_label"
                     style="@style/text_box_date"
                     android:text="March"
@@ -278,13 +278,13 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/total_month_cons"
                             style="@style/summary_table_item"
                             android:text="18"
                             android:textSize="18px" />
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             style="@style/summary_table_item"
                             android:text="Kwh"
                             android:textSize="12px" />
@@ -295,13 +295,13 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/total_co2_month"
                             style="@style/summary_table_item"
                             android:text="0.4"
                             android:textSize="18px" />
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             style="@style/summary_table_item"
                             android:text="g CO2"
                             android:textSize="12px" />
@@ -312,13 +312,13 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/total_money_month"
                             style="@style/summary_table_item"
                             android:text="5.4€"
                             android:textSize="18px" />
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             style="@style/summary_table_item"
                             android:text="@string/euro"
                             android:textSize="12px" />
@@ -330,7 +330,7 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/peak_month"
                             style="@style/summary_table_item"
                             android:text=" 12:00 "
@@ -360,7 +360,7 @@
                     android:src="@drawable/compare_icon" >
                 </ImageView>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     style="@style/text_box_date"
                     android:text=" Comparação:"
                     android:textSize="21px" />

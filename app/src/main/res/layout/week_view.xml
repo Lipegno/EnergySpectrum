@@ -148,7 +148,7 @@
                     android:text=" &lt; " >
                 </Button>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     android:id="@+id/week_ID_label"
                     style="@style/text_box_date"
                     android:text="esta semana"
@@ -270,13 +270,13 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/total_consump_week"
                             style="@style/summary_table_item"
                             android:text="18"
                             android:textSize="18px" />
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             style="@style/summary_table_item"
                             android:text="Kwh"
                             android:textSize="12px" />
@@ -287,13 +287,13 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/total_co2_week"
                             style="@style/summary_table_item"
                             android:text="0.4 g CO2"
                             android:textSize="18px" />
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             style="@style/summary_table_item"
                             android:text="gC02"
                             android:textSize="12px" />
@@ -304,13 +304,13 @@
                         android:layout_weight="0.25"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/total_money_week"
                             style="@style/summary_table_item"
                             android:text="5.4€"
                             android:textSize="18px" />
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             style="@style/summary_table_item"
                             android:text="€"
                             android:textSize="12px" />
@@ -322,7 +322,7 @@
                          android:layout_height="60px"
                         android:orientation="vertical" >
 
-                        <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                        <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                             android:id="@+id/peak_consump_week"
                             style="@style/summary_table_item"
                             android:text="Segunda feira"
@@ -352,7 +352,7 @@
                     android:src="@drawable/compare_icon" >
                 </ImageView>
 
-                <android.prsma.org.energyspectrum.dtos.TextView_Roboto
+                <android.prsma.org.energyspectrum.customUI.TextView_Roboto
                     style="@style/text_box_date"
                     android:text=" Comparação:"
                     android:textSize="21px" />

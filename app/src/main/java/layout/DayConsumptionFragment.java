@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -114,6 +115,8 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
     private TextView _solar_average;
     private TextView _wind_average;
 
+    private ProgressBar _loading_bar;
+
     DecimalFormat df = new DecimalFormat("#0.00");
 
     public DayConsumptionFragment() {
@@ -180,6 +183,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         _mainContainer     = (LinearLayout)v.findViewById(R.id.day_chart_container);
         _daySideBar        = (LinearLayout)v.findViewById(R.id.day_side_bar);
         _chartSideBar      = (LinearLayout)v.findViewById(R.id.chart_day_sidebar);
+        _loading_bar       = (ProgressBar)v.findViewById(R.id.frag_day_loading_bar);
 
         _consumption_chart.setMode(LineConsumptionChart.MODE_DAY);
         _consumption_chart.SetChartInteractionListener(this);
@@ -624,6 +628,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         }
 
         private void addComparisonData(int index, int color){
+            _loading_bar.setVisibility(View.VISIBLE);
             new HistoricalConsumptionRequestWorker().execute(index);
        /*   final double[] stupid_array = new double[48];
             Date dt = new Date();
@@ -704,6 +709,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         private void addComparisonData(double[] stupid_array, int index){
             _consumption_chart.addComparisonData(stupid_array,index, Color.parseColor("#FF0000"));
             _consumption_chart.requestRender();
+            _loading_bar.setVisibility(View.GONE);
         }
 
         private void updateRenewQuotas(float[] quotas){

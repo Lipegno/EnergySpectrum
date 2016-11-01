@@ -1,21 +1,20 @@
 package android.prsma.org.energyspectrum.dtos;
 
-import android.content.Context;
-import android.prsma.org.energyspectrum.customUI.ScreenSaverHandler;
 import android.prsma.org.energyspectrum.services.SocketConnectionService;
-import android.util.Log;
 
 public final class RuntimeConfigs {
 
 	private final static String MODULE = "Runtime configurations";
-	private final static ScreenSaverHandler screenH = new ScreenSaverHandler(50000);
+
 	private SocketConnectionService requestReplySocket;
 	private int eventsCount;
 	private String meterIp;
 	private int installation_id;
 	private double renew_percent;
 	private int webserver_port;
-	
+
+	//private final static ScreenSaverHandler screenH = new ScreenSaverHandler(50000);
+
 	public static class RunTimeConfigsHolder{
 		public static final RuntimeConfigs configs = new RuntimeConfigs(); 
 	}
@@ -33,18 +32,7 @@ public final class RuntimeConfigs {
 		//Log.i(MODULE, "Getting events count to "+ eventsCount);
 		return eventsCount;
 	}
-	
-	public ScreenSaverHandler getScreenHandler(){
-		return screenH;
-	}
-	
-	public boolean handlerRunning(){
-		return screenH.isRunning();
-	}
-	
-	public void startHandler(){
-		screenH.start();
-	}
+
 	
 	public String getMeterIp() {
 		return meterIp;
@@ -88,6 +76,17 @@ public final class RuntimeConfigs {
 	}
 	
 
+	/*public ScreenSaverHandler getScreenHandler(){
+		return screenH;
+	}
+
+	public boolean handlerRunning(){
+		return screenH.isRunning();
+	}
+
+	public void startHandler(){
+		screenH.start();
+	}*/
 //	public static WebServiceHandler getWebHandler() {
 //		return web_handler;
 //	}

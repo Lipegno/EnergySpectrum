@@ -162,13 +162,13 @@ public class LineConsumptionChart extends SurfaceView implements SurfaceHolder.C
             drawVerticalAxis(c);
             drawHorizontalAxis(c,_token);
             if(_avg_cons_data!=null && _cons_data!=null) {
-
+                drawAveragePath(c);
+                drawChartPath(c);
                 for (int i = 0; i < _comparison_data.size(); i++) {
                     if (_comparison_data.get(i)[0] != 0)
                         drawComparisonPath(c, _comparison_data.get(i), _comparison_colors[i]);
                 }
-                drawAveragePath(c);
-                drawChartPath(c);
+
             }
             ////Log.i("Cons Chart", "rendering");
             if(_events!=null && _events.size()>0)

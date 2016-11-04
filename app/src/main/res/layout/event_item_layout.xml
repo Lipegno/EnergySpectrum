@@ -17,18 +17,9 @@
     <TextView
         android:id="@+id/event_list_label"
         android:layout_width="0sp"
-        android:layout_weight="0.3"
+        android:layout_weight="0.8"
         android:layout_height="match_parent"
         android:gravity="center"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:text="EVENT EXAMPLE"/>
-    <TextView
-        android:id="@+id/event_list_tms"
-        android:layout_width="0sp"
-        android:layout_weight="0.3"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:gravity="end"
-        android:layout_gravity="center_vertical"
         android:text="EVENT EXAMPLE"/>
 </LinearLayout>

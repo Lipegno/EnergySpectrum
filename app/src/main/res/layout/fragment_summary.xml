@@ -160,7 +160,8 @@
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_marginLeft="15dp"
-                            android:orientation="horizontal" >
+                            android:orientation="horizontal"
+                            android:visibility="gone">
                         </LinearLayout>
 
                         <Button
@@ -171,6 +172,7 @@
                             android:background="@drawable/round_box_blue_stroke"
                             android:onClick="handleButtonClick"
                             android:padding="9dp"
+                            android:visibility="gone"
                             android:text="Reset" />
                     </LinearLayout>
                 </LinearLayout>

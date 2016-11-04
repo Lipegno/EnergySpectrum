@@ -514,26 +514,30 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             Date dt = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(dt);
-            c.add(Calendar.DATE, -1*params[0]);
+            c.add(Calendar.DATE, -1*(params[0]+1));
             dt = c.getTime();
             String fDate = new SimpleDateFormat("yyyy-MM-dd").format(dt);
             ArrayList<ContentValues> result = web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
 
-            final double[] stupid_array = new double[24];
+            if(result!=null && result.size()>0){
 
-            for(int i=0;i<result.size();i++){
-                stupid_array[result.get(i).getAsInteger("Hour")]=Math.round((result.get(i)).getAsDouble("Power"));
-            }
+                final double[] stupid_array = new double[24];
 
-            Message msg = Message.obtain();
-            msg.arg1=2;
-            Bundle data = new Bundle();
-            data.putDoubleArray("ConsData",stupid_array);
-            data.putInt("Index",params[0]);
-            msg.setData(data);
-            ui_handler.sendMessage(msg);
+                for(int i=0;i<result.size();i++){
+                    stupid_array[result.get(i).getAsInteger("Hour")]=Math.round((result.get(i)).getAsDouble("Power"));
+                }
 
-            return "Executed";
+                Message msg = Message.obtain();
+                msg.arg1=2;
+                Bundle data = new Bundle();
+                data.putDoubleArray("ConsData",stupid_array);
+                data.putInt("Index",params[0]);
+                msg.setData(data);
+                ui_handler.sendMessage(msg);
+
+                return "Executed";
+            }else
+                return "Request Error";
         }
     }
 
@@ -564,20 +568,20 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
         protected void onPostExecute(String result) {
 
             float solar,thermal,wind,hydro = 0;
+            if(prod_data!=null && prod_data.size()>0) {
+                solar = prod_data.get(0).getAsInteger("foto");
+                wind = prod_data.get(0).getAsInteger("eolica");
+                hydro = prod_data.get(0).getAsInteger("hidrica");
+                thermal = prod_data.get(0).getAsInteger("biomassa") + prod_data.get(0).getAsInteger("termica");
 
-            solar   = prod_data.get(0).getAsInteger("foto");
-            wind    = prod_data.get(0).getAsInteger("eolica");
-            hydro   = prod_data.get(0).getAsInteger("hidrica");
-            thermal = prod_data.get(0).getAsInteger("biomassa") + prod_data.get(0).getAsInteger("termica");
-
-            float quotas[] = {solar,wind,hydro,thermal};
-            Message msg = Message.obtain();
-            msg.arg1=3;
-            Bundle data = new Bundle();
-            data.putFloatArray("renew_quotas",quotas);
-            msg.setData(data);
-            ui_handler.sendMessage(msg);
-
+                float quotas[] = {solar, wind, hydro, thermal};
+                Message msg = Message.obtain();
+                msg.arg1 = 3;
+                Bundle data = new Bundle();
+                data.putFloatArray("renew_quotas", quotas);
+                msg.setData(data);
+                ui_handler.sendMessage(msg);
+            }
             Log.i("DayFragment","got new data");
         }
     }
@@ -687,6 +691,7 @@ public class DayConsumptionFragment extends Fragment implements LineConsumptionC
             double comp = today_total/yesterday_total;
             if(comp > 1){
                 comp = 1-comp;
+                comp = Math.abs(comp);
                 String comp_text = df.format(comp*100);
                 _yesterdayComp.setText("+ "+comp_text+" % \n than yesterday");
             }else{

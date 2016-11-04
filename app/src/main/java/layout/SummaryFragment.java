@@ -225,21 +225,25 @@ public class SummaryFragment extends Fragment {
                 String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
                 day_cons = _web_handler.getTodayDetailedCons("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly",fDate);
 
-                final double[] stupid_array = new double[24];
+                if(day_cons!=null && day_cons.size()>0){
+                    final double[] stupid_array = new double[24];
 
-                for(int i=0;i<day_cons.size();i++){
-                    stupid_array[day_cons.get(i).getAsInteger("Hour")]=Math.round((day_cons.get(i)).getAsDouble("Power"));
+                    for(int i=0;i<day_cons.size();i++){
+                        stupid_array[day_cons.get(i).getAsInteger("Hour")]=Math.round((day_cons.get(i)).getAsDouble("Power"));
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.arg1=1;
+                    Bundle data = new Bundle();
+                    data.putDoubleArray("ConsData",stupid_array);
+                    msg.setData(data);
+
+                    ui_handler.sendMessage(msg);
+
+                    return "executed";
+                }else{
+                    return "error in the execution off line";
                 }
-
-                Message msg = Message.obtain();
-                msg.arg1=1;
-                Bundle data = new Bundle();
-                data.putDoubleArray("ConsData",stupid_array);
-                msg.setData(data);
-
-                ui_handler.sendMessage(msg);
-
-                return "executed";
             }else{
                 return "error";
             }

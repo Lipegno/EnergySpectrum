@@ -365,6 +365,7 @@ public class ProductionFragment extends Fragment {
         double comp = today_total/yesterday_total;
         if(comp > 1){
             comp = 1-comp;
+            comp=Math.abs(comp);
             String comp_text = df.format(comp*100);
             _comparison.setText("+ "+comp_text+"% ");
         }else{
@@ -501,17 +502,17 @@ public class ProductionFragment extends Fragment {
             else{
                cons_data = new ArrayList<ContentValues>();
                average_cons =  new ArrayList<ContentValues>();
-               for(int i=0;i<100;i++) {
+               for(int i=0;i<24;i++) {
                   ContentValues cv = new ContentValues();
-                   cv.put("tm_slot",i);
-                   cv.put("cons", Math.random()*500+500);
+                   cv.put("Hour",i);
+                   cv.put("Power", Math.random()*500+500);
                    cons_data.add(cv);
                }
 
                 for(int i=0;i<24;i++) {
                     ContentValues cv = new ContentValues();
-                    cv.put("hour",i);
-                    cv.put("cons", Math.random()*1000);
+                    cv.put("Hour",i);
+                    cv.put("Power", Math.random()*1000);
                     average_cons.add(cv);
                 }
 

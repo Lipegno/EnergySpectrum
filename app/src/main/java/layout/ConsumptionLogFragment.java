@@ -1,5 +1,8 @@
 package layout;
 
+import android.os.AsyncTask;
+import android.os.Message;
+import android.prsma.org.energyspectrum.webservices.WebServiceHandler;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +54,14 @@ public class ConsumptionLogFragment extends Fragment {
     private TextView _eventCons;
     private TextView _eventOccur;
     private TextView _eventHap;
+
+    private static final WebServiceHandler web_handler = WebServiceHandler.get_WS_Handler();
+    private static final String TAG = "ConsumptionLogFragment";
+
+    final ArrayList<EventSampleDTO> _event_data = new ArrayList<EventSampleDTO>();
+    ConsumptionLogAdapter _adapter;
+
+    ConsumptionLogUIHandler _handler = new ConsumptionLogUIHandler();
 
     public ConsumptionLogFragment() {
         // Required empty public constructor
@@ -140,24 +152,25 @@ public class ConsumptionLogFragment extends Fragment {
         _eventOccur   = (TextView) layout.findViewById(R.id.event_detail_occurrences);
         _eventHap     = (TextView) layout.findViewById(R.id.event_detail_usual_occurrences);
 
-        final ArrayList<EventSampleDTO> dummy = getDummyValues();
-        ConsumptionLogAdapter _adapter = new ConsumptionLogAdapter(_appContext,R.layout.event_item_layout,dummy);
+        _adapter = new ConsumptionLogAdapter(_appContext,R.layout.event_item_layout,_event_data);
         _eventLogView.setAdapter(_adapter);
 
-        dummy.add(new EventSampleDTO("MERDAAA",null,2000,10,10,"123123123123123123",null));
+       // _event_data.add(new EventSampleDTO("MERDAAA",null,2000,10,10,"123123123123123123",null));
         _adapter.notifyDataSetChanged();
 
         _eventLogView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i("ConsumptionLog","The "+i+" was selected");
-                _eventLabel.setText(dummy.get(i).get_guess());
-                _eventTms.setText(dummy.get(i).get_timestamp());
-                _eventCons.setText(dummy.get(i).get_deltaPMean()+" Watts");
+                _eventLabel.setText(_event_data.get(i).get_guess());
+                _eventTms.setText(_event_data.get(i).get_timestamp());
+                _eventCons.setText(_event_data.get(i).get_deltaPMean()+" Watts");
                 _eventOccur.setText("Also happened today at 7:30 and 10:30");
                 _eventHap.setText("Usally happens in the morning");
             }
         });
+
+        new EventHistoryRequestWorker().execute();
     }
 
     private ArrayList<EventSampleDTO> getDummyValues(){
@@ -200,16 +213,30 @@ public class ConsumptionLogFragment extends Fragment {
             //current_item.setBackgroundColor(Color.parseColor("#FF0000"));
             EventItemHolder holder = new EventItemHolder();
             holder.event_icon  = (ImageView)current_item.findViewById(R.id.event_img);
-
-            if(position%2 == 0)
-                holder.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.power_icon,null ));
-            else
-                holder.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.prod_icon,null ));
-
-
             holder.event_label = (TextView) current_item.findViewById(R.id.event_list_label);
             holder.event_label.setText(_values.get(position).get_guess());
+            setIcon(holder, position);
             return current_item;
+        }
+
+        private void setIcon(EventItemHolder currentItem, int position){
+
+            String title = _values.get(position).get_guess().toLowerCase();
+            if(title.contains("monitor")){
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.analytics,null ));
+            }else if(title.contains("tv")) {
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.analytics,null ));
+            }else if(title.contains("macbook")) {
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.laptop,null ));
+            }else if(title.contains("router")){
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.router,null ));
+            }else if(title.contains("freezer")){
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.minibar,null ));
+            }else if(title.contains("refrigerator")){
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.minibar,null ));
+            }else if(title.contains("vacuum")){
+                currentItem.event_icon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.vacuum_cleaner,null ));
+            }
         }
 
         class EventItemHolder{
@@ -219,4 +246,26 @@ public class ConsumptionLogFragment extends Fragment {
 
         }
 }
+    private class EventHistoryRequestWorker extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            ArrayList<EventSampleDTO> event_data = web_handler.getEventsList("http://aveiro.m-iti.org/hybridnilm/public/api/v1/plugwise/samples/hourly","status");
+            if(event_data!=null && event_data.size()>0){
+                for(int i=0;i<event_data.size();i++){
+                    _event_data.add(event_data.get(i));
+                }
+                _handler.sendEmptyMessage(0);
+            }
+            Log.i(TAG," got new events");
+            return null;
+        }
+    }
+
+    private class ConsumptionLogUIHandler extends android.os.Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            _adapter.notifyDataSetChanged();
+        }
+    }
 }

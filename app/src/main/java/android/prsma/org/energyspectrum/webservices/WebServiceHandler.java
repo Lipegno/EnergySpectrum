@@ -3,10 +3,12 @@ package android.prsma.org.energyspectrum.webservices;
 import android.content.ContentValues;
 import android.content.Context;
 import android.prsma.org.energyspectrum.database.DBManager;
+import android.prsma.org.energyspectrum.dtos.EventSampleDTO;
 import android.prsma.org.energyspectrum.dtos.RuntimeConfigs;
 import android.prsma.org.energyspectrum.webservices.services.DaysAverage;
 import android.prsma.org.energyspectrum.webservices.services.EnergyProdPrediction;
 import android.prsma.org.energyspectrum.webservices.services.EnergyProduction;
+import android.prsma.org.energyspectrum.webservices.services.EventsHistory;
 import android.prsma.org.energyspectrum.webservices.services.MonthsAverage;
 import android.prsma.org.energyspectrum.webservices.services.TodayConsService;
 import android.prsma.org.energyspectrum.webservices.services.TodayDetailedCons;
@@ -423,6 +425,20 @@ public final class WebServiceHandler {
 			e.printStackTrace();
 		}
 		return detail_cons.getData();
+	}
+
+	public synchronized ArrayList<EventSampleDTO> getEventsList(String path, String keys){
+		EventsHistory events_hist = new EventsHistory();
+		events_hist._appCtx = _ctx;
+		events_hist.buildRequest(path,keys);
+		events_hist.setRequestMode(ConsumptionHttpRequest.NEW_REQUEST_MODE);
+		events_hist.run();
+		try {
+			events_hist.join();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return events_hist.getEventData();
 	}
 
 	private ArrayList<ContentValues> processMonthRequest(int month, int year){

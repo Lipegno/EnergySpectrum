@@ -214,12 +214,12 @@ public class ProductionChart extends SurfaceView implements SurfaceHolder.Callba
 
 		float y_title = 0+text_size;//-(vertical_caption_size_prod + prod_chart_percent_height*getHeight());
 		float y_prod_title = y_title+text_size*2;
-		c.drawText("Produção e consumo de energia", left_margin-5, y_title, p); // chart title
+		c.drawText("Electricity production and consumption", left_margin-5, y_title, p); // chart title
 		p.setTextSize(text_size*0.9f);
-		c.drawText("Produção de energia (MWh)", left_margin, y_prod_title, p); // prod title
+		c.drawText("Electricity production (MWh)", left_margin, y_prod_title, p); // prod title
 		vertical_caption_size_prod = (int)Math.round(height*0.4)+Math.round(y_prod_title)+Math.round(text_size*2f);
 		y_cons_title = vertical_caption_size_prod + text_size;
-		c.drawText("Consumo de energia (kWh)", left_margin, y_cons_title, p);  // cons title
+		c.drawText("Electricity consumption (kWh)", left_margin, y_cons_title, p);  // cons title
 
 		//draw scales prod
 		//p.setTypeface(roboto_thin);

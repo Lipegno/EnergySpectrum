@@ -221,10 +221,10 @@ public class ProductionFragment extends Fragment {
             avg_cons[average_cons.get(i).getAsInteger("Hour")]=(average_cons.get(i)).getAsDouble("Power");
 //			Log.i(MODULE, "cons detailed "+cons[cons_data.get(i).getAsInteger("tm_slot")]+" time slot "+cons_data.get(i).getAsInteger("tm_slot"));
         }
-        if(average_cons.get(average_cons.size()-1).getAsInteger("Hour")<avg_cons.length){
+      /*  if(average_cons.get(average_cons.size()-1).getAsInteger("Hour")<avg_cons.length){
             for(int j=average_cons.get(average_cons.size()-1).getAsInteger("Hour");j<avg_cons.length;j++)
                 avg_cons[j]=0;
-        }
+        }*/
 
         for(int i=0;i<cons.length;i++){
             if(cons[i]>max_cons)

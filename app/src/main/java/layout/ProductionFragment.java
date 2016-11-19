@@ -302,7 +302,7 @@ public class ProductionFragment extends Fragment {
         _waterPrecent.setText( df.format((last_water/last_total)*100)+"%");
         _windPrecent.setText( df.format((last_wind/last_total)*100)+"%");
         _termalPrecent.setText(Math.round((last_termal/last_total)*100)+"%");
-        _termalPrecent.setText("90.6%");
+       // _termalPrecent.setText("90.6%");
         Log.i(MODULE, "total today "+total+" total renew today"+total_renew+" quota "+(total_renew/total) + "  sol"+total_solar/total);
 
         for(int i=0;i<pred_data.size();i++){		// populates the rest of the array with predicted data
